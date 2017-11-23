@@ -21,9 +21,11 @@ class CustomerRole
         if(Auth::check()){
             $userRole = User::getLoggedUserRole();
             $userStatus = User::getLoggedUserStatus();
-            if($userRole != config('roles.customer.en')
-                && $userStatus != config('lists.user_status.approved.en'))
+            if($userRole == config('roles.customer.en')
+                && $userStatus == config('lists.user_status.approved.en'))
             {
+                return $next($request);
+            }else{
                 return redirect('home');
             }
         }else{
@@ -31,6 +33,6 @@ class CustomerRole
         }
 
         
-        return $next($request);
+        
     }
 }

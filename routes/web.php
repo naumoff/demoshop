@@ -1,5 +1,11 @@
 <?php
 
+//************* TESTING
+Route::get('test', function(){
+    dump(\App\User::getLoggedUserRole());
+    dump(\App\User::getLoggedUserStatus());
+});
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,13 +30,16 @@ Route::get('/', function () {
 
 Auth::routes();
 
-//Route::post('/registration-request', )
-
 Route::get('/home', 'HomeController@index')->name('home');
 
+// ADMIN DASHBOARD
+Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
+    Route::get('users','Admin\UserManagementController@index');
+});
 
-//************* TESTING
-Route::get('test', function(){
-   dump(\App\User::getLoggedUserRole());
-   dump(\App\User::getLoggedUserStatus());
+//CUSTOMER DASHBOARD
+Route::group(['prefix'=>'customer', 'middleware'=>'customer'], function(){
+    Route::get('customer',function(){
+       dd('customer');
+    });
 });

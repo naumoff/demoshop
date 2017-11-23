@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class AdminRole
 {
@@ -18,16 +20,15 @@ class AdminRole
         if(Auth::check()){
             $userRole = User::getLoggedUserRole();
             $userStatus = User::getLoggedUserStatus();
-            if($userRole != config('roles.admin.en')
-                && $userStatus != config('lists.user_status.approved.en'))
+            if($userRole == config('roles.admin.en')
+                && $userStatus == config('lists.user_status.approved.en'))
             {
+                return $next($request);
+            }else{
                 return redirect('home');
             }
         }else{
             return redirect('login');
         }
-    
-    
-        return $next($request);
     }
 }
