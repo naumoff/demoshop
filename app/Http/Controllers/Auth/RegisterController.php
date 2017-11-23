@@ -88,11 +88,4 @@ class RegisterController extends Controller
         ];
         return User::create($newUser);
     }
-    
-    #region SERVICE METHODS
-    private function saveGreetingMessageToSession()
-    {
-    
-    }
-    #endregion
 }

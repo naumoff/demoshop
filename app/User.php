@@ -4,11 +4,13 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
     use Notifiable;
 
+    #region CLASS PROPERTIES
     /**
      * The attributes that are mass assignable.
      *
@@ -34,8 +36,26 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    #endregion
     
-    #region SERVICE METHODS
+    #region MAIN METHODS
+    public static function getLoggedUserRole()
+    {
+        $loggedUser = Auth::user();
+        return $loggedUser->role->role;
+    }
     
+    public static function getLoggedUserStatus()
+    {
+        $loggedUser = Auth::user();
+        return $loggedUser->status;
+    }
+    #endregion
+    
+    #region RELATION METHODS
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
     #endregion
 }

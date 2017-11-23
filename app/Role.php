@@ -16,6 +16,9 @@ class Role extends Model
     #endregion
     
     #region RELATION METHODS
-    
+    public function users()
+    {
+        return $this->hasMany(User::class, 'role_id', 'id');
+    }
     #endregion
 }

@@ -31,12 +31,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //************* TESTING
 Route::get('test', function(){
-   dump(config('lists.secret_words_status'));
-   dump(config('roles'));
-   dump(config('lists.user_status'));
-   dump(config('roles'));
-   
-   dump(\App\Role::getRoleId(config('roles.admin.en')));
-   
-   
+   dump(\App\User::getLoggedUserRole());
+   dump(\App\User::getLoggedUserStatus());
 });
