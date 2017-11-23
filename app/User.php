@@ -15,7 +15,15 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'role_id',
+        'name',
+        'first_name',
+        'last_name',
+        'email',
+        'mobile_phone',
+        'country',
+        'status',
+        'password',
     ];
 
     /**
@@ -26,4 +34,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    #region SERVICE METHODS
+    
+    #endregion
 }

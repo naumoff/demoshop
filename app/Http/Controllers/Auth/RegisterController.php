@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Role;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -53,7 +55,14 @@ class RegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'mobile_phone' => 'required',
             'country' => 'required',
-            'secret_word' => 'required|string|min:6',
+            'secret_word' => [
+                'required',
+                'string',
+                'min:6',
+                Rule::exists('secret_words')->where(function ($query){
+                    $query->where('status','=','active');
+                })
+            ],
         ]);
     }
 
@@ -65,11 +74,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        dd($data);
-        return User::create([
-            'name' => $data['name'],
+        $name = $data['first_name'].' '.$data['last_name'];
+        $newUser = [
+            'role_id'=> Role::getRoleId(config('roles.customer.en')),
+            'name' => $name,
+            'first_name'=>$data['first_name'],
+            'last_name'=>$data['last_name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+            'mobile_phone'=>$data['mobile_phone'],
+            'country'=>$data['country'],
+            'status'=>config('lists.user_status.pending.en'),
+            'password' => bcrypt($data['secret_word'].$_ENV['SALT']),
+        ];
+        return User::create($newUser);
     }
+    
+    #region SERVICE METHODS
+    private function saveGreetingMessageToSession()
+    {
+    
+    }
+    #endregion
 }

@@ -12,7 +12,14 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if(Auth::check()){
+        if(Auth::user()->id != config('lists.user_status.approved.en')){
+            return redirect('home');
+        }else{
+            return redirect('home');
+        }
+    }
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -28,6 +35,8 @@ Route::get('test', function(){
    dump(config('roles'));
    dump(config('lists.user_status'));
    dump(config('roles'));
+   
+   dump(\App\Role::getRoleId(config('roles.admin.en')));
    
    
 });
