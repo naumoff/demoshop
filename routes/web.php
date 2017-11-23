@@ -17,4 +17,17 @@ Route::get('/', function () {
 
 Auth::routes();
 
+//Route::post('/registration-request', )
+
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+//************* TESTING
+Route::get('test', function(){
+   dump(config('lists.secret_words_status'));
+   dump(config('roles'));
+   dump(config('lists.user_status'));
+   dump(config('roles'));
+   
+   
+});
