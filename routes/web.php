@@ -19,10 +19,10 @@ Route::get('test', function(){
 
 Route::get('/', function () {
     if(Auth::check()){
-        if(Auth::user()->id != config('lists.user_status.approved.en')){
-            return redirect('home');
-        }else{
-            return redirect('home');
+        if(\App\User::checkActiveAdmin()){
+            return redirect('admin/home');
+        }elseif(\App\User::checkActiveCustomer()){
+            return redirect('customer/home');
         }
     }
     return view('auth.login');
@@ -34,12 +34,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 // ADMIN DASHBOARD
 Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
-    Route::get('users','Admin\UserManagementController@index');
+    Route::get('home','Admin\AdminController@index')->name('admin-home');
 });
 
 //CUSTOMER DASHBOARD
 Route::group(['prefix'=>'customer', 'middleware'=>'customer'], function(){
-    Route::get('customer',function(){
-       dd('customer');
-    });
+    Route::get('home','Customer\CustomerController@index')->name('customer-home');
 });

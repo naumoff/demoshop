@@ -39,6 +39,28 @@ class User extends Authenticatable
     #endregion
     
     #region MAIN METHODS
+    public static function checkActiveAdmin()
+    {
+        if(self::getLoggedUserRole() == config('roles.admin.en')
+            && self::getLoggedUserStatus() == config('lists.user_status.approved.en'))
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public static function checkActiveCustomer()
+    {
+        if(self::getLoggedUserRole() == config('roles.customer.en')
+            && self::getLoggedUserStatus() == config('lists.user_status.approved.en'))
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
     public static function getLoggedUserRole()
     {
         $loggedUser = Auth::user();
