@@ -35,6 +35,12 @@ Route::get('/home', 'HomeController@index')->name('home');
 // ADMIN DASHBOARD
 Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::get('home','Admin\AdminController@index')->name('admin-home');
+    Route::get('users','Admin\UsersController@index')->name('admin-users');
+    Route::get('users/approved','Admin\UsersController@showApproved');
+    Route::get('users/pending','Admin\UsersController@showPending');
+    Route::get('users/suspended','Admin\UsersController@showSuspended');
+    Route::get('users/rejected','Admin\UsersController@showRejected');
+    Route::get('users/all','Admin\UsersController@showAll');
 });
 
 //CUSTOMER DASHBOARD

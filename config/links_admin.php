@@ -2,42 +2,42 @@
 return [
     'top' => [
         'users'=>[
-            'link'=>'users',
+            'link'=>'/admin/users',
             'ru'=>'Пользователи'
         ],
         'content'=>[
-            'link'=>'content',
+            'link'=>'/admin/content',
             'ru'=>'Контент'
         ],
         'questioners'=>[
-            'link'=>'questioners',
+            'link'=>'/admin/questioners',
             'ru'=>'Опросники'
         ],
         'products'=>[
-            'link'=>'products',
+            'link'=>'/admin/products',
             'ru'=>'Товары'
         ]
     ],
     'sidebar'=>[
         'users'=>[
             [
-                'link'=>'admin/users/approved',
+                'link'=>'/admin/users/approved',
                 'ru'=>'Подтвержденные пользователи'
             ],
             [
-                'link'=>'admin/users/pending',
+                'link'=>'/admin/users/pending',
                 'ru'=>'Ожидающие регистрации'
             ],
             [
-                'link'=>'admin/users/suspended',
+                'link'=>'/admin/users/suspended',
                 'ru'=>'C приостановленной регистрацией'
             ],
             [
-                'link'=>'admin/users/rejected',
+                'link'=>'/admin/users/rejected',
                 'ru'=>'C отказанной регистрацией'
             ],
             [
-                'link'=>'admin/users/all',
+                'link'=>'/admin/users/all',
                 'ru'=>'Все пользователи'
             ],
         ]

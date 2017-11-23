@@ -34,11 +34,6 @@
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
-                    &nbsp;
-                </ul>
-
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
@@ -46,7 +41,7 @@
                     <li><a href="{{ route('login') }}">Login</a></li>
                     <li><a href="{{ route('register') }}">Register</a></li>
                     @else
-                        @foreach(config('links-admin.top') AS $key=>$array)
+                        @foreach(config('links_admin.top') AS $key=>$array)
                             <li>
                                 <a href="{{$array['link']}}">{{$array['ru']}}</a>
                             </li>

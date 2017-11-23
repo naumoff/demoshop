@@ -6,7 +6,7 @@
             @include('layouts.sidebar-admin')
             <div class="col-md-9">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Кабинет Администратора</div>
+                    <div class="panel-heading">Пользователи с приостановленной регистрацией</div>
                     <div class="panel-body">
                         Admin
                     </div>
