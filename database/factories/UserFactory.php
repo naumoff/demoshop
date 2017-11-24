@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
+use Faker\Factory as newFaker;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,62 @@ $factory->define(App\User::class, function (Faker $faker) {
         'status'=> $userStatus[rand(0,count($userStatus)-1)],
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+        'created_at'=>\Carbon\Carbon::now(),
+        'updated_at'=>\Carbon\Carbon::now()
+    ];
+});
+
+$factory->define(\App\Group::class, function(Faker $faker){
+    $categories = \App\Category::all()->toArray();
+    return [
+        'category_id'=>$categories[rand(0,count($categories)-1)]['id'],
+        'group'=>$faker->word,
+        'created_at'=>\Carbon\Carbon::now(),
+        'updated_at'=>\Carbon\Carbon::now()
+    ];
+});
+
+$factory->define(\App\Product::class, function(Faker $faker){
+    $groups = \App\Group::all()->toArray();
+    
+    $productName = $faker->word();
+    $productNameRu = 'RU-'.$productName;
+    $productNameDe = 'DE-'.$productName;
+    
+    $exchRate = 69.5;
+    $eurPrice = $faker->randomFloat($nbMaxDecimals = 8, $min = 0, $max = 2);
+    $ruPrice = $eurPrice * $exchRate;
+    
+    $discountChance = rand(0,1);
+    if($discountChance){
+        $year = rand(2016,2019);
+        $month = rand(1,12);
+        $day = rand(1,28);
+        $startDate = \Carbon\Carbon::create($year,$month,$day,0,0,0)
+            ->format('Y-m-d H:i:s');
+        $endDate = \Carbon\Carbon::create($year,$month,$day,0,0,0)
+            ->addDays(rand(1,90))
+            ->format('Y-m-d H:i:s');
+        $discount = rand(5, 9)/10;
+    }else{
+        $startDate = null;
+        $endDate = null;
+    }
+
+    return [
+        'group_id'=>$groups[rand(0,count($groups)-1)]['id'],
+        'product_ru'=>$productNameRu,
+        'product_de'=>$productNameDe,
+        'description'=>$faker->paragraph($nbSentences = 3, $variableNbSentences = true),
+        'pictures'=>'',
+        'price_eur'=>$eurPrice,
+        'price_rub_auto'=>$ruPrice,
+        'price_rub_manual'=>0,
+        'price_with_discount'=>($discountChance)?$ruPrice*$discount:0,
+        'discount_start'=>$startDate,
+        'discount_end'=>$endDate,
+        'discount_active'=>rand(0,$discountChance),
+        'weight_gr'=>rand(500,40000),
         'created_at'=>\Carbon\Carbon::now(),
         'updated_at'=>\Carbon\Carbon::now()
     ];

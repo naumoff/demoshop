@@ -4,8 +4,8 @@
 use App\User;
 use App\Events\CustomerRejected;
 Route::get('test', function(){
-    $userContoller = new \App\Http\Controllers\Admin\UsersController();
-    $userContoller->suspendCustomerRegistration(2,'you are bad customer');
+    $categories = \App\Category::all()->toArray();
+    dd($categories);
 });
 
 /*

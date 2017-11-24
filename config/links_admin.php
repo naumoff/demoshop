@@ -5,6 +5,12 @@ return [
             'link'=>'/admin/users',
             'ru'=>'Пользователи'
         ],
+    
+        'products'=>[
+            'link'=>'/admin/products',
+            'ru'=>'Товары'
+        ],
+        
         'content'=>[
             'link'=>'/admin/content',
             'ru'=>'Контент'
@@ -12,10 +18,6 @@ return [
         'questioners'=>[
             'link'=>'/admin/questioners',
             'ru'=>'Опросники'
-        ],
-        'products'=>[
-            'link'=>'/admin/products',
-            'ru'=>'Товары'
         ]
     ],
     'sidebar'=>[
