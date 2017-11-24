@@ -3,8 +3,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            @include('layouts.sidebar-admin')
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">Кабинет Администратора</div>
                     <div class="panel-body">

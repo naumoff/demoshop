@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 
 class SideBarComposer
 {
-    public function compose(View $view)
+    public function composeForAdmin(View $view)
     {
-        $pathMask = $this->getPathMask();
+        $pathMask = $this->getPathMaskForAdminDashboard();
         
         $links = [];
         
@@ -26,7 +26,7 @@ class SideBarComposer
         $view->with('links', $links);
     }
     
-    private function getPathMask()
+    private function getPathMaskForAdminDashboard()
     {
         $path = $_SERVER['REQUEST_URI'];
         

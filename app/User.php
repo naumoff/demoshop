@@ -72,6 +72,26 @@ class User extends Authenticatable
         $loggedUser = Auth::user();
         return $loggedUser->status;
     }
+    
+    public static function getUsers(string $status = null, string $role = null, $order = 'desc')
+    {
+        $whereStatusCondition = ['id','>',0];
+        $whereRoleCondition = ['id','>',0];
+    
+        if($status !== null){
+            $whereStatusCondition = ['status','=',$status];
+        }
+        
+        if($role !== null){
+            $roleId = Role::getRoleId($role);
+            $whereRoleCondition = ['role_id','=',$roleId];
+        }
+        
+        $users = self::where([$whereRoleCondition, $whereStatusCondition])
+            ->orderBy('created_at', $order);
+        return $users;
+    }
+
     #endregion
     
     #region RELATION METHODS
