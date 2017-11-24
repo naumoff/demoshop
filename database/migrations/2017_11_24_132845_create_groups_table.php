@@ -18,6 +18,7 @@ class CreateGroupsTable extends Migration
             $table->integer('category_id')->unsigned()->index();
             $table->string('group');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('category_id')->references('id')->on('categories');
         });
     }

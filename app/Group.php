@@ -3,9 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Group extends Model
 {
+    use SoftDeletes;
+    
+    #region CLASS PROPERTIES
+    protected $dates = ['deleted_at'];
+    #endregion
+    
     #region RELATION METHODS
     public function category()
     {

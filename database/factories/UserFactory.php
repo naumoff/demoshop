@@ -65,7 +65,7 @@ $factory->define(\App\Product::class, function(Faker $faker){
     $productNameDe = 'DE-'.$productName;
     
     $exchRate = 69.5;
-    $eurPrice = $faker->randomFloat($nbMaxDecimals = 8, $min = 0, $max = 2);
+    $eurPrice = $faker->randomFloat($nbMaxDecimals = 8, $min = 1, $max = 150);
     $ruPrice = $eurPrice * $exchRate;
     
     $discountChance = rand(0,1);

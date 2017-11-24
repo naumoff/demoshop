@@ -22,6 +22,10 @@ class SideBarComposer
         if($pathMask == 'users'){
             $links = config('links_admin.sidebar.users');
         }
+        
+        if($pathMask == 'products'){
+            $links = config('links_admin.sidebar.products');
+        }
 
         $view->with('links', $links);
     }
@@ -32,6 +36,10 @@ class SideBarComposer
         
         if(strpos($path,'admin/users')){
             return 'users';
+        }
+        
+        if(strpos($path,'admin/products')){
+            return 'products';
         }
     }
 }

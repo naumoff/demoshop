@@ -11,6 +11,16 @@ return [
             'ru'=>'Товары'
         ],
         
+        'packages'=>[
+            'link'=>'/admin/packages',
+            'ru'=>'Комплекты'
+        ],
+        
+        'orders'=>[
+            'link'=>'/admin/orders',
+            'ru'=>'Заказы'
+        ],
+        
         'content'=>[
             'link'=>'/admin/content',
             'ru'=>'Контент'
@@ -42,6 +52,20 @@ return [
                 'link'=>'/admin/users/all',
                 'ru'=>'Все пользователи'
             ],
+        ],
+        'products'=>[
+            [
+                'link'=>'/admin/products/categories',
+                'ru'=>'Категории'
+            ],
+            [
+                'link'=>'/admin/products/groups',
+                'ru'=>'Группы'
+            ],
+            [
+                'link'=>'/admin/products/products',
+                'ru'=>'Товары'
+            ]
         ]
     ]
 ];

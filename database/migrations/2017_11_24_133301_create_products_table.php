@@ -29,6 +29,7 @@ class CreateProductsTable extends Migration
             $table->boolean('discount_active');
             $table->integer('weight_gr');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('group_id')->references('id')->on('groups');
         });
     }
