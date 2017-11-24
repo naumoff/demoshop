@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\CustomerRegistered;
 use App\Helpers\TranslateUserStatus;
 use App\User;
 use Illuminate\Http\Request;
@@ -53,6 +54,10 @@ class UsersController extends Controller
     
     public function showAll()
     {
+        $user = User::find(2);
+        event(new CustomerRegistered($user));
+        dd("OK!");
+        
         $allUsers = User::getUsers(null, config('roles.customer.en'))
             ->paginate($this->usersPerPage);
         foreach ($allUsers AS $user){
@@ -60,6 +65,10 @@ class UsersController extends Controller
         }
         return view('admin.users-all')->with('users',$allUsers);
     }
+    #endregion
+    
+    #region AJAX METHODS
+    
     #endregion
     
     #region SERVICE METHODS
