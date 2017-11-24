@@ -17,6 +17,16 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\SaveNewPasswordForCustomer',
             'App\Listeners\SendNewPasswordToCustomer',
         ],
+        
+        'App\Events\CustomerRejected' => [
+            'App\Listeners\SaveRejectStatusForCustomer',
+            'App\Listeners\SendRejectReasonToCustomer',
+        ],
+        
+        'App\Events\CustomerSuspended' => [
+            'App\Listeners\SaveSuspendStatusForCustomer',
+            'App\Listeners\SendSuspendReasonToCustomer',
+        ],
     ];
 
     /**

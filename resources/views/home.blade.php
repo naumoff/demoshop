@@ -14,10 +14,24 @@
                         </div>
                     @endif
 
-                    @if (Auth::user()->status != config('lists.user_status.approved.en'))
+                    @if (Auth::user()->status == config('lists.user_status.pending.en'))
                             <div class="alert alert-danger">
                                 <h3>Спасибо за Вашу заявку!</h3>
                                 <p>Ваша заявка на регистрацию будет рассмотрена в ближайшее время и Вы получете ответ на Ваш email</p>
+                            </div>
+                    @endif
+
+                    @if (Auth::user()->status == config('lists.user_status.suspended.en'))
+                            <div class="alert alert-danger">
+                                <h3>Уважаемый пользователь!</h3>
+                                <p>Ваша регистрация на нашем ресурсе отозвана. Пожалуйста свяжитесь с администрацией нашего сайта для восстановления Вашей регистрации.</p>
+                            </div>
+                    @endif
+
+                    @if (Auth::user()->status == config('lists.user_status.rejected.en'))
+                            <div class="alert alert-danger">
+                                <h3>Уважаемый пользователь!</h3>
+                                <p>Ваша регистрация на нашем ресурсе отклонена. Пожалуйста свяжитесь с администрацией нашего сайта для восстановления Вашей регистрации.</p>
                             </div>
                     @endif
 

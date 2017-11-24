@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Events\CustomerRegistered;
+use App\Events\CustomerRejected;
+use App\Events\CustomerSuspended;
 use App\Helpers\TranslateUserStatus;
 use App\User;
 use Illuminate\Http\Request;
@@ -54,10 +56,6 @@ class UsersController extends Controller
     
     public function showAll()
     {
-        $user = User::find(2);
-        event(new CustomerRegistered($user));
-        dd("OK!");
-        
         $allUsers = User::getUsers(null, config('roles.customer.en'))
             ->paginate($this->usersPerPage);
         foreach ($allUsers AS $user){
@@ -68,7 +66,29 @@ class UsersController extends Controller
     #endregion
     
     #region AJAX METHODS
+    public function approveCustomerRegistration($id)
+    {
+        $user = User::find($id);
+        event(new CustomerRegistered($user));
+    }
     
+    public function rejectCustomerRegistration($id, $reason)
+    {
+        $user = User::find($id);
+        event(new CustomerRejected($user, $reason));
+    }
+    
+    public function suspendCustomerRegistration($id, $reason)
+    {
+        $user = User::find($id);
+        event(new CustomerSuspended($user, $reason));
+    }
+    
+    public function softDeleteCustomerRegistration($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+    }
     #endregion
     
     #region SERVICE METHODS
