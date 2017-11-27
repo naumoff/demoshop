@@ -14,10 +14,27 @@ class Category extends Model
     #endregion
     
     #region MAIN METHODS
-    public static function getCategories()
+    public function scopeGetCategories($query)
     {
-        $categories = self::where('id','>',0);
-        return $categories;
+        return $query->where('id','>',0);
+    }
+    
+    public function scopeActive($query)
+    {
+        return $query->where('active','=',1);
+    }
+    
+    public function scopeNonActive($query)
+    {
+        return $query->where('active','=',0);
+    }
+    
+    public static function getFirstActiveCategoryId()
+    {
+        $category_id = self::where('active','=',1)
+            ->orderBy('category', 'asc')
+            ->first()->id;
+        return $category_id;
     }
     #endregion
     
@@ -25,6 +42,13 @@ class Category extends Model
     public function groups()
     {
         return $this->hasMany(Group::class,'category_id','id');
+    }
+    
+    public function products()
+    {
+        return $this->hasManyThrough(
+            Product::class,
+            Group::class);
     }
     #endergion
 }

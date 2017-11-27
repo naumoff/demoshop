@@ -14,18 +14,18 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\CustomerRegistered' => [
-            'App\Listeners\SaveNewPasswordForCustomer',
-            'App\Listeners\SendNewPasswordToCustomer',
+            'App\Listeners\Customers\SaveNewPasswordForCustomer',
+            'App\Listeners\Customers\SendNewPasswordToCustomer',
         ],
         
         'App\Events\CustomerRejected' => [
-            'App\Listeners\SaveRejectStatusForCustomer',
-            'App\Listeners\SendRejectReasonToCustomer',
+            'App\Listeners\Customers\SaveRejectStatusForCustomer',
+            'App\Listeners\Customers\SendRejectReasonToCustomer',
         ],
         
         'App\Events\CustomerSuspended' => [
-            'App\Listeners\SaveSuspendStatusForCustomer',
-            'App\Listeners\SendSuspendReasonToCustomer',
+            'App\Listeners\Customers\SaveSuspendStatusForCustomer',
+            'App\Listeners\Customers\SendSuspendReasonToCustomer',
         ],
     ];
 

@@ -5,8 +5,10 @@ use App\User;
 use App\Events\CustomerRejected;
 Route::get('test', function(){
     $category = \App\Category::find(3);
-    $category->delete();
+    dd($category->products);
 });
+
+Route::get('test/{id}', 'Admin\ProductsController@deleteCategoryTest');
 
 /*
 |--------------------------------------------------------------------------
@@ -49,10 +51,21 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     
     //Product management
     Route::get('products','Admin\ProductsController@index')->name('admin-products');
-    Route::get('products/categories','Admin\ProductsController@showCategories');
+    Route::get('products/categories','Admin\ProductsController@showCategories'); //+
+    Route::post('products/add-category','Admin\ProductsController@addCategory'); //-
+    Route::get('products/{cat_id}/groups','Admin\ProductsController@showGroupsByCategory'); //+
+    Route::get('products/{cat_id}/products','Admin\ProductsController@showProductsByCategory'); //+
+    
+    Route::get('products/products','Admin\ProductsController@showCategories');
+    Route::get('products/{product_id}','Admin\ProductsController@showCategories');
+    Route::get('products/{cat_id}/{group_id}/products','Admin\ProductsController@showCategories');
+    
+    //AJAX requests
+    Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');
+    Route::post('/category/delete', 'Admin\ProductsController@deleteCategory');
 });
 
 //CUSTOMER DASHBOARD
 Route::group(['prefix'=>'customer', 'middleware'=>'customer'], function(){
-    Route::get('home','Customer\CustomerController@index')->name('customer-home');
+    Route::get('home','Customers\CustomerController@index')->name('customer-home');
 });

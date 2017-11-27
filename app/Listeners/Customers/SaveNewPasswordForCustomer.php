@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\Customers;
 
 use App\Events\CustomerRegistered;
-use App\Notifications\CustomerRegisteredNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendNewPasswordToCustomer
+class SaveNewPasswordForCustomer
 {
     /**
      * Create the event listener.
@@ -27,6 +26,8 @@ class SendNewPasswordToCustomer
      */
     public function handle(CustomerRegistered $event)
     {
-        $event->user->notify(new CustomerRegisteredNotification($event));
+        $event->user->password = bcrypt($event->generatedPassword);
+        $event->user->status = config('lists.user_status.approved.en');
+        $event->user->save();
     }
 }

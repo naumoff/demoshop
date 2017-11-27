@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\Customers;
 
-use App\Events\CustomerRejected;
+use App\Events\CustomerRegistered;
 use App\Notifications\CustomerRegisteredNotification;
-use App\Notifications\CustomerRejectedNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendRejectReasonToCustomer
+class SendNewPasswordToCustomer
 {
     /**
      * Create the event listener.
@@ -23,11 +22,11 @@ class SendRejectReasonToCustomer
     /**
      * Handle the event.
      *
-     * @param  CustomerRejected  $event
+     * @param  CustomerRegistered  $event
      * @return void
      */
-    public function handle(CustomerRejected $event)
+    public function handle(CustomerRegistered $event)
     {
-        $event->user->notify(new CustomerRejectedNotification($event));
+        $event->user->notify(new CustomerRegisteredNotification($event));
     }
 }

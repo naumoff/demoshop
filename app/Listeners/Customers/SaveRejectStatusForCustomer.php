@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\Customers;
 
-use App\Events\CustomerRegistered;
+use App\Events\CustomerRejected;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SaveNewPasswordForCustomer
+class SaveRejectStatusForCustomer
 {
     /**
      * Create the event listener.
@@ -21,13 +21,12 @@ class SaveNewPasswordForCustomer
     /**
      * Handle the event.
      *
-     * @param  CustomerRegistered  $event
+     * @param  CustomerRejected  $event
      * @return void
      */
-    public function handle(CustomerRegistered $event)
+    public function handle(CustomerRejected $event)
     {
-        $event->user->password = bcrypt($event->generatedPassword);
-        $event->user->status = config('lists.user_status.approved.en');
+        $event->user->status = config('lists.user_status.rejected.en');
         $event->user->save();
     }
 }

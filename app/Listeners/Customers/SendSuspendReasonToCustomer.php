@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\Customers;
 
 use App\Events\CustomerSuspended;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Notifications\CustomerSuspendedNotification;
 
-class SaveSuspendStatusForCustomer
+class SendSuspendReasonToCustomer
 {
     /**
      * Create the event listener.
@@ -26,7 +27,6 @@ class SaveSuspendStatusForCustomer
      */
     public function handle(CustomerSuspended $event)
     {
-        $event->user->status = config('lists.user_status.suspended.en');
-        $event->user->save();
+        $event->user->notify(new CustomerSuspendedNotification($event));
     }
 }

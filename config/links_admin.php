@@ -1,4 +1,5 @@
 <?php
+
 return [
     'top' => [
         'users'=>[
@@ -16,9 +17,19 @@ return [
             'ru'=>'Комплекты'
         ],
         
+        'presents'=>[
+            'link'=>'/admin/presents',
+            'ru'=>'Подарки'
+        ],
+        
         'orders'=>[
             'link'=>'/admin/orders',
             'ru'=>'Заказы'
+        ],
+        
+        'payment-partners'=>[
+            'link'=>'/admin/payment-partner',
+            'ru'=>'Платежные партнеры'
         ],
         
         'content'=>[
@@ -58,13 +69,20 @@ return [
                 'link'=>'/admin/products/categories',
                 'ru'=>'Категории'
             ],
+            
             [
-                'link'=>'/admin/products/groups',
+                'link'=>'/admin/products/{cat_id}/groups',
                 'ru'=>'Группы'
             ],
+
             [
-                'link'=>'/admin/products/products',
+                'link'=>'/admin/products',
                 'ru'=>'Товары'
+            ],
+            
+            [
+                'link'=>'/admin/products/deleted',
+                'ru'=>'Удаленные Товары'
             ]
         ]
     ]

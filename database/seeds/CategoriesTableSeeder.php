@@ -14,21 +14,25 @@ class CategoriesTableSeeder extends Seeder
         $categories = [
             [
                 'category'=>'Товары для детей',
+                'active'=>true,
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now()
             ],
             [
                 'category'=>'Товары для взрослых',
+                'active'=>true,
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now()
             ],
             [
                 'category'=>'Товары для женщин',
+                'active'=>true,
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now()
             ],
             [
                 'category'=>'Товары для мужчин',
+                'active'=>true,
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now()
             ],

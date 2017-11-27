@@ -52,6 +52,7 @@ $factory->define(\App\Group::class, function(Faker $faker){
     return [
         'category_id'=>$categories[rand(0,count($categories)-1)]['id'],
         'group'=>$faker->word,
+        'active'=>rand(0,1),
         'created_at'=>\Carbon\Carbon::now(),
         'updated_at'=>\Carbon\Carbon::now()
     ];
@@ -98,6 +99,7 @@ $factory->define(\App\Product::class, function(Faker $faker){
         'discount_end'=>$endDate,
         'discount_active'=>rand(0,$discountChance),
         'weight_gr'=>rand(500,40000),
+        'active'=>rand(0,1),
         'created_at'=>\Carbon\Carbon::now(),
         'updated_at'=>\Carbon\Carbon::now()
     ];

@@ -10,11 +10,13 @@ namespace App\Http\ViewComposers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use App\Category;
 
 class SideBarComposer
 {
     public function composeForAdmin(View $view)
     {
+     
         $pathMask = $this->getPathMaskForAdminDashboard();
         
         $links = [];
@@ -25,6 +27,7 @@ class SideBarComposer
         
         if($pathMask == 'products'){
             $links = config('links_admin.sidebar.products');
+            $links = $this->replaceTokens($links);
         }
 
         $view->with('links', $links);
@@ -41,5 +44,18 @@ class SideBarComposer
         if(strpos($path,'admin/products')){
             return 'products';
         }
+    }
+    
+    private function replaceTokens($links)
+    {
+        $updatedLinks = [];
+        foreach ($links AS $link){
+            if(strpos($link['link'],'{cat_id}') !== false){
+                $firstCatId = Category::getFirstActiveCategoryId();
+                $link['link'] = str_replace('{cat_id}', $firstCatId, $link['link']);
+            }
+            $updatedLinks[] = $link;
+        };
+        return $updatedLinks;
     }
 }

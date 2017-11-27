@@ -21,7 +21,7 @@ class UsersController extends Controller
     #region MAIN METHODS
     public function index()
     {
-        return view('admin.users-home');
+        return view('admin.users.users-home');
     }
     
     public function showApproved()
@@ -29,7 +29,7 @@ class UsersController extends Controller
         $approvedUsers = User::getUsers(config('lists.user_status.approved.en'),
             config('roles.customer.en'))->paginate($this->usersPerPage);
 
-        return view('admin.users-approved')
+        return view('admin.users.users-approved')
             ->with('users',$approvedUsers);
     }
     
@@ -37,21 +37,21 @@ class UsersController extends Controller
     {
         $pendingUsers = User::getUsers(config('lists.user_status.pending.en'),
             config('roles.customer.en'))->paginate($this->usersPerPage);
-        return view('admin.users-pending')->with('users',$pendingUsers);
+        return view('admin.users.users-pending')->with('users',$pendingUsers);
     }
     
     public function showSuspended()
     {
         $suspendedUsers = User::getUsers(config('lists.user_status.suspended.en'),
             config('roles.customer.en'))->paginate($this->usersPerPage);
-        return view('admin.users-suspended')->with('users',$suspendedUsers);
+        return view('admin.users.users-suspended')->with('users',$suspendedUsers);
     }
     
     public function showRejected()
     {
         $rejectedUsers = User::getUsers(config('lists.user_status.rejected.en'),
             config('roles.customer.en'))->paginate($this->usersPerPage);
-        return view('admin.users-rejected')->with('users',$rejectedUsers);
+        return view('admin.users.users-rejected')->with('users',$rejectedUsers);
     }
     
     public function showAll()
@@ -61,7 +61,7 @@ class UsersController extends Controller
         foreach ($allUsers AS $user){
            $user->status = $this->translateStatusEnToRu($user->status);
         }
-        return view('admin.users-all')->with('users',$allUsers);
+        return view('admin.users.users-all')->with('users',$allUsers);
     }
     #endregion
     

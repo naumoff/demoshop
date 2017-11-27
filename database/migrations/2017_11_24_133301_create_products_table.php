@@ -28,6 +28,7 @@ class CreateProductsTable extends Migration
             $table->dateTime('discount_end')->nullable();
             $table->boolean('discount_active');
             $table->integer('weight_gr');
+            $table->boolean('active');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('group_id')->references('id')->on('groups');

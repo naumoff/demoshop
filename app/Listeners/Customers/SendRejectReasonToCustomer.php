@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\Customers;
 
 use App\Events\CustomerRejected;
+use App\Notifications\CustomerRegisteredNotification;
+use App\Notifications\CustomerRejectedNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SaveRejectStatusForCustomer
+class SendRejectReasonToCustomer
 {
     /**
      * Create the event listener.
@@ -26,7 +28,6 @@ class SaveRejectStatusForCustomer
      */
     public function handle(CustomerRejected $event)
     {
-        $event->user->status = config('lists.user_status.rejected.en');
-        $event->user->save();
+        $event->user->notify(new CustomerRejectedNotification($event));
     }
 }
