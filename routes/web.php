@@ -73,8 +73,13 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');
     Route::post('/group/status', 'Admin\ProductsController@changeGroupStatus');
+    
+    Route::post('/product/status', 'Admin\ProductsController@changeProductStatus'); // -
+    Route::post('/product-action/status', 'Admin\ProductsController@changeProductActionStatus'); // -
+    
     Route::post('/category/delete', 'Admin\ProductsController@deleteCategory');
     Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');
+    Route::post('/product/delete', 'Admin\ProductsController@deleteProduct'); // -
 });
 
 //CUSTOMER DASHBOARD

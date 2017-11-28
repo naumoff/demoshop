@@ -137,7 +137,7 @@ class ProductsController extends Controller
         $products = Product::getProducts()
             ->byCategoryId($category->id)
             ->byGroupId($group->id)
-            ->paginate(15);
+            ->paginate(10);
         
         return view('admin.products.category-group-products',[
             'categories'=>$categories,
@@ -177,6 +177,28 @@ class ProductsController extends Controller
         return 'SUCCESS';
     }
     
+    public function changeProductStatus(Request $request)
+    {
+        $productId = $request->input('product-id');
+        $oldValue = $request->input('old-value');
+        $newValue = ($oldValue == 1)? 0:1;
+        $product = Product::find($productId);
+        $product->active = $newValue;
+        $product->save();
+        return 'SUCCESS';
+    }
+    
+    public function changeProductActionStatus(Request $request)
+    {
+        $productId = $request->input('product-id');
+        $oldValue = $request->input('old-value');
+        $newValue = ($oldValue == 1)? 0:1;
+        $product = Product::find($productId);
+        $product->discount_active = $newValue;
+        $product->save();
+        return 'SUCCESS';
+    }
+    
     public function deleteCategory(Request $request)
     {
         $categoryId = $request->input('category-id');
@@ -202,6 +224,5 @@ class ProductsController extends Controller
             return 'SUCCESS';
         }
     }
-
     #endregion
 }
