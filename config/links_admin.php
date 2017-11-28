@@ -76,8 +76,13 @@ return [
             ],
 
             [
-                'link'=>'/admin/products',
+                'link'=>'/admin/products/{cat_id}/{group_id}/products',
                 'ru'=>'Товары'
+            ],
+            
+            [
+                'link'=>'/admin/products/create-product',
+                'ru'=>'Добавить товар'
             ],
             
             [

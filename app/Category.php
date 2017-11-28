@@ -14,6 +14,16 @@ class Category extends Model
     #endregion
     
     #region MAIN METHODS
+    public static function getFirstActiveCategoryId()
+    {
+        $category_id = self::where('active','=',1)
+            ->orderBy('category', 'asc')
+            ->first()->id;
+        return $category_id;
+    }
+    #endregion
+    
+    #region SCOPE METHODS
     public function scopeGetCategories($query)
     {
         return $query->where('id','>',0);
@@ -27,14 +37,6 @@ class Category extends Model
     public function scopeNonActive($query)
     {
         return $query->where('active','=',0);
-    }
-    
-    public static function getFirstActiveCategoryId()
-    {
-        $category_id = self::where('active','=',1)
-            ->orderBy('category', 'asc')
-            ->first()->id;
-        return $category_id;
     }
     #endregion
     

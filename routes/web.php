@@ -56,15 +56,19 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::patch('products/edit-category', 'Admin\ProductsController@editCategory'); //+
     
     Route::get('products/{cat_id}/groups','Admin\ProductsController@showGroupsByCategory'); //+
-    Route::post('products/add-group','Admin\ProductsController@addGroup'); //-
-    Route::patch('products/edit-group','Admin\ProductsController@editGroup'); //-
+    Route::post('products/add-group','Admin\ProductsController@addGroup'); //+
+    Route::patch('products/edit-group','Admin\ProductsController@editGroup'); //+
     
 
     Route::get('products/{cat_id}/products','Admin\ProductsController@showProductsByCategory'); //+
+    Route::get('products/{cat_id}/{group_id}/products','Admin\ProductsController@showProductsByCategoryByGroup');
+    Route::get('products/create-product', 'Admin\ProductsController@createProduct');
+    Route::post('products/add-product', 'Admin\ProductsController@addProduct');
+    
     
     Route::get('products/products','Admin\ProductsController@showCategories');
     Route::get('products/{product_id}','Admin\ProductsController@showCategories');
-    Route::get('products/{cat_id}/{group_id}/products','Admin\ProductsController@showCategories');
+    
     
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');

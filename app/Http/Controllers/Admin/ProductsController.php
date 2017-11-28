@@ -110,6 +110,48 @@ class ProductsController extends Controller
                 'products'=>$products
             ]);
     }
+    
+    public function showProductsByCategoryByGroup($categoryId, $groupId)
+    {
+        $categories = Category::getCategories()
+            ->Active()
+            ->get();
+    
+        $category = Category::find($categoryId);
+        
+        $groups = Group::getGroups()
+            ->Active()
+            ->where('category_id','=',$category->id)
+            ->get();
+        
+        $group = Group::where('category_id','=',$category->id)
+            ->find($groupId);
+        
+        if($group === null){
+            $group = Group::getGroups()
+                ->active()
+                ->where('category_id','=',$category->id)
+                ->first();
+        }
+        
+        $products = Product::getProducts()
+            ->byCategoryId($category->id)
+            ->byGroupId($group->id)
+            ->paginate(15);
+        
+        return view('admin.products.category-group-products',[
+            'categories'=>$categories,
+            'category'=>$category,
+            'groups'=>$groups,
+            'group'=>$group,
+            'products'=>$products
+        ]);
+    }
+    
+    public function createProduct()
+    {
+        return view('admin.products.add-product');
+    }
     #endregion
     
     #region AJAX REQUESTS

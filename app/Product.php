@@ -14,6 +14,10 @@ class Product extends Model
     #endregion
     
     #region MAIN METHODS
+
+    #endregion
+    
+    #region SCOPE METHODS
     public function scopeGetProducts($query)
     {
         return $query->where('id','>',0);

@@ -11,6 +11,7 @@ namespace App\Http\ViewComposers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use App\Category;
+use App\Group;
 
 class SideBarComposer
 {
@@ -54,6 +55,11 @@ class SideBarComposer
                 $firstCatId = Category::getFirstActiveCategoryId();
                 $link['link'] = str_replace('{cat_id}', $firstCatId, $link['link']);
             }
+            if(strpos($link['link'],'{group_id}') !== false){
+                $firstGroupId = Group::getFirstActiveGroupId($firstCatId);
+                $link['link'] = str_replace('{group_id}', $firstGroupId, $link['link']);
+            }
+
             $updatedLinks[] = $link;
         };
         return $updatedLinks;
