@@ -16,7 +16,7 @@
                 <h4 class="modal-title">Изменить имя категории</h4>
             </div>
             <div class="modal-body">
-                <form method="post" action="/admin/products/edit-category">
+                <form method="post" action="/admin/products/update-category">
                     {{csrf_field()}}
                     {{method_field('PATCH')}}
                     <div class="form-group">

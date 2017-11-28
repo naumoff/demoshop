@@ -30,6 +30,11 @@ class Group extends Model
         return $query->where('id','>',0);
     }
     
+    public function scopeByCategoryId($query, $categoryId)
+    {
+        return $query->where('category_id','=',$categoryId);
+    }
+    
     public function scopeActive($query)
     {
         return $query->where('active','=',1);

@@ -81,11 +81,6 @@ return [
             ],
             
             [
-                'link'=>'/admin/products/create-product',
-                'ru'=>'Добавить товар'
-            ],
-            
-            [
                 'link'=>'/admin/products/deleted',
                 'ru'=>'Удаленные Товары'
             ]

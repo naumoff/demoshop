@@ -41,7 +41,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     //General management
     Route::get('home','Admin\AdminController@index')->name('admin-home');
     
-    //User management
+    /**
+     * User Management
+     */
     Route::get('users','Admin\UsersController@index')->name('admin-users');
     Route::get('users/approved','Admin\UsersController@showApproved');
     Route::get('users/pending','Admin\UsersController@showPending');
@@ -49,37 +51,40 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::get('users/rejected','Admin\UsersController@showRejected');
     Route::get('users/all','Admin\UsersController@showAll');
     
-    //Product management
+    /**
+     * Product Management
+     */
     Route::get('products','Admin\ProductsController@index')->name('admin-products');
+    
+    //categories
     Route::get('products/categories','Admin\ProductsController@showCategories'); //+
     Route::post('products/add-category','Admin\ProductsController@addCategory'); //+
-    Route::patch('products/edit-category', 'Admin\ProductsController@editCategory'); //+
+    Route::patch('products/update-category', 'Admin\ProductsController@updateCategory'); //+
     
+    //groups
     Route::get('products/{cat_id}/groups','Admin\ProductsController@showGroupsByCategory'); //+
     Route::post('products/add-group','Admin\ProductsController@addGroup'); //+
-    Route::patch('products/edit-group','Admin\ProductsController@editGroup'); //+
+    Route::patch('products/update-group','Admin\ProductsController@updateGroup'); //+
     
-
+    //products
     Route::get('products/{cat_id}/products','Admin\ProductsController@showProductsByCategory'); //+
     Route::get('products/{cat_id}/{group_id}/products','Admin\ProductsController@showProductsByCategoryByGroup');
-    Route::get('products/create-product', 'Admin\ProductsController@createProduct');
-    Route::post('products/add-product', 'Admin\ProductsController@addProduct');
     
+    Route::get('products/{cat_id}/create-product', 'Admin\ProductsController@createProduct'); // -
+    Route::post('products/add-product', 'Admin\ProductsController@addProduct'); // -
     
-    Route::get('products/products','Admin\ProductsController@showCategories');
-    Route::get('products/{product_id}','Admin\ProductsController@showCategories');
-    
+    Route::get('products/{prod_id}/edit-product','Admin\ProductsController@editProduct'); // -
+    Route::patch('products/update-product','Admin\ProductsController@updateProduct'); // -
     
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');
     Route::post('/group/status', 'Admin\ProductsController@changeGroupStatus');
-    
-    Route::post('/product/status', 'Admin\ProductsController@changeProductStatus'); // -
-    Route::post('/product-action/status', 'Admin\ProductsController@changeProductActionStatus'); // -
+    Route::post('/product/status', 'Admin\ProductsController@changeProductStatus'); // +
+    Route::post('/product-action/status', 'Admin\ProductsController@changeProductActionStatus'); // +
     
     Route::post('/category/delete', 'Admin\ProductsController@deleteCategory');
     Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');
-    Route::post('/product/delete', 'Admin\ProductsController@deleteProduct'); // -
+    Route::post('/product/delete', 'Admin\ProductsController@deleteProduct'); // +
 });
 
 //CUSTOMER DASHBOARD

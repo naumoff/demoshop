@@ -51,7 +51,12 @@
 
                     <div class="panel-heading">
                         Товары <br>
-                        <a href="/admin/products/create-product" class="btn btn-success" role="button">Добавить товар</a>
+                        <a href="/admin/products/{{$category->id}}/create-product?group={{$group->id}}"
+                           class="btn btn-success"
+                           role="button"
+                        >
+                            Добавить товар
+                        </a>
                         @include('inclusions.error-message')
                     </div>
                     <div class="panel-body">
@@ -108,10 +113,18 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                Редактор
+                                                <a href="#" class="btn btn-success btn-sm" role="button">
+                                                    Редактор
+                                                </a>
                                             </td>
                                             <td>
-                                                Удалить
+                                                <button
+                                                        type="button"
+                                                        class="btn btn-danger btn-sm delete"
+                                                        id="{{$product->id}}"
+                                                >
+                                                    Удалить
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -165,13 +178,13 @@
         });
 
         $(".delete").click(function(){
-            var categoryId = $(this).attr('id');
+            var productId = $(this).attr('id');
             $.post
             (
-                '/admin/category/delete',
+                '/admin/product/delete',
                 {
                     "_token": "{{ csrf_token() }}",
-                    'category-id':categoryId
+                    'product-id':productId
                 },
                 function(data){
                     if(data === 'SUCCESS'){

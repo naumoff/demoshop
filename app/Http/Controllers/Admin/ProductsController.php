@@ -40,7 +40,7 @@ class ProductsController extends Controller
         return back();
     }
     
-    public function editCategory(EditCategoryPatch $request)
+    public function updateCategory(EditCategoryPatch $request)
     {
         $categoryId = $request->input('id');
         $categoryName = $request->input('category-name');
@@ -77,7 +77,7 @@ class ProductsController extends Controller
         return back();
     }
     
-    public function editGroup(EditGroupPatch $request)
+    public function updateGroup(EditGroupPatch $request)
     {
         $categoryId = $request->input('category-id');
         $groupId = $request->input('group-id');
@@ -148,9 +148,57 @@ class ProductsController extends Controller
         ]);
     }
     
-    public function createProduct()
+    public function createProduct(Request $request, $categoryId)
     {
-        return view('admin.products.add-product');
+        $category = Category::find($categoryId);
+        
+        $categories = Category::getCategories()
+            ->active()
+            ->get();
+    
+        if($request->input('group')){
+            $groupId = $request->input('group');
+            
+            $count = count($category->groups()->where('id','=',$groupId)->get());
+            if($count == 0){
+                unset($groupId);
+            }
+        }
+    
+        if(!isset($groupId)){
+            $groupId = Group::getFirstActiveGroupId($categoryId);
+        }
+        
+        $group = Group::find($groupId);
+        
+        $groups = Group::getGroups()
+            ->byCategoryId($categoryId)
+            ->active()
+            ->get();
+            
+        return view('admin.products.add-product',
+            [
+                'category'=>$category,
+                'group'=>$group,
+                'categories'=>$categories,
+                'groups'=>$groups
+            ]
+        );
+    }
+    
+    public function addProduct(Request $request)
+    {
+    
+    }
+    
+    public function editProduct($id)
+    {
+    
+    }
+    
+    public function updateProduct(Request $request)
+    {
+    
     }
     #endregion
     
@@ -223,6 +271,14 @@ class ProductsController extends Controller
             $group->delete();
             return 'SUCCESS';
         }
+    }
+    
+    public function deleteProduct(Request $request)
+    {
+        $productId = $request->input('product-id');
+        $product = Product::find($productId);
+        $product->delete();
+        return 'SUCCESS';
     }
     #endregion
 }

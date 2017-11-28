@@ -16,7 +16,7 @@
                 <h4 class="modal-title">Изменить имя группы</h4>
             </div>
             <div class="modal-body">
-                <form method="post" action="/admin/products/edit-group">
+                <form method="post" action="/admin/products/update-group">
                     {{csrf_field()}}
                     {{method_field('PATCH')}}
                     <div class="form-group">

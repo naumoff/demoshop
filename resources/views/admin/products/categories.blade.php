@@ -44,7 +44,7 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="/admin/products/{{$category['id']}}/products"
+                                            <a href="/admin/products/{{$category['id']}}/{{\App\Group::getFirstActiveGroupId($category['id'])}}/products"
                                                class="btn btn-info btn-sm">
                                                 Товары
                                                 <span class="badge">{{count($category->products)}}</span>
