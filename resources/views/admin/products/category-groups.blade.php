@@ -47,15 +47,35 @@
                                 @foreach($groups AS $group)
                                     <tr>
                                         <td>{{$group['group']}}</td>
-                                        <td><a href="#" class="btn btn-info">Активность</a></td>
+                                        <td>
+                                            <button
+                                                    type="button"
+                                                    class="btn btn-sm status"
+                                                    id="{{$group->id}}"
+                                                    value="{{$group->active}}"
+                                            >
+                                                <b>{{ $status=($group->active)?'+':'-' }}</b>
+                                            </button>
+                                        </td>
                                         <td>
                                             <a href="/admin/products/{{$category['id']}}/{{$group['id']}}/products"
-                                               class="btn btn-info">
+                                               class="btn btn-info btn-sm">
                                                 Товары
+                                                <span class="badge">{{count($group->products)}}</span>
                                             </a>
                                         </td>
-                                        <td><a href="#" class="btn btn-info">Редактор</a></td>
-                                        <td><button>Удалить</button></td>
+                                        <td>
+                                            @include('inclusions.admin.edit-group-modal')
+                                        </td>
+                                        <td>
+                                            <button
+                                                    type="button"
+                                                    class="btn btn-danger btn-sm delete"
+                                                    id="{{$group->id}}"
+                                            >
+                                                Удалить
+                                            </button>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -67,4 +87,44 @@
             </div>
         </div>
     </div>
+    <script>
+        $(function(){
+            $(".status").click(function(){
+                var groupId = $(this).attr('id');
+                var oldValue = $(this).attr('value');
+                $.post
+                (
+                    '/admin/group/status',
+                    {
+                        "_token": "{{ csrf_token() }}",
+                        'groupId':groupId,
+                        'oldValue':oldValue
+                    },
+                    function(data){
+                        if(data === 'SUCCESS'){
+                            location.reload();
+                        }
+                    }
+                );
+            });
+            $(".delete").click(function(){
+                var groupId = $(this).attr('id');
+                $.post
+                (
+                    '/admin/group/delete',
+                    {
+                        "_token": "{{ csrf_token() }}",
+                        'groupId':groupId
+                    },
+                    function(data){
+                        if(data === 'SUCCESS'){
+                            location.reload();
+                        }else{
+                            alert(data);
+                        }
+                    }
+                );
+            })
+        });
+    </script>
 @endsection

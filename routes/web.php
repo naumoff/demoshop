@@ -68,7 +68,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');
+    Route::post('/group/status', 'Admin\ProductsController@changeGroupStatus');
     Route::post('/category/delete', 'Admin\ProductsController@deleteCategory');
+    Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');
 });
 
 //CUSTOMER DASHBOARD

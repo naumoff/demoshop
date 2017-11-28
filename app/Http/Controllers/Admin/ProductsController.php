@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\Group;
 use App\Http\Requests\EditCategoryPatch;
 use App\Http\Requests\StoreCategoryPost;
 use App\Http\Requests\StoreGroupPost;
@@ -66,9 +67,13 @@ class ProductsController extends Controller
     public function addGroup(StoreGroupPost $request)
     {
         $categoryId = $request->input('category-id');
-        $newGroup = $request->input('new-group');
-        dump($categoryId);
-        dump($newGroup);
+        $newGroupName = $request->input('new-group');
+        $newGroup = new Group();
+        $newGroup->category_id = $categoryId;
+        $newGroup->group = $newGroupName;
+        $newGroup->active = 1;
+        $newGroup->save();
+        return back();
     }
     
     public function showProductsByCategory($category_id)
@@ -104,6 +109,17 @@ class ProductsController extends Controller
         return 'SUCCESS';
     }
     
+    public function changeGroupStatus(Request $request)
+    {
+        $groupId = $request->input('groupId');
+        $oldValue = $request->input('oldValue');
+        $newValue = ($oldValue == 1)? 0:1;
+        $group = Group::find($groupId);
+        $group->active = $newValue;
+        $group->save();
+        return 'SUCCESS';
+    }
+    
     public function deleteCategory(Request $request)
     {
         $categoryId = $request->input('categoryId');
@@ -114,6 +130,18 @@ class ProductsController extends Controller
             return 'Категория содержит вложенные товары - пожалуйста, перед удалением категории удалите вложенные товары!';
         }else{
             $category->delete();
+            return 'SUCCESS';
+        }
+    }
+    
+    public function deleteGroup(Request $request)
+    {
+        $groupId = $request->input('groupId');
+        $group = Group::find($groupId);
+        if (count($group->products) > 0) {
+            return 'Группа содержит товары - пожалуйста, перед удалением группы удалите вложенные товары!';
+        }else{
+            $group->delete();
             return 'SUCCESS';
         }
     }
