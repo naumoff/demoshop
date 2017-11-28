@@ -9,11 +9,7 @@
                     <div class="panel-heading">Категории</div>
                     <div class="panel-body">
                         @if(count($categories)>0)
-                            {{--BUTTON TO OPEN ADD NEW CATEGORY MODAL--}}
-                            <button class="btn btn-success btn-lg" type="button" data-toggle="modal" data-target="#addCategory">
-                                Добавить категорию
-                            </button>
-                            {{--END OF BUTTOM TO OPEN ADD NEW CATEGORY MODAL--}}
+                            @include('inclusions.admin.add-category-modal')
                             @include('inclusions.error-message')
                             <table class="table table-striped">
                                 <thead>
@@ -33,7 +29,7 @@
                                         <td>
                                             <button
                                                     type="button"
-                                                    class="btn status"
+                                                    class="btn btn-sm status"
                                                     id="{{$category->id}}"
                                                     value="{{$category->active}}"
                                             >
@@ -42,21 +38,25 @@
                                         </td>
                                         <td>
                                             <a href="/admin/products/{{$category['id']}}/groups"
-                                               class="btn btn-info">
+                                               class="btn btn-info btn-sm">
                                                 Группы
+                                                <span class="badge">{{count($category->groups)}}</span>
                                             </a>
                                         </td>
                                         <td>
                                             <a href="/admin/products/{{$category['id']}}/products"
-                                               class="btn btn-info">
+                                               class="btn btn-info btn-sm">
                                                 Товары
+                                                <span class="badge">{{count($category->products)}}</span>
                                             </a>
                                         </td>
-                                        <td><button>редактор</button></td>
+                                        <td>
+                                            @include('inclusions.admin.edit-category-modal',['category'=>$category])
+                                        </td>
                                         <td>
                                             <button
                                                     type="button"
-                                                    class="btn btn-danger delete"
+                                                    class="btn btn-danger btn-sm delete"
                                                     id="{{$category->id}}"
                                             >
                                                 Удалить
@@ -68,41 +68,6 @@
                             </table>
 
                             {{ $categories->links() }}
-
-                            {{--ADD NEW CATEGORY MODAL--}}
-                            <div id="addCategory" class="modal fade">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button class="close" type="button" data-dismiss="modal">×</button>
-                                            <h4 class="modal-title">Создание новой категории</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="post" action="/admin/products/add-category">
-                                                {{csrf_field()}}
-                                                <div class="form-group">
-                                                    <label for="new-category">
-                                                        Имя новой категории:
-                                                    </label>
-                                                    <input
-                                                            type="text"
-                                                            class="form-control"
-                                                            id="new-category"
-                                                            name="new-category"
-                                                    >
-                                                </div>
-                                                <button type="submit" class="btn btn-success">Создать</button>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-default" type="button" data-dismiss="modal">
-                                                Закрыть
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {{--END OF ADD NEW CATEGORY MODAL--}}
                         @endif
                     </div>
                 </div>

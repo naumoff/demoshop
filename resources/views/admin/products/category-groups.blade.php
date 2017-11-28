@@ -26,16 +26,20 @@
                         </div>
                     </div>
 
-                    <div class="panel-heading">Группы</div>
+                    <div class="panel-heading">
+                        Группы <br>
+                        @include('inclusions.admin.add-group-modal',['categories'=>$categories,'category'=>$category])
+                        @include('inclusions.error-message')
+                    </div>
                     <div class="panel-body">
                         @if(count($groups)>0)
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
                                     <th>Группа</th>
-                                    <th>Активировать</th>
+                                    <th>Активность</th>
                                     <th>Товары</th>
-                                    <th>Редактировать</th>
+                                    <th>Редактор</th>
                                     <th>Удалить</th>
                                 </tr>
                                 </thead>
@@ -43,14 +47,14 @@
                                 @foreach($groups AS $group)
                                     <tr>
                                         <td>{{$group['group']}}</td>
+                                        <td><a href="#" class="btn btn-info">Активность</a></td>
                                         <td>
                                             <a href="/admin/products/{{$category['id']}}/{{$group['id']}}/products"
                                                class="btn btn-info">
                                                 Товары
                                             </a>
                                         </td>
-                                        <td><a href="#" class="btn btn-info">Активировать</a></td>
-                                        <td><a href="#" class="btn btn-info">Редактивароть</a></td>
+                                        <td><a href="#" class="btn btn-info">Редактор</a></td>
                                         <td><button>Удалить</button></td>
                                     </tr>
                                 @endforeach

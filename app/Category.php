@@ -41,7 +41,10 @@ class Category extends Model
     #region RELATION METHODS
     public function groups()
     {
-        return $this->hasMany(Group::class,'category_id','id');
+        return $this->hasMany(
+            Group::class,
+            'category_id',
+            'id');
     }
     
     public function products()

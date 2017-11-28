@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\Http\Requests\EditCategoryPatch;
 use App\Http\Requests\StoreCategoryPost;
+use App\Http\Requests\StoreGroupPost;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -36,6 +38,16 @@ class ProductsController extends Controller
         return back();
     }
     
+    public function editCategory(EditCategoryPatch $request)
+    {
+        $categoryId = $request->input('id');
+        $categoryName = $request->input('category-name');
+        $category = Category::find($categoryId);
+        $category->category = $categoryName;
+        $category->save();
+        return back();
+    }
+    
     public function showGroupsByCategory($category_id)
     {
        
@@ -51,6 +63,13 @@ class ProductsController extends Controller
             ]);
     }
     
+    public function addGroup(StoreGroupPost $request)
+    {
+        $categoryId = $request->input('category-id');
+        $newGroup = $request->input('new-group');
+        dump($categoryId);
+        dump($newGroup);
+    }
     
     public function showProductsByCategory($category_id)
     {

@@ -52,8 +52,14 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     //Product management
     Route::get('products','Admin\ProductsController@index')->name('admin-products');
     Route::get('products/categories','Admin\ProductsController@showCategories'); //+
-    Route::post('products/add-category','Admin\ProductsController@addCategory'); //-
+    Route::post('products/add-category','Admin\ProductsController@addCategory'); //+
+    Route::patch('products/edit-category', 'Admin\ProductsController@editCategory'); //+
+    
     Route::get('products/{cat_id}/groups','Admin\ProductsController@showGroupsByCategory'); //+
+    Route::post('products/add-group','Admin\ProductsController@addGroup'); //-
+    Route::patch('products/edit-group','Admin\ProductsController@editGroup'); //-
+    
+
     Route::get('products/{cat_id}/products','Admin\ProductsController@showProductsByCategory'); //+
     
     Route::get('products/products','Admin\ProductsController@showCategories');
