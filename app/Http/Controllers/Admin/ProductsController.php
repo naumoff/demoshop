@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Category;
 use App\Group;
 use App\Http\Requests\EditCategoryPatch;
+use App\Http\Requests\EditGroupPatch;
 use App\Http\Requests\StoreCategoryPost;
 use App\Http\Requests\StoreGroupPost;
 use App\Product;
@@ -76,6 +77,20 @@ class ProductsController extends Controller
         return back();
     }
     
+    public function editGroup(EditGroupPatch $request)
+    {
+        $categoryId = $request->input('category-id');
+        $groupId = $request->input('group-id');
+        $groupName = $request->input('group-name');
+       
+        $group = Group::find($groupId);
+        $group->category_id = $categoryId;
+        $group->group = $groupName;
+        $group->active = 1;
+        $group->save();
+        return back();
+    }
+    
     public function showProductsByCategory($category_id)
     {
         $categories = Category::getCategories()
@@ -100,8 +115,8 @@ class ProductsController extends Controller
     #region AJAX REQUESTS
     public function changeCategoryStatus(Request $request)
     {
-        $categoryId = $request->input('categoryId');
-        $oldValue = $request->input('oldValue');
+        $categoryId = $request->input('category-id');
+        $oldValue = $request->input('old-value');
         $newValue = ($oldValue == 1)? 0:1;
         $category = Category::find($categoryId);
         $category->active = $newValue;
@@ -111,8 +126,8 @@ class ProductsController extends Controller
     
     public function changeGroupStatus(Request $request)
     {
-        $groupId = $request->input('groupId');
-        $oldValue = $request->input('oldValue');
+        $groupId = $request->input('group-id');
+        $oldValue = $request->input('old-value');
         $newValue = ($oldValue == 1)? 0:1;
         $group = Group::find($groupId);
         $group->active = $newValue;
@@ -122,7 +137,7 @@ class ProductsController extends Controller
     
     public function deleteCategory(Request $request)
     {
-        $categoryId = $request->input('categoryId');
+        $categoryId = $request->input('category-id');
         $category = Category::find($categoryId);
         if (count($category->groups) > 0) {
             return 'Категория содержит группы - пожалуйста, перед удалением категории удалите вложенные группы!';
@@ -136,7 +151,7 @@ class ProductsController extends Controller
     
     public function deleteGroup(Request $request)
     {
-        $groupId = $request->input('groupId');
+        $groupId = $request->input('group-id');
         $group = Group::find($groupId);
         if (count($group->products) > 0) {
             return 'Группа содержит товары - пожалуйста, перед удалением группы удалите вложенные товары!';

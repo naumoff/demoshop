@@ -23,11 +23,11 @@ class EditCategoryPatch extends FormRequest
      * @return array
      */
     public function rules()
-{
-    $categoryId = $this->request->all()['id']; // доступ к полю формы с именем id
-    return [
-        'id'=>'required|min:1|exists:categories,id',
-        'category-name'=> 'required|min:3|unique:categories,category,'.$categoryId
-    ];
-}
+    {
+        $categoryId = $this->request->all()['id']; // доступ к полю формы с именем id
+        return [
+            'id'=>'required|min:1|exists:categories,id',
+            'category-name'=> 'required|min:3|unique:categories,category,'.$categoryId
+        ];
+    }
 }

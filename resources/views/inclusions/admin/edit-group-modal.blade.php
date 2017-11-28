@@ -2,33 +2,45 @@
 <button class="btn btn-success btn-sm"
         type="button"
         data-toggle="modal"
-        data-target="#editCategory-{{$category->id}}">
+        data-target="#editGroup-{{$group->id}}">
     Редактор
 </button>
 {{--END OF BUTTOM TO OPEN ADD NEW CATEGORY MODAL--}}
 
 {{--ADD NEW CATEGORY MODAL--}}
-<div id="editCategory-{{$category->id}}" class="modal fade">
+<div id="editGroup-{{$group->id}}" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" type="button" data-dismiss="modal">×</button>
-                <h4 class="modal-title">Изменить имя категории</h4>
+                <h4 class="modal-title">Изменить имя группы</h4>
             </div>
             <div class="modal-body">
-                <form method="post" action="/admin/products/edit-category">
+                <form method="post" action="/admin/products/edit-group">
                     {{csrf_field()}}
                     {{method_field('PATCH')}}
                     <div class="form-group">
-                        <label for="new-category">
-                            Имя категории:
+                        <label for="category">
+                            Категория:
                         </label>
-                        <input type="text" name="id" value="{{$category->id}}" hidden>
+                        <select class="form-control" id="category" name="category-id">
+                            @foreach($categories AS $categoryItem)
+                                @if($categoryItem->id === $category->id)
+                                    <option value="{{$categoryItem->id}}" selected>{{$categoryItem->category}}</option>
+                                @else
+                                    <option value="{{$categoryItem->id}}">{{$categoryItem->category}}</option>
+                                @endif
+                            @endforeach
+                         </select>
+                        <label for="new-category">
+                            Имя группы:
+                        </label>
+                        <input type="text" name="group-id" value="{{$group->id}}" hidden>
                         <input
                                 type="text"
                                 class="form-control"
-                                name="category-name"
-                                value="{{$category->category}}"
+                                name="group-name"
+                                value="{{$group->group}}"
                         >
                     </div>
                     <button type="submit" class="btn btn-success">Изменить</button>

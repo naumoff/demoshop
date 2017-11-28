@@ -65,7 +65,13 @@
                                             </a>
                                         </td>
                                         <td>
-                                            @include('inclusions.admin.edit-group-modal')
+                                            @include('inclusions.admin.edit-group-modal',
+                                                [
+                                                    'categories'=>$categories,
+                                                    'category'=>$category,
+                                                    'groups'=>$groups
+                                                ]
+                                            )
                                         </td>
                                         <td>
                                             <button
@@ -97,8 +103,8 @@
                     '/admin/group/status',
                     {
                         "_token": "{{ csrf_token() }}",
-                        'groupId':groupId,
-                        'oldValue':oldValue
+                        'group-id':groupId,
+                        'old-value':oldValue
                     },
                     function(data){
                         if(data === 'SUCCESS'){
@@ -114,7 +120,7 @@
                     '/admin/group/delete',
                     {
                         "_token": "{{ csrf_token() }}",
-                        'groupId':groupId
+                        'group-id':groupId
                     },
                     function(data){
                         if(data === 'SUCCESS'){

@@ -84,8 +84,8 @@
                 '/admin/category/status',
                 {
                     "_token": "{{ csrf_token() }}",
-                    'categoryId':categoryId,
-                    'oldValue':oldValue
+                    'category-id':categoryId,
+                    'old-value':oldValue
                 },
                 function(data){
                     if(data === 'SUCCESS'){
@@ -101,7 +101,7 @@
                 '/admin/category/delete',
                 {
                     "_token": "{{ csrf_token() }}",
-                    'categoryId':categoryId
+                    'category-id':categoryId
                 },
                 function(data){
                     if(data === 'SUCCESS'){
