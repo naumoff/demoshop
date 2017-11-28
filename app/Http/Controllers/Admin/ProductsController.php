@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\Http\Requests\StoreCategoryPost;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -25,9 +26,14 @@ class ProductsController extends Controller
             ->with('categories',$categories);
     }
     
-    public function addCategory()
+    public function addCategory(StoreCategoryPost $request)
     {
-        dd("OK");
+        $newCategoryName = $request->input('new-category');
+        $newCategory = new Category();
+        $newCategory->category = $newCategoryName;
+        $newCategory->active = 1;
+        $newCategory->save();
+        return back();
     }
     
     public function showGroupsByCategory($category_id)

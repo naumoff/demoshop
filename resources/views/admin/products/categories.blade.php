@@ -14,6 +14,7 @@
                                 Добавить категорию
                             </button>
                             {{--END OF BUTTOM TO OPEN ADD NEW CATEGORY MODAL--}}
+                            @include('inclusions.error-message')
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
@@ -21,7 +22,7 @@
                                     <th>Активность</th>
                                     <th>Группы</th>
                                     <th>Товары</th>
-                                    <th>Переименовать</th>
+                                    <th>Редактор</th>
                                     <th>Удалить</th>
                                 </tr>
                                 </thead>
@@ -36,7 +37,7 @@
                                                     id="{{$category->id}}"
                                                     value="{{$category->active}}"
                                             >
-                                                {{ $status=($category->active)?'Активен':'Отключен' }}
+                                                <b>{{ $status=($category->active)?'+':'-' }}</b>
                                             </button>
                                         </td>
                                         <td>
@@ -51,7 +52,7 @@
                                                 Товары
                                             </a>
                                         </td>
-                                        <td><button>Переименовать</button></td>
+                                        <td><button>редактор</button></td>
                                         <td>
                                             <button
                                                     type="button"
