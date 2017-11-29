@@ -20,12 +20,22 @@
                                     @foreach($categories AS $categoryItem)
                                         <li>
                                             <a href="/admin/products/{{$categoryItem->id}}/{{$group->id}}/products">
-                                                {{$categoryItem->category}}
+                                                @if($categoryItem->active == 1)
+                                                    <b>{{$categoryItem->category}}</b>
+                                                @else
+                                                    {{$categoryItem->category}}
+                                                @endif
+
                                             </a>
                                         </li>
                                     @endforeach
                                 </ul>
                             </div>
+                            @if($categoryActive == 1)
+                                Категория активна
+                            @else
+                                <b style="color: red">Категория не активна</b>
+                            @endif
                         </div>
                         <div class="btn-group">
                             Группы
@@ -40,12 +50,21 @@
                                     @foreach($groups AS $groupItem)
                                         <li>
                                             <a href="/admin/products/{{$category->id}}/{{$groupItem->id}}/products">
-                                                {{$groupItem->group}}
+                                                @if($groupItem->active == 1)
+                                                    <b>{{$groupItem->group}}</b>
+                                                @else
+                                                    {{$groupItem->group}}
+                                                @endif
                                             </a>
                                         </li>
                                     @endforeach
                                 </ul>
                             </div>
+                            @if($groupActive == 1)
+                                Группа активна
+                            @else
+                                <b style="color: red">Группа не активна</b>
+                            @endif
                         </div>
                     </div>
 

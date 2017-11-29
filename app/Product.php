@@ -30,10 +30,8 @@ class Product extends Model
             ->toArray();
         
         $arrayIds = array_flatten($groupIds);
-        
-        $query->with('group')
-            ->whereIn('group_id',$arrayIds)
-            ->orderBy('group_id');
+        dump($arrayIds);
+        $query->whereIn('group_id',$arrayIds);
     }
     
     public function scopeByGroupId($query, $group_id)

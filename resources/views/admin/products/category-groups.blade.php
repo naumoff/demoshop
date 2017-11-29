@@ -18,14 +18,23 @@
                                 @foreach($categories AS $categoryItem)
                                     <li>
                                         <a href="/admin/products/{{$categoryItem->id}}/groups">
-                                            {{$categoryItem->category}}
+                                            @if($categoryItem->active == 1)
+                                                <b>{{$categoryItem->category}}</b>
+                                            @else
+                                                {{$categoryItem->category}}
+                                            @endif
+
                                         </a>
                                     </li>
                                 @endforeach
                             </ul>
                         </div>
+                        @if($categoryActive == 1)
+                            Категория активна
+                        @else
+                            <b style="color: red">Категория не активна</b>
+                        @endif
                     </div>
-
                     <div class="panel-heading">
                         Группы <br>
                         @include('inclusions.admin.add-group-modal',['categories'=>$categories,'category'=>$category])

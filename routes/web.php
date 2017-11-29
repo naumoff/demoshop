@@ -65,17 +65,16 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::get('products','Admin\ProductsController@index')->name('admin-products');
     
     //categories
-    Route::get('products/categories','Admin\ProductsController@showCategories'); //+
+    Route::get('products/categories','Admin\ProductsController@showCategories')->name('admin-categories'); //+
     Route::post('products/add-category','Admin\ProductsController@addCategory'); //+
     Route::patch('products/update-category', 'Admin\ProductsController@updateCategory'); //+
     
     //groups
-    Route::get('products/{cat_id}/groups','Admin\ProductsController@showGroupsByCategory'); //+
+    Route::get('products/{cat_id}/groups','Admin\ProductsController@showGroupsByCategory')->name('admin-groups'); //+
     Route::post('products/add-group','Admin\ProductsController@addGroup'); //+
     Route::patch('products/update-group','Admin\ProductsController@updateGroup'); //+
     
     //products
-    Route::get('products/{cat_id}/products','Admin\ProductsController@showProductsByCategory'); //+
     Route::get('products/{cat_id}/{group_id}/products','Admin\ProductsController@showProductsByCategoryByGroup');
     
     Route::get('products/{cat_id}/create-product', 'Admin\ProductsController@createProduct'); // -

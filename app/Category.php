@@ -28,6 +28,19 @@ class Category extends Model
         }
         return null;
     }
+    
+    public static function getActiveCategoriesWithActiveGroups()
+    {
+       $activeCategories = \DB::table('categories')
+            ->join('groups','categories.id','=','groups.category_id')
+            ->select('categories.*')
+            ->where('categories.active','=',1)
+            ->where('groups.active','=',1)
+            ->groupBy('categories.id')
+            ->get();
+        
+        return $activeCategories;
+    }
     #endregion
     
     #region SCOPE METHODS

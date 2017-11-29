@@ -53,7 +53,7 @@ class ProductsController extends Controller
     public function showGroupsByCategory($category_id)
     {
        
-        $categories = Category::getCategories()->Active()->get();
+        $categories = Category::getCategories()->get();
         $category = Category::find($category_id);
         $groups = $category->groups;
         
@@ -61,6 +61,7 @@ class ProductsController extends Controller
             ->with([
                 'categories'=>$categories,
                 'category'=>$category,
+                'categoryActive'=>$category->active,
                 'groups'=>$groups
             ]);
     }
@@ -91,60 +92,28 @@ class ProductsController extends Controller
         return back();
     }
     
-    public function showProductsByCategory($category_id)
-    {
-        $categories = Category::getCategories()
-            ->Active()
-            ->get();
-        
-        $category = Category::find($category_id);
-        
-        $products = Product::getProducts()
-            ->byCategoryId($category_id)
-            ->paginate(10);
-
-        return view('admin.products.category-products')
-            ->with([
-                'categories'=>$categories,
-                'category'=>$category,
-                'products'=>$products
-            ]);
-    }
-    
     public function showProductsByCategoryByGroup($categoryId, $groupId)
     {
-        $categories = Category::getCategories()
-            ->Active()
-            ->get();
-    
+     
+        $categories = Category::all();
         $category = Category::find($categoryId);
         
-        $groups = Group::getGroups()
-            ->Active()
-            ->where('category_id','=',$category->id)
-            ->get();
+        $groups = Group::getGroups()->byCategoryId($categoryId)->get();
+        $group = Group::find($groupId);
         
-        $group = Group::where('category_id','=',$category->id)
-            ->find($groupId);
+        $products = Product::getProducts()->byGroupId($groupId)->paginate(10);
         
-        if($group === null){
-            $group = Group::getGroups()
-                ->active()
-                ->where('category_id','=',$category->id)
-                ->first();
-        }
-        
-        $products = Product::getProducts()
-            ->byCategoryId($category->id)
-            ->byGroupId($group->id)
-            ->paginate(10);
-        
+        $groupActivity = $group->active;
+        $categoryActivity = $category->active == 1;
+
         return view('admin.products.category-group-products',[
             'categories'=>$categories,
             'category'=>$category,
             'groups'=>$groups,
             'group'=>$group,
-            'products'=>$products
+            'products'=>$products,
+            'categoryActive'=>$categoryActivity,
+            'groupActive'=>$groupActivity
         ]);
     }
     
@@ -153,7 +122,6 @@ class ProductsController extends Controller
         $category = Category::find($categoryId);
         
         $categories = Category::getCategories()
-            ->active()
             ->get();
     
         if($request->input('group')){
@@ -167,18 +135,24 @@ class ProductsController extends Controller
     
         if(!isset($groupId)){
             $groupId = Group::getFirstActiveGroupId($categoryId);
+            if($groupId == null){
+                $groupId = Group::getFirstAnyGroupId($categoryId);
+                if($groupId == null){
+                    return redirect()->route('admin-groups',['cat_id'=>$categoryId]);
+                }
+            }
         }
         
         $group = Group::find($groupId);
-        
         $groups = Group::getGroups()
             ->byCategoryId($categoryId)
-            ->active()
             ->get();
             
         return view('admin.products.add-product',
             [
                 'category'=>$category,
+                'categoryActive'=>$category->active,
+                'groupActive'=>$group->active,
                 'group'=>$group,
                 'categories'=>$categories,
                 'groups'=>$groups
@@ -280,5 +254,8 @@ class ProductsController extends Controller
         $product->delete();
         return 'SUCCESS';
     }
+    #endregion
+    
+    #region SERVICE METHODS
     #endregion
 }

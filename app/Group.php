@@ -27,6 +27,32 @@ class Group extends Model
             return $group->id;
         }
     }
+    
+    public static function getFirstAnyGroupId($categoryId)
+    {
+        $group = self::where('category_id','=',$categoryId)
+            ->orderBy('group','asc')
+            ->first();
+        
+        if($group == null){
+            return null;
+        }else{
+            return $group->id;
+        }
+    }
+    
+    public static function getActiveGroupsWithActiveCategories()
+    {
+        $activeGroups = \DB::table('groups')
+            ->join('categories','categories.id','=','groups.category_id')
+            ->select('groups.*')
+            ->where('categories.active','=',1)
+            ->where('groups.active','=',1)
+            ->groupBy('groups.id')
+            ->get();
+    
+        return $activeGroups;
+    }
     #endregion
     
     #region SCOPES METHODS
