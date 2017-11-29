@@ -16,10 +16,17 @@ class Category extends Model
     #region MAIN METHODS
     public static function getFirstActiveCategoryId()
     {
-        $category_id = self::where('active','=',1)
+        $categories = self::where('active', '=', 1)
             ->orderBy('category', 'asc')
-            ->first()->id;
-        return $category_id;
+            ->get();
+        
+        foreach ($categories AS $category) {
+            $item = $category->groups()->where('active', '=', 1)->first();
+            if($item !== null){
+                return $category->id;
+            };
+        }
+        return null;
     }
     #endregion
     

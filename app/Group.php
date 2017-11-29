@@ -16,11 +16,16 @@ class Group extends Model
     #region MAIN METHODS
     public static function getFirstActiveGroupId($categoryId)
     {
-        return self::where('category_id','=',$categoryId)
+        $group = self::where('category_id','=',$categoryId)
             ->where('active','=',1)
             ->orderBy('group','asc')
-            ->first()
-            ->id;
+            ->first();
+        
+        if($group == null){
+            return null;
+        }else{
+            return $group->id;
+        }
     }
     #endregion
     

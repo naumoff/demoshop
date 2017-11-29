@@ -53,6 +53,9 @@ class SideBarComposer
         foreach ($links AS $link){
             if(strpos($link['link'],'{cat_id}') !== false){
                 $firstCatId = Category::getFirstActiveCategoryId();
+                if($firstCatId === null){
+                    continue;
+                }
                 $link['link'] = str_replace('{cat_id}', $firstCatId, $link['link']);
             }
             if(strpos($link['link'],'{group_id}') !== false){

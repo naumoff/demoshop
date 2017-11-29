@@ -8,8 +8,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Категории</div>
                     <div class="panel-body">
+                        @include('inclusions.admin.add-category-modal')
                         @if(count($categories)>0)
-                            @include('inclusions.admin.add-category-modal')
                             @include('inclusions.error-message')
                             <table class="table table-striped">
                                 <thead>
