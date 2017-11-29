@@ -51,7 +51,7 @@ $factory->define(\App\Group::class, function(Faker $faker){
     $categories = \App\Category::all()->toArray();
     return [
         'category_id'=>$categories[rand(0,count($categories)-1)]['id'],
-        'group'=>$faker->word,
+        'group'=>'group-'.$faker->word,
         'active'=>rand(0,1),
         'created_at'=>\Carbon\Carbon::now(),
         'updated_at'=>\Carbon\Carbon::now()
@@ -62,8 +62,8 @@ $factory->define(\App\Product::class, function(Faker $faker){
     $groups = \App\Group::all()->toArray();
     
     $productName = $faker->word();
-    $productNameRu = 'RU-'.$productName;
-    $productNameDe = 'DE-'.$productName;
+    $productNameRu = 'RU-prod-'.$productName;
+    $productNameDe = 'DE-prod-'.$productName;
     
     $exchRate = 69.5;
     $eurPrice = $faker->randomFloat($nbMaxDecimals = 8, $min = 1, $max = 150);
@@ -102,5 +102,19 @@ $factory->define(\App\Product::class, function(Faker $faker){
         'active'=>rand(0,1),
         'created_at'=>\Carbon\Carbon::now(),
         'updated_at'=>\Carbon\Carbon::now()
+    ];
+});
+
+$factory->define(\App\ColorProduct::class, function(Faker $faker){
+    $colors = \App\Color::all()->toArray();
+    $products = \App\Product::all()->toArray();
+    
+    $pathToFiles = Storage::disk('products')->files('/');
+    $url = Storage::disk('products')->url($pathToFiles[rand(0,count($pathToFiles)-1)]);
+    
+    return [
+        'color_id'=>$colors[rand(0,count($colors)-1)]['id'],
+        'product_id'=>$products[rand(0,count($products)-1)]['id'],
+        'url'=>$url
     ];
 });

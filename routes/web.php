@@ -4,8 +4,16 @@
 use App\User;
 use App\Events\CustomerRejected;
 Route::get('test', function(){
-    $category = \App\Category::find(3);
-    dd($category->products);
+    
+    $result = Storage::disk('products')->files('/');
+    dump($result);
+    
+    $url = Storage::disk('products')->url($result[0]);
+    dump($url);
+    
+    $rawContent1 = Storage::disk('products')->get("images (1).jpg");
+    dump($rawContent1);
+    
 });
 
 Route::get('test/{id}', 'Admin\ProductsController@deleteCategoryTest');

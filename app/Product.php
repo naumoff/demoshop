@@ -57,5 +57,10 @@ class Product extends Model
     {
         return $this->belongsTo(Group::class,'group_id','id');
     }
+    
+    public function colors()
+    {
+        return $this->belongsTo(Color::class,'color_product');
+    }
     #endregion
 }
