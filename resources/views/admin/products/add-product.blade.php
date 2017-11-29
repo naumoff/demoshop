@@ -69,26 +69,85 @@
                         <hr>
                         <form action="/action_page.php">
                             <div class="form-group">
-                                <label for="email">Email:</label>
-                                <input type="email"
+                                <label for="product_ru">Название товара (рус):</label>
+                                <input type="text"
                                        class="form-control"
-                                       id="email"
-                                       placeholder="Enter email"
-                                       name="email">
+                                       id="product_ru"
+                                       placeholder="Введите имя товара на русском языке"
+                                       required
+                                       name="product-ru">
                             </div>
                             <div class="form-group">
-                                <label for="pwd">Password:</label>
-                                <input type="password"
+                                <label for="product_de">Название товара (нем):</label>
+                                <input type="text"
                                        class="form-control"
-                                       id="pwd"
-                                       placeholder="Enter password"
-                                       name="pwd">
+                                       id="product_de"
+                                       placeholder="Введите имя товара на немецком языке"
+                                       required
+                                       name="product-de">
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Описание товара:</label>
+                                <textarea class="form-control"
+                                          rows="5"
+                                          name="description"
+                                          id="description">
+			                    </textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="price_eur">Цена товара (EUR):</label>
+                                <input type="number"
+                                       class="form-control"
+                                       id="price_eur"
+                                       placeholder="Введите цену товара в EUR"
+                                       required
+                                       name="price_eur">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_rub_manual">Цена товара (RUB):</label>
+                                <input type="number"
+                                       class="form-control"
+                                       id="price_rub_manual"
+                                       placeholder="Введите вручную цену товара в RUB (Если есть необходимость)"
+                                       required
+                                       name="price_rub_manual">
+                            </div>
+                            <div class="form-group">
+                                <label for="price_with_discount">Акционная цена товара (RUB):</label>
+                                <input type="number"
+                                       class="form-control"
+                                       id="price_with_discount"
+                                       placeholder="Акционная цена товара в RUB"
+                                       name="price_with_discount">
+                            </div>
+                            <div class="form-group">
+                                <label for="discount_start">Дата и время начала акции:</label>
+                                <input type="datetime-local"
+                                       class="form-control"
+                                       id="discount_start"
+                                       placeholder="Начало акции"
+                                       name="discount_start" >
+                            </div>
+                            <div class="form-group">
+                                <label for="discount_end">Дата и время конца акции:</label>
+                                <input type="datetime-local"
+                                       class="form-control"
+                                       id="discount_end"
+                                       placeholder="Конец акции"
+                                       name="discount_end" >
+                            </div>
+                            <div class="form-group">
+                                <label for="weight_gr">Вес товара:</label>
+                                <input type="number"
+                                       class="form-control"
+                                       id="weight_gr"
+                                       placeholder="Вес товара"
+                                       name="weight_gr" >
                             </div>
                             <div class="checkbox">
-                                <label><input type="checkbox"
-                                              name="remember"> Remember me</label>
+                                <label><input type="checkbox" name="active" value="1">Товар активен</label>
                             </div>
-                            <button type="submit" class="btn btn-default">Submit</button>
+                            <button type="submit" class="btn btn-default">Сохранить</button>
                         </form>
                     </div>
                 </div>
