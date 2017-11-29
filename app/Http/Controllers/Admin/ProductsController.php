@@ -99,8 +99,16 @@ class ProductsController extends Controller
         $category = Category::find($categoryId);
         
         $groups = Group::getGroups()->byCategoryId($categoryId)->get();
-        $group = Group::find($groupId);
         
+        $groupCheck = Group::getGroups()->byCategoryId($categoryId)->find($groupId);
+        
+        if($groupCheck == null){
+            $group = Group::find(Group::getFirstAnyGroupId($categoryId));
+        }else{
+            $group = Group::find($groupId);
+        }
+        
+
         $products = Product::getProducts()->byGroupId($groupId)->paginate(10);
         
         $groupActivity = $group->active;
