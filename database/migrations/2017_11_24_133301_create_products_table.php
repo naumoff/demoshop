@@ -19,11 +19,10 @@ class CreateProductsTable extends Migration
             $table->string('product_ru');
             $table->string('product_de');
             $table->longText('description');
-            $table->string('pictures');
             $table->float('price_eur',8,2);
             $table->float('price_rub_auto',8,2);
-            $table->float('price_rub_manual',8,2);
-            $table->float('price_with_discount',8,2);
+            $table->float('price_rub_manual',8,2)->nullable();
+            $table->float('price_with_discount',8,2)->nullable();
             $table->dateTime('discount_start')->nullable();
             $table->dateTime('discount_end')->nullable();
             $table->boolean('discount_active');

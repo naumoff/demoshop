@@ -11,6 +11,24 @@ class Product extends Model
     
     #region CLASS PROPERTIES
     protected $dates = ['deleted_at'];
+    
+    protected $fillable = [
+        'group_id',
+        'product_ru',
+        'product_de',
+        'description',
+        'pictures',
+        'price_eur',
+        'price_rub_auto',
+        'price_rub_manual',
+        'price_with_discount',
+        'discount_start',
+        'discount_end',
+        'discount_active',
+        'weight_gr',
+        'active'
+    ];
+
     #endregion
     
     #region MAIN METHODS

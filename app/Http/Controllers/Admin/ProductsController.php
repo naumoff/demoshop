@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\CurrencyRate;
 use App\Group;
 use App\Http\Requests\EditCategoryPatch;
 use App\Http\Requests\EditGroupPatch;
@@ -100,10 +101,16 @@ class ProductsController extends Controller
         
         $groups = Group::getGroups()->byCategoryId($categoryId)->get();
         
-        $groupCheck = Group::getGroups()->byCategoryId($categoryId)->find($groupId);
+        $groupIdCheck = Group::getGroups()->byCategoryId($categoryId)->find($groupId);
         
-        if($groupCheck == null){
-            $group = Group::find(Group::getFirstAnyGroupId($categoryId));
+        if($groupIdCheck == null){
+            $group = Group::find(Group::getFirstActiveGroupId($categoryId));
+            if($group === null){
+                $group = Group::find(Group::getFirstAnyGroupId($categoryId));
+                if($group === null){
+                    return redirect()->route('admin-groups',['cat_id'=>$categoryId]);
+                }
+            }
         }else{
             $group = Group::find($groupId);
         }
@@ -170,7 +177,20 @@ class ProductsController extends Controller
     
     public function addProduct(Request $request)
     {
+        $postData = $this->formProductCreateData($request);
+        $product = Product::create($postData);
+        return redirect()->route('admin-create-photo',['prod_id'=>$product->id]);
+        
+    }
     
+    public function createPhoto($categoryId)
+    {
+        dd($categoryId);
+    }
+    
+    public function addPhoto()
+    {
+        dd('OK!');
     }
     
     public function editProduct($id)
@@ -265,5 +285,31 @@ class ProductsController extends Controller
     #endregion
     
     #region SERVICE METHODS
+    
+    private function formProductCreateData(Request $request)
+    {
+        return [
+            'group_id' => $request->input('group-id'),
+            'product_ru' => $request->input('product-ru'),
+            'product_de' => $request->input('product-de'),
+            'description' => $request->input('description'),
+            'price_eur' => $request->input('price-eur'),
+            'price_rub_auto' => $this->calculateRublePrice($request->input('price-eur')),
+            'price_rub_manual' => $request->input('price-rub-manual'),
+            'price_with_discount' => $request->input('price-with-discount'),
+            'discount_start' => $request->input('discount-start'),
+            'discount_end' => $request->input('discount-end'),
+            'discount_active' => ($request->input('discount-active') == null)? 0:1,
+            'weight_gr' => $request->input('weight-gr'),
+            'active' => ($request->input('product-active') == null)? 0:1
+        ];
+    }
+    
+    private function calculateRublePrice($eurPrice)
+    {
+        $rubRate = CurrencyRate::getEurRubRate();
+
+        return $eurPrice * (float)$rubRate;
+    }
     #endregion
 }

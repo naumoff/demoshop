@@ -90,7 +90,6 @@ $factory->define(\App\Product::class, function(Faker $faker){
         'product_ru'=>$productNameRu,
         'product_de'=>$productNameDe,
         'description'=>$faker->paragraph($nbSentences = 3, $variableNbSentences = true),
-        'pictures'=>'',
         'price_eur'=>$eurPrice,
         'price_rub_auto'=>$ruPrice,
         'price_rub_manual'=>0,

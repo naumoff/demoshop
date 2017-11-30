@@ -67,7 +67,9 @@
                             @endif
                         </div>
                         <hr>
-                        <form action="/action_page.php">
+                        <form method="post" action="/admin/products/add-product">
+                            {{csrf_field()}}
+                            <input type="text" name="group-id" value="{{$group->id}}" hidden>
                             <div class="form-group">
                                 <label for="product_ru">Название товара (рус):</label>
                                 <input type="text"
@@ -101,7 +103,7 @@
                                        id="price_eur"
                                        placeholder="Введите цену товара в EUR"
                                        required
-                                       name="price_eur">
+                                       name="price-eur">
                             </div>
                             <div class="form-group">
                                 <label for="price_rub_manual">Цена товара (RUB):</label>
@@ -109,8 +111,7 @@
                                        class="form-control"
                                        id="price_rub_manual"
                                        placeholder="Введите вручную цену товара в RUB (Если есть необходимость)"
-                                       required
-                                       name="price_rub_manual">
+                                       name="price-rub-manual">
                             </div>
                             <div class="form-group">
                                 <label for="price_with_discount">Акционная цена товара (RUB):</label>
@@ -118,7 +119,7 @@
                                        class="form-control"
                                        id="price_with_discount"
                                        placeholder="Акционная цена товара в RUB"
-                                       name="price_with_discount">
+                                       name="price-with-discount">
                             </div>
                             <div class="form-group">
                                 <label for="discount_start">Дата и время начала акции:</label>
@@ -126,7 +127,7 @@
                                        class="form-control"
                                        id="discount_start"
                                        placeholder="Начало акции"
-                                       name="discount_start" >
+                                       name="discount-start" >
                             </div>
                             <div class="form-group">
                                 <label for="discount_end">Дата и время конца акции:</label>
@@ -134,7 +135,13 @@
                                        class="form-control"
                                        id="discount_end"
                                        placeholder="Конец акции"
-                                       name="discount_end" >
+                                       name="discount-end" >
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="discount-active" value="1">
+                                    Акция активна
+                                </label>
                             </div>
                             <div class="form-group">
                                 <label for="weight_gr">Вес товара:</label>
@@ -142,10 +149,13 @@
                                        class="form-control"
                                        id="weight_gr"
                                        placeholder="Вес товара"
-                                       name="weight_gr" >
+                                       name="weight-gr" >
                             </div>
                             <div class="checkbox">
-                                <label><input type="checkbox" name="active" value="1">Товар активен</label>
+                                <label>
+                                    <input type="checkbox" name="product-active" value="1">
+                                    Товар активен
+                                </label>
                             </div>
                             <button type="submit" class="btn btn-default">Сохранить</button>
                         </form>
