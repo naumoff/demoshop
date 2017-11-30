@@ -16,6 +16,7 @@ use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 
 class ProductsController extends Controller
 {
@@ -161,8 +162,9 @@ class ProductsController extends Controller
                 }
             }
         }
-
-        session(['fullUrl' => $request->fullUrl()]);
+        
+        //adding to session for future redirect after pictures saving
+        session(['fullUrl'=>$request->fullUrl()]);
         
         $group = Group::find($groupId);
         $groups = Group::getGroups()
@@ -183,7 +185,6 @@ class ProductsController extends Controller
     
     public function addProduct(StoreProductPost $request)
     {
-//        dump(session('fulUrl'));
         $postData = $this->formProductCreateData($request);
         $product = Product::create($postData);
 
@@ -193,7 +194,6 @@ class ProductsController extends Controller
     
     public function createPhoto($productId)
     {
-//        dump(session('fulUrl'));
         $product = Product::find($productId);
         $colors = Color::getColors();
         return view('admin.products.add-photo',[
@@ -204,7 +204,6 @@ class ProductsController extends Controller
     
     public function addPhoto(Request $request)
     {
-        dd(session('fulUrl'));
         $input = $request->except(['_token','product-id','product-name']);
     
         foreach ($input as $key=>$photo) {
@@ -224,13 +223,16 @@ class ProductsController extends Controller
                 }
             }
         }
-    
-        header("Location: {$fullPath}");
+        
+        //redirecting to create product page
+        $fullPath = session('fullUrl');
+        return redirect($fullPath);
     }
     
-    public function editProduct($id)
+    public function editProduct($productId)
     {
-    
+        $product = Product::find($productId);
+        dd($product);
     }
     
     public function updateProduct(Request $request)

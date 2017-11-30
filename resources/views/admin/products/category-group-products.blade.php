@@ -132,7 +132,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="#" class="btn btn-success btn-sm" role="button">
+                                                <a href="/admin/products/{{$product->id}}/edit-product" class="btn btn-success btn-sm" role="button">
                                                     Редактор
                                                 </a>
                                             </td>

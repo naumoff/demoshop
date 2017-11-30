@@ -77,10 +77,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     //products
     Route::get('products/{cat_id}/{group_id}/products','Admin\ProductsController@showProductsByCategoryByGroup');
     
-    Route::get('products/{cat_id}/create-product', 'Admin\ProductsController@createProduct'); // -
-    Route::post('products/add-product', 'Admin\ProductsController@addProduct'); // -
+    Route::get('products/{cat_id}/create-product', 'Admin\ProductsController@createProduct'); // +
+    Route::post('products/add-product', 'Admin\ProductsController@addProduct'); // +
     Route::get('products/{prod_id}/create-photo', 'Admin\ProductsController@createPhoto')->name('admin-create-photo'); // -
-    Route::post('products/add-photo', 'Admin\ProductsController@addPhoto')->name('admin-add-photo'); // -
+    Route::post('products/add-photo', 'Admin\ProductsController@addPhoto')->name('admin-add-photo'); // +
     
     Route::get('products/{prod_id}/edit-product','Admin\ProductsController@editProduct'); // -
     Route::patch('products/update-product','Admin\ProductsController@updateProduct'); // -
