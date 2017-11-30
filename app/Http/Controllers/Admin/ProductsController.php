@@ -9,6 +9,7 @@ use App\Http\Requests\EditCategoryPatch;
 use App\Http\Requests\EditGroupPatch;
 use App\Http\Requests\StoreCategoryPost;
 use App\Http\Requests\StoreGroupPost;
+use App\Http\Requests\StoreProductPost;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -175,7 +176,7 @@ class ProductsController extends Controller
         );
     }
     
-    public function addProduct(Request $request)
+    public function addProduct(StoreProductPost $request)
     {
         $postData = $this->formProductCreateData($request);
         $product = Product::create($postData);
@@ -183,9 +184,12 @@ class ProductsController extends Controller
         
     }
     
-    public function createPhoto($categoryId)
+    public function createPhoto($productId)
     {
-        dd($categoryId);
+        $product = Product::find($productId);
+        return view('admin.products.add-photo',[
+            'product'=>$product
+        ]);
     }
     
     public function addPhoto()
@@ -308,8 +312,7 @@ class ProductsController extends Controller
     private function calculateRublePrice($eurPrice)
     {
         $rubRate = CurrencyRate::getEurRubRate();
-
-        return $eurPrice * (float)$rubRate;
+        return round($eurPrice * (float)$rubRate,2);
     }
     #endregion
 }

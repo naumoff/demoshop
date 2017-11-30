@@ -67,6 +67,7 @@
                             @endif
                         </div>
                         <hr>
+                        @include('inclusions.error-message')
                         <form method="post" action="/admin/products/add-product">
                             {{csrf_field()}}
                             <input type="text" name="group-id" value="{{$group->id}}" hidden>
@@ -77,7 +78,9 @@
                                        id="product_ru"
                                        placeholder="Введите имя товара на русском языке"
                                        required
-                                       name="product-ru">
+                                       name="product-ru"
+                                       value="{{old('product-ru')}}"
+                                >
                             </div>
                             <div class="form-group">
                                 <label for="product_de">Название товара (нем):</label>
@@ -86,14 +89,18 @@
                                        id="product_de"
                                        placeholder="Введите имя товара на немецком языке"
                                        required
-                                       name="product-de">
+                                       name="product-de"
+                                       value="{{old('product-de')}}"
+                                >
                             </div>
                             <div class="form-group">
                                 <label for="description">Описание товара:</label>
                                 <textarea class="form-control"
                                           rows="5"
                                           name="description"
-                                          id="description">
+                                          id="description"
+                                          value="{{old('description')}}"
+                                >
 			                    </textarea>
                             </div>
                             <div class="form-group">
@@ -103,7 +110,9 @@
                                        id="price_eur"
                                        placeholder="Введите цену товара в EUR"
                                        required
-                                       name="price-eur">
+                                       name="price-eur"
+                                       value="{{old('price-eur')}}"
+                                >
                             </div>
                             <div class="form-group">
                                 <label for="price_rub_manual">Цена товара (RUB):</label>
@@ -111,7 +120,9 @@
                                        class="form-control"
                                        id="price_rub_manual"
                                        placeholder="Введите вручную цену товара в RUB (Если есть необходимость)"
-                                       name="price-rub-manual">
+                                       name="price-rub-manual"
+                                       value="{{old('price-rub-manual')}}"
+                                >
                             </div>
                             <div class="form-group">
                                 <label for="price_with_discount">Акционная цена товара (RUB):</label>
@@ -119,7 +130,9 @@
                                        class="form-control"
                                        id="price_with_discount"
                                        placeholder="Акционная цена товара в RUB"
-                                       name="price-with-discount">
+                                       name="price-with-discount"
+                                       value="{{old('price-with-discount')}}"
+                                >
                             </div>
                             <div class="form-group">
                                 <label for="discount_start">Дата и время начала акции:</label>
@@ -127,7 +140,9 @@
                                        class="form-control"
                                        id="discount_start"
                                        placeholder="Начало акции"
-                                       name="discount-start" >
+                                       name="discount-start"
+                                       value="{{old('discount-start')}}"
+                                >
                             </div>
                             <div class="form-group">
                                 <label for="discount_end">Дата и время конца акции:</label>
@@ -135,11 +150,17 @@
                                        class="form-control"
                                        id="discount_end"
                                        placeholder="Конец акции"
-                                       name="discount-end" >
+                                       name="discount-end"
+                                       value="{{old('discount-end')}}"
+                                >
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="discount-active" value="1">
+                                    <input
+                                            type="checkbox"
+                                            name="discount-active"
+                                            value=1
+                                    >
                                     Акция активна
                                 </label>
                             </div>
@@ -149,11 +170,18 @@
                                        class="form-control"
                                        id="weight_gr"
                                        placeholder="Вес товара"
-                                       name="weight-gr" >
+                                       name="weight-gr"
+                                       value="{{old('weight-gr')}}"
+                                       required
+                                >
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="product-active" value="1">
+                                    <input
+                                            type="checkbox"
+                                            name="product-active"
+                                            value=1
+                                    >
                                     Товар активен
                                 </label>
                             </div>
