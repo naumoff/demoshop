@@ -80,7 +80,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::get('products/{cat_id}/create-product', 'Admin\ProductsController@createProduct'); // -
     Route::post('products/add-product', 'Admin\ProductsController@addProduct'); // -
     Route::get('products/{prod_id}/create-photo', 'Admin\ProductsController@createPhoto')->name('admin-create-photo'); // -
-    Route::post('products/add-photo', 'Admin\ProductsController@addPhoto'); // -
+    Route::post('products/add-photo', 'Admin\ProductsController@addPhoto')->name('admin-add-photo'); // -
     
     Route::get('products/{prod_id}/edit-product','Admin\ProductsController@editProduct'); // -
     Route::patch('products/update-product','Admin\ProductsController@updateProduct'); // -
@@ -94,6 +94,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::post('/category/delete', 'Admin\ProductsController@deleteCategory');
     Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');
     Route::post('/product/delete', 'Admin\ProductsController@deleteProduct'); // +
+    
+    Route::get('/photo/{prod_id}/{color_code}', 'Admin\ProductsController@formGroupLoaderForProductPhoto'); //-
 });
 
 //CUSTOMER DASHBOARD

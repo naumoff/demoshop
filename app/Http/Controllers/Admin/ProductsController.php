@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\Color;
+use App\ColorProduct;
 use App\CurrencyRate;
 use App\Group;
 use App\Http\Requests\EditCategoryPatch;
@@ -13,6 +15,7 @@ use App\Http\Requests\StoreProductPost;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
@@ -158,6 +161,8 @@ class ProductsController extends Controller
                 }
             }
         }
+
+        session(['fullUrl' => $request->fullUrl()]);
         
         $group = Group::find($groupId);
         $groups = Group::getGroups()
@@ -178,23 +183,49 @@ class ProductsController extends Controller
     
     public function addProduct(StoreProductPost $request)
     {
+//        dump(session('fulUrl'));
         $postData = $this->formProductCreateData($request);
         $product = Product::create($postData);
+
         return redirect()->route('admin-create-photo',['prod_id'=>$product->id]);
         
     }
     
     public function createPhoto($productId)
     {
+//        dump(session('fulUrl'));
         $product = Product::find($productId);
+        $colors = Color::getColors();
         return view('admin.products.add-photo',[
-            'product'=>$product
+            'product'=>$product,
+            'colors'=>$colors
         ]);
     }
     
-    public function addPhoto()
+    public function addPhoto(Request $request)
     {
-        dd('OK!');
+        dd(session('fulUrl'));
+        $input = $request->except(['_token','product-id','product-name']);
+    
+        foreach ($input as $key=>$photo) {
+            $files = $request->file($key);
+            if(!empty($files)){
+                foreach ($files AS $file){
+                    $fileExtension = $file->extension();
+                    $fileName = $key.'-'.uniqid().'.'.$fileExtension;
+                    $pathToFile = null;
+                    $file->storeAs('/public/products/',$fileName);
+                    $colorId = $this->getColorId($key);
+                    ColorProduct::create([
+                        'color_id'=>$colorId,
+                        'product_id'=>$request->input('product-id'),
+                        'url'=>Storage::disk('products')->url($fileName)
+                    ]);
+                }
+            }
+        }
+    
+        header("Location: {$fullPath}");
     }
     
     public function editProduct($id)
@@ -286,6 +317,20 @@ class ProductsController extends Controller
         $product->delete();
         return 'SUCCESS';
     }
+    
+    public function formGroupLoaderForProductPhoto($productId, $colorCode)
+    {
+        $fieldName = $colorCode.'-'.$productId;
+        
+        if($colorCode === 'xxx'){
+            $colorCode = null;
+        }
+
+        return view('inclusions.admin.add-photo-form-item',[
+            'color'=>$colorCode,
+            'fieldName'=>$fieldName
+        ]);
+    }
     #endregion
     
     #region SERVICE METHODS
@@ -313,6 +358,13 @@ class ProductsController extends Controller
     {
         $rubRate = CurrencyRate::getEurRubRate();
         return round($eurPrice * (float)$rubRate,2);
+    }
+   
+    private function getColorId($key){
+        $pattern = '/-.*/i';
+        $colorName = preg_replace($pattern,'',$key);
+        $colorId = Color::getColorIdFromColorName($colorName);
+        return $colorId;
     }
     #endregion
 }
