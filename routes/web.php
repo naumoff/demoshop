@@ -75,15 +75,17 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::patch('products/update-group','Admin\ProductsController@updateGroup'); //+
     
     //products
-    Route::get('products/{cat_id}/{group_id}/products','Admin\ProductsController@showProductsByCategoryByGroup');
+    Route::get('products/{cat_id}/{group_id}/products','Admin\ProductsController@showProductsByCategoryByGroup')->name('admin-products');
     
     Route::get('products/{cat_id}/create-product', 'Admin\ProductsController@createProduct'); // +
     Route::post('products/add-product', 'Admin\ProductsController@addProduct'); // +
     Route::get('products/{prod_id}/create-photo', 'Admin\ProductsController@createPhoto')->name('admin-create-photo'); // -
     Route::post('products/add-photo', 'Admin\ProductsController@addPhoto')->name('admin-add-photo'); // +
     
-    Route::get('products/{prod_id}/edit-product','Admin\ProductsController@editProduct'); // -
-    Route::patch('products/update-product','Admin\ProductsController@updateProduct'); // -
+    Route::get('products/{prod_id}/edit-product','Admin\ProductsController@editProduct'); // +
+    Route::patch('products/update-product','Admin\ProductsController@updateProduct'); // +
+    Route::get('products/{prod_id}/edit-photo','Admin\ProductsController@editPhoto'); // -
+    Route::patch('products/update-photo','Admin\ProductsController@updatePhoto'); // -
     
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');
@@ -94,6 +96,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::post('/category/delete', 'Admin\ProductsController@deleteCategory');
     Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');
     Route::post('/product/delete', 'Admin\ProductsController@deleteProduct'); // +
+    Route::post('/photo/delete', 'Admin\ProductsController@deletePhoto'); // +
     
     Route::get('/photo/{prod_id}/{color_code}', 'Admin\ProductsController@formGroupLoaderForProductPhoto'); //-
 });

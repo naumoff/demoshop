@@ -41,6 +41,7 @@ class Category extends Model
         
         return $activeCategories;
     }
+    
     #endregion
     
     #region SCOPE METHODS

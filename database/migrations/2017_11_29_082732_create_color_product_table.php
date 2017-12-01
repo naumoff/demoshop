@@ -20,7 +20,10 @@ class CreateColorProductTable extends Migration
             $table->text('url');
             $table->timestamps();
             $table->foreign('color_id')->references('id')->on('colors');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('product_id')
+                ->references('id')
+                ->on('products')
+                ->onDeleted('cascade');
         });
     }
 

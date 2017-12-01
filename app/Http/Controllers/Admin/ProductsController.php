@@ -16,7 +16,7 @@ use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Session;
+
 
 class ProductsController extends Controller
 {
@@ -164,7 +164,7 @@ class ProductsController extends Controller
         }
         
         //adding to session for future redirect after pictures saving
-        session(['fullUrl'=>$request->fullUrl()]);
+        session(['fullUrlCreateProduct'=>$request->fullUrl()]);
         
         $group = Group::find($groupId);
         $groups = Group::getGroups()
@@ -224,21 +224,74 @@ class ProductsController extends Controller
             }
         }
         
-        //redirecting to create product page
-        $fullPath = session('fullUrl');
+        if(session()->exists('fullUrlCreateProduct')){
+            //redirecting to create product page
+            $fullPath = session('fullUrlCreateProduct');
+            session()->forget('fullUrlCreateProduct');
+        }elseif (session()->exists('fullUrlAddPhoto')){
+            //redirecting to add photo page
+            $fullPath = session('fullUrlAddPhoto');
+            session()->forget('fullUrlAddPhoto');
+        }
+
+        
+        //redirecting
         return redirect($fullPath);
     }
     
     public function editProduct($productId)
     {
         $product = Product::find($productId);
-        dd($product);
+        
+        if($product->discount_start !== null){
+            $product->discount_start = $this->transformDateTime($product->discount_start);
+        }
+        
+        if($product->discount_end !== null){
+            $product->discount_end = $this->transformDateTime($product->discount_end);
+        }
+        return view('admin.products.edit-product',[
+            'product'=>$product
+        ]);
     }
     
     public function updateProduct(Request $request)
     {
+        $updateDate = $this->formProductCreateData($request);
+        Product::where('id','=',$request->input('id'))
+            ->update($updateDate);
+        
+        $groupId = $request->input('group-id');
+        $categoryId = Group::getCategoryIdByGroupId($groupId);
+        
+        return redirect()->route('admin-products',[
+            '{cat-id}'=>$categoryId,
+            '{prod-id}'=>$groupId
+        ]);
+    }
+    
+    public function editPhoto(Request $request, $productId)
+    {
+        $product = Product::find($productId);
+        $photos = ColorProduct::byProductId($productId)->get();
+//        dd($photos->url);
+        
+        //adding to session for future redirect after pictures saving
+        session(['fullUrlAddPhoto'=>$request->fullUrl()]);
+        
+        return view('admin.products.edit-photo',[
+            'product'=>$product,
+            'photos'=>$photos
+        ]);
+    }
+    
+    public function updatePhoto()
+    {
     
     }
+    
+
+    
     #endregion
     
     #region AJAX REQUESTS
@@ -320,6 +373,15 @@ class ProductsController extends Controller
         return 'SUCCESS';
     }
     
+    public function deletePhoto(Request $request)
+    {
+        $photoId = $request->input('photo-id');
+        $photo = ColorProduct::find($photoId);
+        Storage::disk('products')->delete(basename($photo->url));
+        $photo->delete();
+        return 'SUCCESS';
+    }
+    
     public function formGroupLoaderForProductPhoto($productId, $colorCode)
     {
         $fieldName = $colorCode.'-'.$productId;
@@ -367,6 +429,13 @@ class ProductsController extends Controller
         $colorName = preg_replace($pattern,'',$key);
         $colorId = Color::getColorIdFromColorName($colorName);
         return $colorId;
+    }
+    
+    private function transformDateTime($date)
+    {
+        $date = str_replace(' ','T',$date);
+        $date = str_replace('.','-',$date);
+        return $date;
     }
     #endregion
 }

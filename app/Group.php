@@ -53,6 +53,12 @@ class Group extends Model
     
         return $activeGroups;
     }
+    
+    public static function getCategoryIdByGroupId($groupId)
+    {
+        $group = self::find($groupId);
+        return $group->category_id;
+    }
     #endregion
     
     #region SCOPES METHODS

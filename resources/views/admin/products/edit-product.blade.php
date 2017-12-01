@@ -6,71 +6,18 @@
             @include('layouts.sidebar-admin')
             <div class="col-md-9">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Карточка нового товара</div>
+                    <div class="panel-heading">Редактор товара</div>
                     <div class="panel-body">
-                        <div class="btn-group">
-                            Категории
-                            <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle"
-                                        type="button"
-                                        data-toggle="dropdown">
-                                    {{$category->category}}
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    @foreach($categories AS $categoryItem)
-                                        <li>
-                                            <a href="/admin/products/{{$categoryItem->id}}/create-product?group={{$group->id}}">
-                                                @if($categoryItem->active == 1)
-                                                    <b>{{$categoryItem->category}}</b>
-                                                @else
-                                                    {{$categoryItem->category}}
-                                                @endif
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @if($categoryActive == 1)
-                                Категория активна
-                            @else
-                                <b style="color: red">Категория не активна</b>
-                            @endif
-                        </div>
-                        <div class="btn-group">
-                            Группы
-                            <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle"
-                                        type="button"
-                                        data-toggle="dropdown">
-                                    {{$group->group}}
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    @foreach($groups AS $groupItem)
-                                        <li>
-                                            <a href="/admin/products/{{$category->id}}/create-product?group={{$groupItem->id}}">
-                                                @if($groupItem->active == 1)
-                                                    <b>{{$groupItem->group}}</b>
-                                                @else
-                                                    {{$groupItem->group}}
-                                                @endif
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @if($groupActive == 1)
-                                Группа активна
-                            @else
-                                <b style="color: red">Группа не активна</b>
-                            @endif
-                        </div>
-                        <hr>
+                        <ul class="nav nav-pills nav-justified">
+                            <li class="active"><a href="#">Редактор Товара</a></li>
+                            <li><a href="/admin/products/{{$product->id}}/edit-photo">Редактор фотографий</a></li>
+                        </ul>
                         @include('inclusions.error-message')
-                        <form method="post" action="/admin/products/add-product">
+                        <form method="post" action="/admin/products/update-product">
                             {{csrf_field()}}
-                            <input type="text" name="group-id" value="{{$group->id}}" hidden>
+                            {{method_field('PATCH')}}
+                            <input type="text" name="id" value="{{$product->id}}" hidden>
+                            <input type="text" name="group-id" value="{{$product->group_id}}" hidden>
                             <div class="form-group">
                                 <label for="product_ru">Название товара (рус):</label>
                                 <input type="text"
@@ -79,7 +26,7 @@
                                        placeholder="Введите имя товара на русском языке"
                                        required
                                        name="product-ru"
-                                       value="{{old('product-ru')}}"
+                                       value="{{$product->product_ru}}"
                                 >
                             </div>
                             <div class="form-group">
@@ -90,7 +37,7 @@
                                        placeholder="Введите имя товара на немецком языке"
                                        required
                                        name="product-de"
-                                       value="{{old('product-de')}}"
+                                       value="{{$product->product_de}}"
                                 >
                             </div>
                             <div class="form-group">
@@ -99,7 +46,7 @@
                                           rows="5"
                                           name="description"
                                           id="description"
-                                >{{old('description')}}
+                                >{{$product->description}}"
 			                    </textarea>
                             </div>
                             <div class="form-group">
@@ -110,7 +57,7 @@
                                        placeholder="Введите цену товара в EUR"
                                        required
                                        name="price-eur"
-                                       value="{{old('price-eur')}}"
+                                       value="{{$product->price_eur}}"
                                 >
                             </div>
                             <div class="form-group">
@@ -120,7 +67,18 @@
                                        id="price_rub_manual"
                                        placeholder="Введите вручную цену товара в RUB (Если есть необходимость)"
                                        name="price-rub-manual"
-                                       value="{{old('price-rub-manual')}}"
+                                       value="{{$product->price_rub_auto}}"
+                                       readonly
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="price_rub_manual">Цена товара (RUB):</label>
+                                <input type="number"
+                                       class="form-control"
+                                       id="price_rub_manual"
+                                       placeholder="Введите вручную цену товара в RUB (Если есть необходимость)"
+                                       name="price-rub-manual"
+                                       value="{{$product->price_rub_manual}}"
                                 >
                             </div>
                             <div class="form-group">
@@ -130,7 +88,7 @@
                                        id="price_with_discount"
                                        placeholder="Акционная цена товара в RUB"
                                        name="price-with-discount"
-                                       value="{{old('price-with-discount')}}"
+                                       value="{{$product->price_with_discount}}"
                                 >
                             </div>
                             <div class="form-group">
@@ -140,7 +98,7 @@
                                        id="discount_start"
                                        placeholder="Начало акции"
                                        name="discount-start"
-                                       value="{{old('discount-start')}}"
+                                       value="{{$product->discount_start}}"
                                 >
                             </div>
                             <div class="form-group">
@@ -150,7 +108,7 @@
                                        id="discount_end"
                                        placeholder="Конец акции"
                                        name="discount-end"
-                                       value="{{old('discount-end')}}"
+                                       value="{{$product->discount_end}}"
                                 >
                             </div>
                             <div class="checkbox">
@@ -159,6 +117,7 @@
                                             type="checkbox"
                                             name="discount-active"
                                             value=1
+                                            {{($product->discount_active ==1)?'checked':''}}
                                     >
                                     Акция активна
                                 </label>
@@ -170,7 +129,7 @@
                                        id="weight_gr"
                                        placeholder="Вес товара"
                                        name="weight-gr"
-                                       value="{{old('weight-gr')}}"
+                                       value="{{$product->weight_gr}}"
                                        required
                                 >
                             </div>
@@ -180,11 +139,12 @@
                                             type="checkbox"
                                             name="product-active"
                                             value=1
+                                            {{($product->active ==1)?'checked':''}}
                                     >
                                     Товар активен
                                 </label>
                             </div>
-                            <button type="submit" class="btn btn-default">Сохранить</button>
+                            <button type="submit" class="btn btn-success">Сохранить</button>
                         </form>
                     </div>
                 </div>
