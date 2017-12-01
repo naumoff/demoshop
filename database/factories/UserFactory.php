@@ -65,9 +65,7 @@ $factory->define(\App\Product::class, function(Faker $faker){
     $productNameRu = 'RU-prod-'.$productName;
     $productNameDe = 'DE-prod-'.$productName;
     
-    $exchRate = 69.5;
-    $eurPrice = $faker->randomFloat($nbMaxDecimals = 8, $min = 1, $max = 150);
-    $ruPrice = $eurPrice * $exchRate;
+    extract(makeEurAndRuPrice($faker));
     
     $discountChance = rand(0,1);
     if($discountChance){
@@ -115,10 +113,7 @@ $factory->define(\App\Package::class,function(Faker $faker){
     
     extract(makeStartAndEndDate());
     
-    // make price
-    $exchRate = 69.5;
-    $eurPrice = $faker->randomFloat($nbMaxDecimals = 8, $min = 1, $max = 150);
-    $ruPrice = $eurPrice * $exchRate;
+    extract(makeEurAndRuPrice($faker));
     
     // retrive random category id
     $categories = \App\Category::all()->toArray();
@@ -162,5 +157,18 @@ function makeStartAndEndDate()
     return [
         'startDate'=>$startDate,
         'endDate'=>$endDate
+    ];
+}
+
+function makeEurAndRuPrice(Faker $faker)
+{
+    // make price
+    $exchRate = 69.5;
+    $eurPrice = $faker->randomFloat($nbMaxDecimals = 8, $min = 1, $max = 150);
+    $ruPrice = $eurPrice * $exchRate;
+    
+    return [
+        'eurPrice'=>$eurPrice,
+        'ruPrice'=>$ruPrice
     ];
 }
