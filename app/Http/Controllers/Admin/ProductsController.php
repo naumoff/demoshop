@@ -165,6 +165,9 @@ class ProductsController extends Controller
         
         //adding to session for future redirect after pictures saving
         session(['fullUrlCreateProduct'=>$request->fullUrl()]);
+        if (session()->exists('fullUrlAddPhoto')){
+            session()->forget('fullUrlAddPhoto');
+        }
         
         $group = Group::find($groupId);
         $groups = Group::getGroups()
@@ -233,8 +236,6 @@ class ProductsController extends Controller
             $fullPath = session('fullUrlAddPhoto');
             session()->forget('fullUrlAddPhoto');
         }
-
-        
         //redirecting
         return redirect($fullPath);
     }
@@ -274,10 +275,13 @@ class ProductsController extends Controller
     {
         $product = Product::find($productId);
         $photos = ColorProduct::byProductId($productId)->get();
-//        dd($photos->url);
         
         //adding to session for future redirect after pictures saving
         session(['fullUrlAddPhoto'=>$request->fullUrl()]);
+    
+        if(session()->exists('fullUrlCreateProduct')){
+            session()->forget('fullUrlCreateProduct');
+        }
         
         return view('admin.products.edit-photo',[
             'product'=>$product,
@@ -285,13 +289,10 @@ class ProductsController extends Controller
         ]);
     }
     
-    public function updatePhoto()
+    public function editCurrencyRate()
     {
-    
+        return view('admin.products.edit-currency-rate');
     }
-    
-
-    
     #endregion
     
     #region AJAX REQUESTS

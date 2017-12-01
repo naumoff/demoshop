@@ -84,8 +84,11 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     
     Route::get('products/{prod_id}/edit-product','Admin\ProductsController@editProduct'); // +
     Route::patch('products/update-product','Admin\ProductsController@updateProduct'); // +
-    Route::get('products/{prod_id}/edit-photo','Admin\ProductsController@editPhoto'); // -
-    Route::patch('products/update-photo','Admin\ProductsController@updatePhoto'); // -
+    Route::get('products/{prod_id}/edit-photo','Admin\ProductsController@editPhoto'); // +
+    
+    //exchange rates
+    Route::get('/products/exchange-rates', 'Admin\ProductsController@editCurrencyRate');
+
     
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');

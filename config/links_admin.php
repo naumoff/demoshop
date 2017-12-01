@@ -81,8 +81,8 @@ return [
             ],
             
             [
-                'link'=>'/admin/products/deleted',
-                'ru'=>'Удаленные Товары'
+                'link'=>'/admin/products/exchange-rates',
+                'ru'=>'Курс валют'
             ]
         ]
     ]
