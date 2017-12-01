@@ -143,6 +143,7 @@ $factory->define(\App\PackageProduct::class,function(Faker $faker){
     ];
 });
 
+#region SERVICE METHODS
 function makeStartAndEndDate()
 {
     //make date
@@ -172,3 +173,5 @@ function makeEurAndRuPrice(Faker $faker)
         'ruPrice'=>$ruPrice
     ];
 }
+
+#endregion

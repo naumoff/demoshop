@@ -93,7 +93,11 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     //exchange rates
     Route::get('/products/create-currency-rate', 'Admin\ProductsController@createCurrencyRate');
     Route::post('/products/currency-rates', 'Admin\ProductsController@storeCurrencyRate');
-
+    
+    /**
+     * Package Management
+     */
+    Route::resource('packages', 'PackagesController');
     
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');
