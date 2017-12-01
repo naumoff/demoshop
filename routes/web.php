@@ -87,7 +87,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::get('products/{prod_id}/edit-photo','Admin\ProductsController@editPhoto'); // +
     
     //exchange rates
-    Route::get('/products/exchange-rates', 'Admin\ProductsController@editCurrencyRate');
+    Route::get('/products/create-currency-rate', 'Admin\ProductsController@createCurrencyRate');
+    Route::post('/products/currency-rates', 'Admin\ProductsController@storeCurrencyRate');
 
     
     //AJAX requests

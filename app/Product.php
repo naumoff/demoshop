@@ -32,7 +32,10 @@ class Product extends Model
     #endregion
     
     #region MAIN METHODS
-
+    public function updatePriceRubAuto($EurRubRate)
+    {
+        $this->price_rub_auto = $this->price_eur * $EurRubRate;
+    }
     #endregion
     
     #region SCOPE METHODS

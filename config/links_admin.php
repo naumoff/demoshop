@@ -81,7 +81,7 @@ return [
             ],
             
             [
-                'link'=>'/admin/products/exchange-rates',
+                'link'=>'/admin/products/create-currency-rate',
                 'ru'=>'Курс валют'
             ]
         ]

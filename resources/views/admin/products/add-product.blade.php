@@ -110,6 +110,9 @@
                                        placeholder="Введите цену товара в EUR"
                                        required
                                        name="price-eur"
+                                       min="0"
+                                       max="100000"
+                                       step="0.0001"
                                        value="{{old('price-eur')}}"
                                 >
                             </div>
@@ -120,6 +123,9 @@
                                        id="price_rub_manual"
                                        placeholder="Введите вручную цену товара в RUB (Если есть необходимость)"
                                        name="price-rub-manual"
+                                       min="0"
+                                       max="10000000"
+                                       step="0.0001"
                                        value="{{old('price-rub-manual')}}"
                                 >
                             </div>
@@ -130,6 +136,9 @@
                                        id="price_with_discount"
                                        placeholder="Акционная цена товара в RUB"
                                        name="price-with-discount"
+                                       min="0"
+                                       max="10000000"
+                                       step="0.0001"
                                        value="{{old('price-with-discount')}}"
                                 >
                             </div>

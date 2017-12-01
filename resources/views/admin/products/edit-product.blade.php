@@ -57,16 +57,22 @@
                                        placeholder="Введите цену товара в EUR"
                                        required
                                        name="price-eur"
+                                       min="0"
+                                       max="100000"
+                                       step="0.0001"
                                        value="{{$product->price_eur}}"
                                 >
                             </div>
                             <div class="form-group">
-                                <label for="price_rub_manual">Цена товара (RUB):</label>
+                                <label for="price_rub_manual">Автоматическая цена товара (RUB):</label>
                                 <input type="number"
                                        class="form-control"
                                        id="price_rub_manual"
                                        placeholder="Введите вручную цену товара в RUB (Если есть необходимость)"
                                        name="price-rub-manual"
+                                       min="0"
+                                       max="10000000"
+                                       step="0.0001"
                                        value="{{$product->price_rub_auto}}"
                                        readonly
                                 >
@@ -78,6 +84,9 @@
                                        id="price_rub_manual"
                                        placeholder="Введите вручную цену товара в RUB (Если есть необходимость)"
                                        name="price-rub-manual"
+                                       min="0"
+                                       max="10000000"
+                                       step="0.0001"
                                        value="{{$product->price_rub_manual}}"
                                 >
                             </div>
@@ -88,6 +97,9 @@
                                        id="price_with_discount"
                                        placeholder="Акционная цена товара в RUB"
                                        name="price-with-discount"
+                                       min="0"
+                                       max="10000000"
+                                       step="0.0001"
                                        value="{{$product->price_with_discount}}"
                                 >
                             </div>

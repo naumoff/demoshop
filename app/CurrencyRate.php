@@ -9,7 +9,15 @@ class CurrencyRate extends Model
     #region CLASS PROPERTIES
     protected $table = 'currency_rates';
     static private $tableName = 'currency_rates';
+    
+    public $currentEurRubRate;
     #endregion
+    
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->currentEurRubRate = self::getEurRubRate();
+    }
     
     #region MAIN METHODS
     public static function getEurRubRate()

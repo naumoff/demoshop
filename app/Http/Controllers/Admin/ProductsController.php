@@ -6,10 +6,12 @@ use App\Category;
 use App\Color;
 use App\ColorProduct;
 use App\CurrencyRate;
+use App\Events\ExchangeRateUpdated;
 use App\Group;
 use App\Http\Requests\EditCategoryPatch;
 use App\Http\Requests\EditGroupPatch;
 use App\Http\Requests\StoreCategoryPost;
+use App\Http\Requests\StoreCurrencyRatePost;
 use App\Http\Requests\StoreGroupPost;
 use App\Http\Requests\StoreProductPost;
 use App\Product;
@@ -289,10 +291,29 @@ class ProductsController extends Controller
         ]);
     }
     
-    public function editCurrencyRate()
+    public function createCurrencyRate()
     {
-        return view('admin.products.edit-currency-rate');
+        $currentRate = CurrencyRate::getEurRubRate();
+        $allRates = CurrencyRate::orderBy('created_at','desc')->paginate(15);
+        return view('admin.products.edit-currency-rate',[
+                'currentRate'=>$currentRate,
+                'allRates'=>$allRates
+            ]
+        );
     }
+    
+    public function storeCurrencyRate(StoreCurrencyRatePost $request)
+    {
+        $currencyRate = new CurrencyRate();
+        $currencyRate->eur_rub = $request->input('eur-rub');
+        $currencyRate->save();
+        
+        //updating all products prices
+        event(new ExchangeRateUpdated(new CurrencyRate()));
+        
+        return back();
+    }
+    
     #endregion
     
     #region AJAX REQUESTS

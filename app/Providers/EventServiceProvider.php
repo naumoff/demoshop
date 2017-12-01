@@ -27,6 +27,10 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Customers\SaveSuspendStatusForCustomer',
             'App\Listeners\Customers\SendSuspendReasonToCustomer',
         ],
+    
+        'App\Events\ExchangeRateUpdated' => [
+            'App\Listeners\Products\UpdateAllProductsPrices',
+        ],
     ];
 
     /**
