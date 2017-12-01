@@ -5,6 +5,10 @@ use App\User;
 use App\Events\CustomerRejected;
 Route::get('test', function(){
     
+    $categories = \App\Category::all()->toArray();
+    dd($categories[rand(0,count($categories)-1)]['id']);
+    
+    dd('end');
     $result = Storage::disk('products')->files('/');
     dump($result);
     

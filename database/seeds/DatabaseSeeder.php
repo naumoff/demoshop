@@ -18,5 +18,25 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductsTableSeeder::class);
         $this->call(ColorProductTableSeeder::class);
         $this->call(CurrencyRatesTableSeeder::class);
+        $this->generatePackage(45);
+
+
     }
+    
+    #region SERVICE METHODS
+    private function generatePackage($limit)
+    {
+        for($a = 0; $a <$limit; $a++){
+            $packageId = factory(\App\Package::class)->create()->id;
+        
+            factory(\App\PackageProduct::class)->create([
+                'package_id'=>$packageId,
+            ]);
+            
+            factory(\App\PackageProduct::class)->create([
+                'package_id'=>$packageId,
+            ]);
+        }
+    }
+    #endregion
 }

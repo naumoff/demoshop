@@ -16,17 +16,29 @@ class CurrencyRate extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
+    
         $this->currentEurRubRate = self::getEurRubRate();
     }
     
     #region MAIN METHODS
     public static function getEurRubRate()
     {
-        return \DB::table(self::$tableName)
+    
+        $result =  \DB::table(self::$tableName)
             ->where('eur_rub','!=',null)
             ->latest()
-            ->first()
-            ->eur_rub;
+            ->first();
+        
+        if($result != null){
+            return $result->eur_rub;
+        }else{
+            return 0;
+        }
+    }
+    
+    public static function checkEntriesPresence()
+    {
+        return count(self::all());
     }
     #endregion
     

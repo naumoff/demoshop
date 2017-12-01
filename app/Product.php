@@ -81,5 +81,10 @@ class Product extends Model
     {
         return $this->belongsTo(Color::class,'color_product');
     }
+    
+    public function packages()
+    {
+        return $this->belongsTo(Package::class, 'color_product');
+    }
     #endregion
 }

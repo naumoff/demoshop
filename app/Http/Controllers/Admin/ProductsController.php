@@ -294,6 +294,7 @@ class ProductsController extends Controller
     public function createCurrencyRate()
     {
         $currentRate = CurrencyRate::getEurRubRate();
+
         $allRates = CurrencyRate::orderBy('created_at','desc')->paginate(15);
         return view('admin.products.edit-currency-rate',[
                 'currentRate'=>$currentRate,

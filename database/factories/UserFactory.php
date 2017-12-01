@@ -71,14 +71,7 @@ $factory->define(\App\Product::class, function(Faker $faker){
     
     $discountChance = rand(0,1);
     if($discountChance){
-        $year = rand(2016,2019);
-        $month = rand(1,12);
-        $day = rand(1,28);
-        $startDate = \Carbon\Carbon::create($year,$month,$day,0,0,0)
-            ->format('Y-m-d H:i:s');
-        $endDate = \Carbon\Carbon::create($year,$month,$day,0,0,0)
-            ->addDays(rand(1,90))
-            ->format('Y-m-d H:i:s');
+        extract(makeStartAndEndDate());
         $discount = rand(5, 9)/10;
     }else{
         $startDate = null;
@@ -117,3 +110,57 @@ $factory->define(\App\ColorProduct::class, function(Faker $faker){
         'url'=>$url
     ];
 });
+
+$factory->define(\App\Package::class,function(Faker $faker){
+    
+    extract(makeStartAndEndDate());
+    
+    // make price
+    $exchRate = 69.5;
+    $eurPrice = $faker->randomFloat($nbMaxDecimals = 8, $min = 1, $max = 150);
+    $ruPrice = $eurPrice * $exchRate;
+    
+    // retrive random category id
+    $categories = \App\Category::all()->toArray();
+    $categoryId = $categories[rand(0,count($categories)-1)]['id'];
+    
+    return [
+        'category_id'=>$categoryId,
+        'package_name'=>'RU-pack-'.$faker->word,
+        'package_price'=>$ruPrice,
+        'package_start_period'=>$startDate,
+        'package_end_period'=>$endDate,
+        'active'=>rand(0,1),
+        'created_at'=>\Carbon\Carbon::now(),
+        'updated_at'=>\Carbon\Carbon::now()
+    ];
+});
+
+$factory->define(\App\PackageProduct::class,function(Faker $faker){
+    
+    $products = \App\Product::all()->toArray();
+    $productId = $products[rand(0,count($products)-1)]['id'];
+    
+    return [
+        'product_id'=>$productId,
+        'created_at'=>\Carbon\Carbon::now(),
+        'updated_at'=>\Carbon\Carbon::now()
+    ];
+});
+
+function makeStartAndEndDate()
+{
+    //make date
+    $year = rand(2016, 2019);
+    $month = rand(1, 12);
+    $day = rand(1, 28);
+    $startDate = \Carbon\Carbon::create($year, $month, $day, 0, 0, 0)
+        ->format('Y-m-d H:i:s');
+    $endDate = \Carbon\Carbon::create($year, $month, $day, 0, 0, 0)
+        ->addDays(rand(1, 90))
+        ->format('Y-m-d H:i:s');
+    return [
+        'startDate'=>$startDate,
+        'endDate'=>$endDate
+    ];
+}
