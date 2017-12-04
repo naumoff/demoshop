@@ -28,6 +28,7 @@ class Category extends Model
         }
         return null;
     }
+
     
     public static function getActiveCategoriesWithActiveGroups()
     {

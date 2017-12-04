@@ -8,7 +8,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Пакеты</div>
                     <div class="panel-body">
-                        <a href="{{route('packages.create')}}" class="btn btn-success" role="button">
+                        <a href="{{rout}}" class="btn btn-success" role="button">
                             Добавить пакет
                         </a>
                         <table class="table table-striped">

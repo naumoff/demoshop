@@ -3,13 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\Group;
+use App\Helpers\DateTimeManipulation;
+use App\Helpers\GetCategoriesAndGroups;
 use App\Http\Requests\StorePackagePost;
 use App\Package;
+use App\PackageProduct;
+use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class PackagesController extends Controller
 {
+    use GetCategoriesAndGroups,
+        DateTimeManipulation;
+    
     #region MAIN METHODS
     /**
      * Display a listing of the resource.
@@ -56,8 +64,54 @@ class PackagesController extends Controller
         $package->package_end_period = $request->input('package-end');
         $package->active = $request->input('package-active');
         $package->save();
+        return redirect()->route('admin-create-package-products',[
+            'pack_id'=>$package->id
+        ]);
     }
+    
+    public function showPackageProductsList($packageId)
+    {
+        $package = Package::find($packageId);
+        
+        extract($this->getCategoryAndCategories($package->category_id));
+    
+        extract($this->getGroupAndGroups($category->id));
+        
+        $products = Package::find($packageId)->products()->paginate(5);
+        
+        return view('admin.packages.show-package-products-list',[
+            'package'=>$package,
+            'category'=>$category,
+            'group'=>$group,
+            'products'=>$products
+        ]);
+    }
+    
+    public function showProductsList($packageId, $categoryId = null, $groupId = null)
+    {
+        $package = Package::find($packageId);
+        
+        extract($this->getCategoryAndCategories($categoryId));
+    
+        extract($this->getGroupAndGroups($category->id, $groupId));
+        
+        $packageProductIds = PackageProduct::getProductIdsByPackageId($packageId);
+        
+        $products = Product::getProducts()
+            ->byGroupId($groupId)
+            ->excludeProductIds($packageProductIds)
+            ->paginate(10);
 
+        return view('admin.packages.add-package-products-list',[
+            'categories'=>$categories,
+            'category'=>$category,
+            'groups'=>$groups,
+            'group'=>$group,
+            'package'=>$package,
+            'products'=>$products
+        ]);
+    }
+    
     /**
      * Display the specified resource.
      *
@@ -77,7 +131,14 @@ class PackagesController extends Controller
      */
     public function edit($id)
     {
-        dd(2);
+        $categories = Category::all();
+        $package = Package::find($id);
+        return view('admin.packages.edit-package',[
+            'package'=>$package,
+            'packageStart'=>$this->transformDateTime($package->package_start_period),
+            'packageEnd'=>$this->transformDateTime($package->package_end_period),
+            'categories'=>$categories
+        ]);
     }
 
     /**
@@ -120,6 +181,21 @@ class PackagesController extends Controller
             $package->delete();
             return 'SUCCESS';
         }
+    }
+    
+    public function storeProductsList(Request $request)
+    {
+        $packageProduct = new PackageProduct();
+        $packageProduct->package_id = $request->input('package-id');
+        $packageProduct->product_id = $request->input('product-id');
+        $packageProduct->save();
+        return 'SUCCESS';
+    }
+    
+    public function deleteProductFromPackage(Request $request)
+    {
+        echo $request->input('package-product-id');
+//        return 'SUCCESS';
     }
     #endregion
 }

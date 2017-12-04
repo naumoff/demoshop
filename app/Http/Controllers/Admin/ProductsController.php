@@ -8,6 +8,7 @@ use App\ColorProduct;
 use App\CurrencyRate;
 use App\Events\ExchangeRateUpdated;
 use App\Group;
+use App\Helpers\DateTimeManipulation;
 use App\Http\Requests\EditCategoryPatch;
 use App\Http\Requests\EditGroupPatch;
 use App\Http\Requests\StoreCategoryPost;
@@ -22,6 +23,8 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
+    use DateTimeManipulation;
+    
     #region CLASS PROPERTIES
     #endregion
     
@@ -453,12 +456,6 @@ class ProductsController extends Controller
         $colorId = Color::getColorIdFromColorName($colorName);
         return $colorId;
     }
-    
-    private function transformDateTime($date)
-    {
-        $date = str_replace(' ','T',$date);
-        $date = str_replace('.','-',$date);
-        return $date;
-    }
+   
     #endregion
 }

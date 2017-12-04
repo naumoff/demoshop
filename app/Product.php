@@ -51,8 +51,13 @@ class Product extends Model
             ->toArray();
         
         $arrayIds = array_flatten($groupIds);
-        dump($arrayIds);
+
         $query->whereIn('group_id',$arrayIds);
+    }
+    
+    public function scopeExcludeProductIds($querry, $productIds)
+    {
+        return $querry->whereNotIn('id',$productIds);
     }
     
     public function scopeByGroupId($query, $group_id)
@@ -86,5 +91,6 @@ class Product extends Model
     {
         return $this->belongsTo(Package::class, 'color_product');
     }
+    
     #endregion
 }

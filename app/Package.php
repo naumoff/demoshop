@@ -34,9 +34,5 @@ class Package extends Model
         return $this->belongsToMany(Product::class,'package_product');
     }
     
-    public function packageProducts()
-    {
-        return $this->hasMany(PackageProduct::class,'package_product');
-    }
     #endregion
 }

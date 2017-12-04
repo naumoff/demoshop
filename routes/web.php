@@ -5,18 +5,21 @@ use App\User;
 use App\Events\CustomerRejected;
 Route::get('test', function(){
     
-    $categories = \App\Category::all()->toArray();
-    dd($categories[rand(0,count($categories)-1)]['id']);
+    $productIds = \App\PackageProduct::getProductIdsByPackageId(60);
+    dd($productIds);
     
-    dd('end');
-    $result = Storage::disk('products')->files('/');
-    dump($result);
-    
-    $url = Storage::disk('products')->url($result[0]);
-    dump($url);
-    
-    $rawContent1 = Storage::disk('products')->get("images (1).jpg");
-    dump($rawContent1);
+//    $categories = \App\Category::all()->toArray();
+//    dd($categories[rand(0,count($categories)-1)]['id']);
+//
+//    dd('end');
+//    $result = Storage::disk('products')->files('/');
+//    dump($result);
+//
+//    $url = Storage::disk('products')->url($result[0]);
+//    dump($url);
+//
+//    $rawContent1 = Storage::disk('products')->get("images (1).jpg");
+//    dump($rawContent1);
     
 });
 
@@ -46,17 +49,20 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')
+    ->name('home');
 
 // ADMIN DASHBOARD
 Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     //General management
-    Route::get('home','Admin\AdminController@index')->name('admin-home');
+    Route::get('home','Admin\AdminController@index')
+        ->name('admin-home');
     
     /**
      * User Management
      */
-    Route::get('users','Admin\UsersController@index')->name('admin-users');
+    Route::get('users','Admin\UsersController@index')
+        ->name('admin-users');
     Route::get('users/approved','Admin\UsersController@showApproved');
     Route::get('users/pending','Admin\UsersController@showPending');
     Route::get('users/suspended','Admin\UsersController@showSuspended');
@@ -66,27 +72,34 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     /**
      * Product Management
      */
-    Route::get('products','Admin\ProductsController@index')->name('admin-products');
+    Route::get('products','Admin\ProductsController@index')
+        ->name('admin-products');
     
     //categories
-    Route::get('products/categories','Admin\ProductsController@showCategories')->name('admin-categories'); //+
+    Route::get('products/categories','Admin\ProductsController@showCategories')
+        ->name('admin-categories'); //+
     Route::post('products/add-category','Admin\ProductsController@addCategory'); //+
     Route::patch('products/update-category', 'Admin\ProductsController@updateCategory'); //+
     
     //groups
-    Route::get('products/{cat_id}/groups','Admin\ProductsController@showGroupsByCategory')->name('admin-groups'); //+
+    Route::get('products/{cat_id}/groups','Admin\ProductsController@showGroupsByCategory')
+        ->name('admin-groups'); //+
     Route::post('products/add-group','Admin\ProductsController@addGroup'); //+
     Route::patch('products/update-group','Admin\ProductsController@updateGroup'); //+
     
     //products
-    Route::get('products/{cat_id}/{group_id}/products','Admin\ProductsController@showProductsByCategoryByGroup')->name('admin-products');
+    Route::get('products/{cat_id}/{group_id}/products','Admin\ProductsController@showProductsByCategoryByGroup')
+        ->name('admin-products');
     
     Route::get('products/{cat_id}/create-product', 'Admin\ProductsController@createProduct'); // +
     Route::post('products/add-product', 'Admin\ProductsController@addProduct'); // +
-    Route::get('products/{prod_id}/create-photo', 'Admin\ProductsController@createPhoto')->name('admin-create-photo'); // -
-    Route::post('products/add-photo', 'Admin\ProductsController@addPhoto')->name('admin-add-photo'); // +
+    Route::get('products/{prod_id}/create-photo', 'Admin\ProductsController@createPhoto')
+        ->name('admin-create-photo'); // -
+    Route::post('products/add-photo', 'Admin\ProductsController@addPhoto')
+        ->name('admin-add-photo'); // +
     
-    Route::get('products/{prod_id}/edit-product','Admin\ProductsController@editProduct'); // +
+    Route::get('products/{prod_id}/edit-product','Admin\ProductsController@editProduct')
+        ->name('admin-edit-product'); // +
     Route::patch('products/update-product','Admin\ProductsController@updateProduct'); // +
     Route::get('products/{prod_id}/edit-photo','Admin\ProductsController@editPhoto'); // +
     
@@ -99,6 +112,18 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
      */
     Route::resource('packages', 'Admin\PackagesController');
     
+    Route::get('packages/{pack_id}/products/show','Admin\PackagesController@showPackageProductsList')
+        ->name('admin-create-package-products');// +
+    Route::get('packages/{pack_id}/products/show/{cat_id}/{group_id}','Admin\PackagesController@showProductsList')
+        ->name('admin-add-product-to-package'); //-
+    Route::post('packages/{pack_id}/products', 'Admin\PackagesController@storeProductsList');
+
+    
+    
+    Route::get('packages/{pack_id}/products/edit', 'Admin\PackagesController@editProductsList');
+    Route::patch('packages/{pack_id}/products/', 'Admin\PackagesController@updateProductsList');
+
+    
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');
     Route::post('/group/status', 'Admin\ProductsController@changeGroupStatus');
@@ -110,6 +135,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');
     Route::post('/product/delete', 'Admin\ProductsController@deleteProduct'); // +
     Route::post('/photo/delete', 'Admin\ProductsController@deletePhoto'); // +
+    Route::delete('/package-product/delete', 'Admin\PackagesController@deleteProductFromPackage');
     
     Route::get('/photo/{prod_id}/{color_code}', 'Admin\ProductsController@formGroupLoaderForProductPhoto'); //-
 });
