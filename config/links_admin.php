@@ -84,6 +84,12 @@ return [
                 'link'=>'/admin/products/create-currency-rate',
                 'ru'=>'Курс валют'
             ]
+        ],
+        'packages'=>[
+            [
+                'link'=>'/admin/packages',
+                'ru'=>'Комплекты'
+            ],
         ]
     ]
 ];

@@ -24,6 +24,11 @@ class Package extends Model
     #endregion
     
     #region RELATION METHODS
+    public function category()
+    {
+        return $this->belongsTo(Category::class,'category_id');
+    }
+    
     public function products()
     {
         return $this->belongsToMany(Product::class,'package_product');

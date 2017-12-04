@@ -18,8 +18,14 @@ class CreatePackageProductTable extends Migration
             $table->integer('package_id')->unsigned()->index();
             $table->integer('product_id')->unsigned()->index();
             $table->timestamps();
-            $table->foreign('package_id')->references('id')->on('packages');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('package_id')
+                ->references('id')
+                ->on('packages')
+                ->onDelete('cascade');
+            $table->foreign('product_id')
+                ->references('id')
+                ->on('products')
+                ->onDelete('cascade');
         });
     }
 

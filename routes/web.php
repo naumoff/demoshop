@@ -97,13 +97,14 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     /**
      * Package Management
      */
-    Route::resource('packages', 'PackagesController');
+    Route::resource('packages', 'Admin\PackagesController');
     
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');
     Route::post('/group/status', 'Admin\ProductsController@changeGroupStatus');
     Route::post('/product/status', 'Admin\ProductsController@changeProductStatus'); // +
     Route::post('/product-action/status', 'Admin\ProductsController@changeProductActionStatus'); // +
+    Route::post('/package/status', 'Admin\PackagesController@changePackageStatus');
     
     Route::post('/category/delete', 'Admin\ProductsController@deleteCategory');
     Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');

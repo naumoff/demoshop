@@ -30,6 +30,10 @@ class SideBarComposer
             $links = config('links_admin.sidebar.products');
             $links = $this->replaceTokens($links);
         }
+        
+        if($pathMask == 'packages'){
+            $links = config('links_admin.sidebar.packages');
+        }
 
         $view->with('links', $links);
     }
@@ -44,6 +48,10 @@ class SideBarComposer
         
         if(strpos($path,'admin/products')){
             return 'products';
+        }
+        
+        if(strpos($path,'admin/packages')){
+            return 'packages';
         }
     }
     

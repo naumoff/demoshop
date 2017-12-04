@@ -76,5 +76,10 @@ class Category extends Model
             Product::class,
             Group::class);
     }
+    
+    public function packages()
+    {
+        return $this->hasMany(Package::class);
+    }
     #endergion
 }
