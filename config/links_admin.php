@@ -87,8 +87,12 @@ return [
         ],
         'packages'=>[
             [
+                'link'=> '/admin/packages/create',
+                'ru'=>'Добавить комплект'
+            ],
+            [
                 'link'=>'/admin/packages',
-                'ru'=>'Комплекты'
+                'ru'=>'Управление комплектами'
             ],
         ]
     ]

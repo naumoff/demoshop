@@ -18,8 +18,9 @@
 
                         </ul>
                         @include('inclusions.error-message')
-                        <form method="post" action="{{route('packages.store')}}">
+                        <form method="post" action="{{route('packages.update',['id'=>$package->id])}}">
                             {{csrf_field()}}
+                            {{method_field('PATCH')}}
                             <label for="category">
                                 Выберите категорию (одну):
                             </label>
@@ -30,7 +31,7 @@
                                             {{$category->category}}
                                         </option>
                                     @else
-                                        <option>
+                                        <option value="{{$category->id}}">
                                             {{$category->category}}
                                         </option>
                                     @endif

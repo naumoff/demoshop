@@ -8,7 +8,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Пакеты</div>
                     <div class="panel-body">
-                        <a href="{{rout}}" class="btn btn-success" role="button">
+                        <a href="{{route('packages.create')}}" class="btn btn-success" role="button">
                             Добавить пакет
                         </a>
                         <table class="table table-striped">
@@ -43,10 +43,21 @@
                                         </button>
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-info btn-xs" role="button">Редактор</a>
+                                        <a class="btn btn-info btn-xs"
+                                           href="{{route('packages.edit',['id'=>$package->id])}}"
+                                           role="button"
+                                        >
+                                            Редактор
+                                        </a>
                                     </td>
                                     <td>
-                                        <a href="#" id="{{$package->id}}" class="btn btn-danger btn-xs delete" role="button">Удалить</a>
+                                        <a href="#"
+                                           id="{{$package->id}}"
+                                           class="btn btn-danger btn-xs delete"
+                                           role="button"
+                                        >
+                                            Удалить
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

@@ -71,7 +71,8 @@
                                         <a href="#"
                                            class="btn btn-danger btn-xs delete"
                                            role="button"
-                                           id="{{$package->pivot}}"
+                                           pack-id="{{$package->id}}"
+                                           prod-id="{{$product->id}}"
                                         >
                                             Удалить из пакета
                                         </a>
@@ -89,14 +90,16 @@
 <script>
     $(function(){
         $(".delete").click(function(){
-            var packageProductId = $(this).attr('id');
+            var packageId = $(this).attr('pack-id');
+            var productId = $(this).attr('prod-id');
             $.post
             (
-                '/admin/package-product/delete',
+                '{{route('admin-delete-product-from-package')}}',
                 {
                     "_token": "{{ csrf_token() }}",
                     "_method": "DELETE",
-                    "package-product-id":packageProductId
+                    "package-id":packageId,
+                    "product-id":productId
                 },
                 function(data){
                     if(data === 'SUCCESS'){

@@ -135,7 +135,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');
     Route::post('/product/delete', 'Admin\ProductsController@deleteProduct'); // +
     Route::post('/photo/delete', 'Admin\ProductsController@deletePhoto'); // +
-    Route::delete('/package-product/delete', 'Admin\PackagesController@deleteProductFromPackage');
+    Route::delete('/package-product/delete', 'Admin\PackagesController@deleteProductFromPackage')
+        ->name('admin-delete-product-from-package');
     
     Route::get('/photo/{prod_id}/{color_code}', 'Admin\ProductsController@formGroupLoaderForProductPhoto'); //-
 });

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
-use App\Group;
 use App\Helpers\DateTimeManipulation;
 use App\Helpers\GetCategoriesAndGroups;
 use App\Http\Requests\StorePackagePost;
+use App\Http\Requests\UpdatePackagePatch;
 use App\Package;
 use App\PackageProduct;
 use App\Product;
@@ -148,9 +148,27 @@ class PackagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePackagePatch $request, $id)
     {
-        dd(1);
+        $package = Package::find($id);
+        if($package == null){
+            return redirect()->back();
+        }
+        
+        if($request->input('package-active') == null){
+            $request->merge(['package-active' => 0]);
+        }
+        
+        $package->category_id = $request->input('category-id');
+        $package->package_name = $request->input('package-ru');
+        $package->package_price = $request->input('price-rub');
+        $package->package_start_period = $request->input('package-start');
+        $package->package_end_period = $request->input('package-end');
+        $package->active = $request->input('package-active');
+        
+        $package->save();
+        
+        return redirect()->back();
     }
     #endregion
     
@@ -194,8 +212,13 @@ class PackagesController extends Controller
     
     public function deleteProductFromPackage(Request $request)
     {
-        echo $request->input('package-product-id');
-//        return 'SUCCESS';
+        $productId =  $request->input('product-id');
+        $packageId =  $request->input('package-id');
+        $packageProduct = PackageProduct::where('package_id','=',$packageId)
+            ->where('product_id','=',$productId)
+            ->first();
+        $packageProduct->delete();
+        return 'SUCCESS';
     }
     #endregion
 }
