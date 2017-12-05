@@ -5,21 +5,21 @@ use App\User;
 use App\Events\CustomerRejected;
 Route::get('test', function(){
     
-    $productIds = \App\PackageProduct::getProductIdsByPackageId(60);
-    dd($productIds);
+//    $productIds = \App\PackageProduct::getProductIdsByPackageId(60);
+//    dd($productIds);
     
 //    $categories = \App\Category::all()->toArray();
 //    dd($categories[rand(0,count($categories)-1)]['id']);
 //
 //    dd('end');
-//    $result = Storage::disk('products')->files('/');
-//    dump($result);
-//
-//    $url = Storage::disk('products')->url($result[0]);
-//    dump($url);
-//
-//    $rawContent1 = Storage::disk('products')->get("images (1).jpg");
-//    dump($rawContent1);
+    $result = Storage::disk('products')->files('/');
+    dump($result);
+
+    $url = Storage::disk('products')->url($result[0]);
+    dump($url);
+
+    $rawContent1 = Storage::disk('products')->get("images (1).jpg");
+    dump($rawContent1);
     
 });
 
@@ -110,18 +110,18 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     /**
      * Package Management
      */
-    Route::resource('packages', 'Admin\PackagesController');
+    Route::resource('packages', 'Admin\PackagesController',['except'=>['show']]);
     
     Route::get('packages/{pack_id}/products/show','Admin\PackagesController@showPackageProductsList')
         ->name('admin-create-package-products');// +
     Route::get('packages/{pack_id}/products/show/{cat_id}/{group_id}','Admin\PackagesController@showProductsList')
         ->name('admin-add-product-to-package'); //-
     Route::post('packages/{pack_id}/products', 'Admin\PackagesController@storeProductsList');
-
     
-    
-    Route::get('packages/{pack_id}/products/edit', 'Admin\PackagesController@editProductsList');
-    Route::patch('packages/{pack_id}/products/', 'Admin\PackagesController@updateProductsList');
+    /**
+     * Present Management
+     */
+    Route::resource('presents', 'Admin\PresentsController');
 
     
     //AJAX requests
@@ -130,6 +130,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::post('/product/status', 'Admin\ProductsController@changeProductStatus'); // +
     Route::post('/product-action/status', 'Admin\ProductsController@changeProductActionStatus'); // +
     Route::post('/package/status', 'Admin\PackagesController@changePackageStatus');
+    Route::post('/present/status', 'Admin\PresentsController@changePresentStatus');
     
     Route::post('/category/delete', 'Admin\ProductsController@deleteCategory');
     Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');

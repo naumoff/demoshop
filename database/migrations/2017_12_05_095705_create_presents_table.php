@@ -15,6 +15,14 @@ class CreatePresentsTable extends Migration
     {
         Schema::create('presents', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('present_ru');
+            $table->string('present_de');
+            $table->longText('description');
+            $table->text('urls')->nullable();
+            $table->integer('weight_gr');
+            $table->float('min_order_value_rub');
+            $table->float('max_order_value_rub');
+            $table->boolean('active');
             $table->timestamps();
         });
     }

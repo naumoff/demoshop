@@ -19,8 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ColorProductTableSeeder::class);
         $this->call(CurrencyRatesTableSeeder::class);
         $this->generatePackage(45);
-
-
+        $this->call(PresentsTableSeeder::class);
     }
     
     #region SERVICE METHODS

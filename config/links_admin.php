@@ -94,6 +94,16 @@ return [
                 'link'=>'/admin/packages',
                 'ru'=>'Управление комплектами'
             ],
+        ],
+        'presents'=>[
+            [
+                'link'=> '/admin/presents/create',
+                'ru'=>'Добавить подарок'
+            ],
+            [
+                'link'=>'/admin/presents',
+                'ru'=>'Управление подарками'
+            ],
         ]
     ]
 ];

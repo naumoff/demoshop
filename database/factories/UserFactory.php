@@ -13,7 +13,7 @@ use Faker\Factory as newFaker;
 | model instances for testing / seeding your application's database.
 |
 */
-
+#region MAIN METHODS
 $factory->define(App\User::class, function (Faker $faker) {
     static $password;
     
@@ -143,6 +143,35 @@ $factory->define(\App\PackageProduct::class,function(Faker $faker){
     ];
 });
 
+$factory->define(\App\Present::class,function(Faker $faker){
+    $pathToFiles = Storage::disk('presents')->files('/');
+    $url1 = Storage::disk('presents')->url($pathToFiles[rand(0,count($pathToFiles)-1)]);
+    $url2 = Storage::disk('presents')->url($pathToFiles[rand(0,count($pathToFiles)-1)]);
+    $url3 = Storage::disk('presents')->url($pathToFiles[rand(0,count($pathToFiles)-1)]);
+    $urls = serialize([$url1,$url2,$url3]);
+    $ranges = [
+        [1000,2000],
+        [2000.01,3000],
+        [3000.01,4000],
+        [4000.01,5000],
+        [5000.01,6000],
+        [6000.01,7000]
+    ];
+    $range = $ranges[rand(0,count($ranges)-1)];
+    $present = $faker->word;
+    return [
+        'present_ru'=>'PRES-RU-'.$present,
+        'present_de'=>'PRES-DE-'.$present,
+        'description'=>'DESC-'.$faker->paragraph($nbSentences = 3, $variableNbSentences = true),
+        'urls'=>$urls,
+        'weight_gr'=>rand(25,1000),
+        'min_order_value_rub'=> $range[0],
+        'max_order_value_rub'=> $range[1],
+        'active'=>rand(0,1)
+    ];
+});
+#endregion
+
 #region SERVICE METHODS
 function makeStartAndEndDate()
 {
@@ -173,5 +202,4 @@ function makeEurAndRuPrice(Faker $faker)
         'ruPrice'=>$ruPrice
     ];
 }
-
 #endregion
