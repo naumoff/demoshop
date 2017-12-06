@@ -143,14 +143,11 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::patch('presents/{present_id}/add-photo','Admin\PresentsController@addPhoto')
         ->name('admin-present-add-photo');
     
-    /**
-     * Orders Management
-     */
-    
+
     /**
      * Payment Partners Management
      */
-    
+    Route::resource('partners','Admin\PartnersController');
     
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');

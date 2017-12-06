@@ -27,8 +27,8 @@ return [
             'ru'=>'Заказы'
         ],
         
-        'payment-partners'=>[
-            'link'=>'/admin/payment-partner',
+        'partners'=>[
+            'link'=>'/admin/partners',
             'ru'=>'Платежные партнеры'
         ],
         
@@ -103,6 +103,16 @@ return [
             [
                 'link'=>'/admin/presents',
                 'ru'=>'Управление подарками'
+            ],
+        ],
+        'partners'=>[
+            [
+                'link'=> '/admin/partners/create',
+                'ru'=>'Добавить партнера'
+            ],
+            [
+                'link'=>'/admin/patners',
+                'ru'=>'Управление партнерами'
             ],
         ]
     ]
