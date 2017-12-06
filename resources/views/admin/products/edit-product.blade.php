@@ -13,7 +13,7 @@
                             <li><a href="/admin/products/{{$product->id}}/edit-photo">Редактор фотографий</a></li>
                         </ul>
                         @include('inclusions.error-message')
-                        <form method="post" action="/admin/products/update-product">
+                        <form method="post" action="{{route('presents.update')}}">
                             {{csrf_field()}}
                             {{method_field('PATCH')}}
                             <input type="text" name="id" value="{{$product->id}}" hidden>

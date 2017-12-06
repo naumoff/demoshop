@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\StorePresentPost;
+use App\Http\Requests\UpdatePresentPatch;
 use App\Present;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -87,7 +88,9 @@ class PresentsController extends Controller
      */
     public function edit($id)
     {
-        dd(888);
+        $present = Present::find($id);
+
+        return view('admin.presents.edit-present',['present'=>$present]);
     }
 
     /**
@@ -97,23 +100,66 @@ class PresentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePresentPatch $request, $id)
     {
-        //
+        if($request->input('active') === null){
+            $request->merge(['active'=>0]);
+        }
+        $present = Present::find($id);
+        $present->present_ru = $request->input('present-ru');
+        $present->present_de = $request->input('present-de');
+        $present->description = $request->input('description');
+        $present->weight_gr = $request->input('weight-gr');
+        $present->min_order_value_rub = $request->input('min-order-value-rub');
+        $present->max_order_value_rub = $request->input('max-order-value-rub');
+        $present->active = $request->input('active');
+        $present->save();
+        return redirect()->back();
+        
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function editPhoto($id)
     {
         $present = Present::find($id);
-        $present->delete();
+        return view('admin.presents.edit-photo',['present'=>$present]);
+    }
+    
+    public function deletePhoto(Request $request, $id)
+    {
+        $present = Present::find($id);
+        $urls = unserialize($present->urls);
+        foreach ($urls AS $key=>$url){
+            if($url == $request->input('url')){
+                $this->deleteRealPhoto($url);
+                unset($urls[$key]);
+            }
+        }
+        $present->urls = serialize($urls);
+        $present->save();
         return 'SUCCESS';
     }
+    
+    public function addPhoto(Request $request, $id)
+    {
+        $present = Present::find($id);
+        $oldUrls = unserialize($present->urls);
+    
+        $newUrls = [];
+        foreach($request->urls AS $file){
+            $extension = $file->extension();
+            $fileName = $present->id.'-'.uniqid().'.'.$extension;
+            $file->storeAs('/public/presents/',$fileName);
+            $url = Storage::disk('presents')->url($fileName);
+            $newUrls[] = $url;
+        };
+        
+        $updatedUrls = array_merge($oldUrls, $newUrls);
+        $present->urls = serialize($updatedUrls);
+        $present->save();
+        
+        return redirect()->back();
+    }
+    
     #endregion
     
     #region AJAX METHODS
@@ -126,6 +172,33 @@ class PresentsController extends Controller
         $present->active = $newValue;
         $present->save();
         return 'SUCCESS';
+    }
+    
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $present = Present::find($id);
+        $present->delete();
+        $this->deleteAllPresentPhotos($id);
+        return 'SUCCESS';
+    }
+    #endregion
+    
+    #region SERVICE METHODS
+    private function deleteRealPhoto($url)
+    {
+        $file = basename($url);
+        Storage::disk('presents')->delete($file);
+    }
+    
+    private function deleteAllPresentPhotos($presentId)
+    {
+        return $presentId;
     }
     #endregion
     

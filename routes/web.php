@@ -3,7 +3,15 @@
 //************* TESTING
 use App\User;
 use App\Events\CustomerRejected;
+use Illuminate\Support\Facades\Storage;
+
 Route::get('test', function(){
+    
+    $files = Storage::disk('presents')->files('/');
+    
+    $mask = 
+    
+    dd($files);
     
 //    $productIds = \App\PackageProduct::getProductIdsByPackageId(60);
 //    dd($productIds);
@@ -12,14 +20,17 @@ Route::get('test', function(){
 //    dd($categories[rand(0,count($categories)-1)]['id']);
 //
 //    dd('end');
-    $result = Storage::disk('products')->files('/');
-    dump($result);
 
-    $url = Storage::disk('products')->url($result[0]);
-    dump($url);
 
-    $rawContent1 = Storage::disk('products')->get("images (1).jpg");
-    dump($rawContent1);
+
+//    $result = Storage::disk('products')->files('/');
+//    dump($result);
+//
+//    $url = Storage::disk('products')->url($result[0]);
+//    dump($url);
+//
+//    $rawContent1 = Storage::disk('products')->get("images (1).jpg");
+//    dump($rawContent1);
     
 });
 
@@ -122,6 +133,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
      * Present Management
      */
     Route::resource('presents', 'Admin\PresentsController');
+    Route::get('presents/{present_id}/edit-photo', 'Admin\PresentsController@editPhoto');
+    Route::delete('presents/{present_id}/delete-photo','Admin\PresentsController@deletePhoto');
+    Route::patch('presents/{present_id}/add-photo','Admin\PresentsController@addPhoto')
+        ->name('admin-present-add-photo');
 
     
     //AJAX requests
