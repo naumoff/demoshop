@@ -22,9 +22,9 @@ return [
             'ru'=>'Подарки'
         ],
         
-        'orders'=>[
-            'link'=>'/admin/orders',
-            'ru'=>'Заказы'
+        'sales'=>[
+            'link'=>'/admin/sales',
+            'ru'=>'Продажи'
         ],
         
         'partners'=>[
