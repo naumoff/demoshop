@@ -170,6 +170,30 @@ $factory->define(\App\Present::class,function(Faker $faker){
         'active'=>rand(0,1)
     ];
 });
+
+$factory->define(\App\PaymentPartner::class, function(Faker $faker){
+    return [
+        'first_name'=>$faker->firstName,
+        'last_name'=>$faker->lastName,
+        'total_limit_eur'=>5000,
+        'active'=>0,
+        'suspended'=>rand(0,1),
+        'created_at'=>\Carbon\Carbon::now(),
+        'updated_at'=>\Carbon\Carbon::now()
+    ];
+});
+
+$factory->define(\App\PaymentCard::class, function(Faker $faker){
+    return [
+        'bank'=>$faker->company,
+        'card_number'=>$faker->creditCardNumber,
+        'card_limit_eur'=>600,
+        'active'=>0,
+        'suspended'=>rand(0,1),
+        'created_at'=>\Carbon\Carbon::now(),
+        'updated_at'=>\Carbon\Carbon::now()
+    ];
+});
 #endregion
 
 #region SERVICE METHODS

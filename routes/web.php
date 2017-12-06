@@ -142,7 +142,15 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::delete('presents/{present_id}/delete-photo','Admin\PresentsController@deletePhoto');
     Route::patch('presents/{present_id}/add-photo','Admin\PresentsController@addPhoto')
         ->name('admin-present-add-photo');
-
+    
+    /**
+     * Orders Management
+     */
+    
+    /**
+     * Payment Partners Management
+     */
+    
     
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');
