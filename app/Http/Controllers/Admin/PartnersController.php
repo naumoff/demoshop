@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 class PartnersController extends Controller
 {
+    #region MAIN METHODS
     /**
      * Display a listing of the resource.
      *
@@ -84,4 +85,19 @@ class PartnersController extends Controller
     {
         //
     }
+    #endregion
+    
+    #region AJAX METHODS
+    public function changeActivity(Request $request)
+    {
+        $partnerId = $request->input('partner-id');
+        $oldValue = $request->input('old-value');
+        
+        echo $partnerId.'-'.$oldValue;
+    }
+    #endregion
+    
+    #region SERVICE METHODS
+    
+    #endregion
 }

@@ -33,7 +33,7 @@
                                     <td>
                                         <button
                                                 type="button"
-                                                class="btn btn-sm status"
+                                                class="btn btn-sm active"
                                                 id="{{$partner->id}}"
                                                 value="{{$partner->active}}"
                                         >
@@ -43,7 +43,7 @@
                                     <td>
                                         <button
                                                 type="button"
-                                                class="btn btn-sm status"
+                                                class="btn btn-sm suspend"
                                                 id="{{$partner->id}}"
                                                 value="{{$partner->suspended}}"
                                         >
@@ -90,20 +90,23 @@
     </div>
 <script>
     $(function(){
-        $(".status").click(function(){
-            var presentId = $(this).attr('id');
+        $(".active").click(function(){
+            var partnerId = $(this).attr('id');
             var oldValue = $(this).attr('value');
             $.post
             (
-                '/admin/present/status',
+                '/admin/partner/active',
                 {
-                    "_token": "{{ csrf_token() }}",
-                    'present-id':presentId,
+                    "_token": "{{csrf_token()}}",
+                    "_method": "PATCH",
+                    'partner-id':partnerId,
                     'old-value':oldValue
                 },
                 function(data){
                     if(data === 'SUCCESS'){
                         location.reload();
+                    }else{
+                        alert(data);
                     }
                 }
             );

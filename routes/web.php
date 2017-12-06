@@ -157,6 +157,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::post('/package/status', 'Admin\PackagesController@changePackageStatus');
     Route::post('/present/status', 'Admin\PresentsController@changePresentStatus');
     
+    Route::patch('/partner/active', 'Admin\PartnersController@changeActivity');
+    
     Route::post('/category/delete', 'Admin\ProductsController@deleteCategory');
     Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');
     Route::post('/product/delete', 'Admin\ProductsController@deleteProduct'); // +
