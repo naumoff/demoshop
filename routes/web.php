@@ -8,8 +8,13 @@ use Illuminate\Support\Facades\Storage;
 Route::get('test', function(){
     
     $files = Storage::disk('presents')->files('/');
-    
-    $mask = 
+    $id = 32;
+    $mask = "/^{$id}\-.*/i";
+    foreach ($files AS $file){
+        if(preg_match($mask,$file)===1){
+            Storage::disk('presents')->delete($file);
+        }
+    }
     
     dd($files);
     

@@ -198,7 +198,14 @@ class PresentsController extends Controller
     
     private function deleteAllPresentPhotos($presentId)
     {
-        return $presentId;
+        $files = Storage::disk('presents')->files('/');
+
+        $mask = "/^{$presentId}\-.*/i";
+        foreach ($files AS $file){
+            if(preg_match($mask,$file)===1){
+                Storage::disk('presents')->delete($file);
+            }
+        };
     }
     #endregion
     
