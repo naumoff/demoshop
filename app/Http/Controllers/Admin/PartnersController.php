@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\StorePartnerPost;
+use App\Http\Requests\StorePaymentCardPost;
+use App\Http\Requests\UpdatePaymentPartnerPatch;
+use App\PaymentCard;
 use App\PaymentPartner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -39,8 +42,8 @@ class PartnersController extends Controller
      */
     public function store(StorePartnerPost $request)
     {
-        if($request->input('suspended') == null){
-            $request->merge(['suspended'=>0]);
+        if($request->input('active') == null){
+            $request->merge(['active'=>0]);
         }
         
         $partner = new PaymentPartner();
@@ -49,8 +52,8 @@ class PartnersController extends Controller
         $partner->email = $request->input('email');
         $partner->total_limit_eur = $request->input('total-limit-eur');
         $partner->total_cards_eur = 0;
-        $partner->active = 0;
-        $partner->suspended = $request->input('suspended');
+        $partner->current = 0;
+        $partner->active = $request->input('active');
         $partner->save();
         return redirect()->route('admin-partner-add-card',['part_id'=>$partner->id]);
     }
@@ -58,9 +61,31 @@ class PartnersController extends Controller
     public function createPaymentCard($partnerId)
     {
         $partner = PaymentPartner::find($partnerId);
+        $cards = PaymentCard::getCards()->byHolderId($partnerId)->paginate(10);
         return view('admin.partners.create-partner-card',[
-            'partner'=>$partner
+            'partner'=>$partner,
+            'cards'=>$cards
         ]);
+    }
+    
+    public function storePaymentCard(StorePaymentCardPost $request, $partnerId)
+    {
+        if($request->input('active') == null){
+            $request->merge(['active'=>0]);
+        }
+        
+        $paymentCard = new PaymentCard();
+        $paymentCard->holder_id = $request->input('holder-id');
+        $paymentCard->bank = $request->input('bank');
+        $paymentCard->card_number = $request->input('card-number');
+        $paymentCard->card_limit_eur = $request->input('card-limit-eur');
+        $paymentCard->current = 0;
+        $paymentCard->active = $request->input('active');
+        $paymentCard->save();
+        
+        $this->calculateTotalCardsLimitAmount($partnerId);
+        
+        return redirect()->back();
     }
 
     /**
@@ -82,7 +107,10 @@ class PartnersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $partner = PaymentPartner::find($id);
+        return view('admin.partners.edit-partner',[
+            'partner'=>$partner
+        ]);
     }
 
     /**
@@ -92,9 +120,18 @@ class PartnersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePaymentPartnerPatch $request, PaymentPartner $partner)
     {
-        //
+        if($request->input('active') == null){
+            $request->merge(['active'=>0]);
+        }
+        $partner->first_name = $request->input('first-name');
+        $partner->last_name = $request->input('last-name');
+        $partner->email = $request->input('email');
+        $partner->card_limit_eur = $request->input('card-limit-eur');
+        $partner->active = $request->input('active');
+        $partner->save();
+        return back();
     }
 
     /**
@@ -110,7 +147,8 @@ class PartnersController extends Controller
     #endregion
     
     #region AJAX METHODS
-    public function changeActivity(Request $request)
+    //change current payment partner
+    public function changeCurrent(Request $request)
     {
         $partnerId = $request->input('partner-id');
         $oldValue = $request->input('old-value');
@@ -118,7 +156,8 @@ class PartnersController extends Controller
         echo $partnerId.'-'.$oldValue;
     }
     
-    public function changeSuspension(Request $request)
+    //block - unblock payment partner
+    public function changeActivity(Request $request)
     {
         $partnerId = $request->input('partner-id');
         $oldValue = $request->input('old-value');
@@ -130,13 +169,26 @@ class PartnersController extends Controller
         }
         
         $partner = PaymentPartner::find($partnerId);
-        $partner->suspended = $newValue;
+        $partner->active = $newValue;
         $partner->save();
         return 'SUCCESS';
     }
     #endregion
     
     #region SERVICE METHODS
+    private function calculateTotalCardsLimitAmount($partnerId)
+    {
+        $partner = PaymentPartner::find($partnerId);
     
+        $totalCardsLimit = 0;
+        foreach ($partner->paymentCards()->where('active','=',1)->get() AS $card){
+            $totalCardsLimit += $card->card_limit_eur;
+        }
+
+        $partner->total_cards_eur = $totalCardsLimit;
+        $partner->save();
+        
+        return $partner->total_cards_eur;
+    }
     #endregion
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePartnerPost extends FormRequest
+class StorePaymentCardPost extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,11 @@ class StorePartnerPost extends FormRequest
     public function rules()
     {
         return [
-            'first-name'=>'required|min:2',
-            'last-name'=>'required|min:2',
-            'email'=>'required|email|unique:payment_partners,email',
-            'total-limit-eur'=>'required|numeric',
-            'active'=>'nullable'
+            'holder-id'=>'required|exists:payment_partners,id',
+            'bank'=>'required|min:3',
+            'card-number'=>'required|numeric|digits:16|unique:payment_cards,card_number',
+            'card-limit-eur'=>'required',
+            'active'=>'nullable|in:1,0'
         ];
     }
 }

@@ -22,6 +22,20 @@ class PaymentCard extends Model
     #endregion
     
     #region SCOPE METHODS
+    public function scopeGetCards($query)
+    {
+        return $query->where('id','>',0);
+    }
+    
+    public function scopeByHolderId($query, $holderId)
+    {
+        return $query->where('holder_id','=',$holderId);
+    }
+    
+    public function scopeActive($query)
+    {
+        return $query->where('active','=',1);
+    }
     #endregion
     
     #region RELATION METHODS

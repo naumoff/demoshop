@@ -20,8 +20,8 @@ class CreatePaymentPartnersTable extends Migration
             $table->string('email')->unique()->index();
             $table->float('total_limit_eur',8,2)->default(5000.00);
             $table->float('total_cards_eur',8,2)->default(0);
-            $table->boolean('active');
-            $table->boolean('suspended')->default(0);
+            $table->boolean('current')->comment('1 - if partner is used now for invoicing');
+            $table->boolean('active')->default(0)->comment('1 - if partner is not blocked');
             $table->timestamps();
             $table->softDeletes();
         });

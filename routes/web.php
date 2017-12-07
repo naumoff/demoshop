@@ -150,6 +150,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::resource('partners','Admin\PartnersController');
     Route::get('partners/{part_id}/createPaymentCard', 'Admin\PartnersController@createPaymentCard')
         ->name('admin-partner-add-card');
+    Route::post('partners/{part_id}/storePaymentCard', 'Admin\PartnersController@storePaymentCard')
+        ->name('admin-partner-store-card');
     
     /**
      * Sales Management
@@ -167,7 +169,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::post('/present/status', 'Admin\PresentsController@changePresentStatus');
     
     Route::patch('/partner/active', 'Admin\PartnersController@changeActivity');
-    Route::patch('/partner/suspend', 'Admin\PartnersController@changeSuspension');
+    Route::patch('/partner/current', 'Admin\PartnersController@changeCurrent');
     
     Route::post('/category/delete', 'Admin\ProductsController@deleteCategory');
     Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');

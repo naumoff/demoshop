@@ -31,15 +31,17 @@ return [
             'link'=>'/admin/partners',
             'ru'=>'Платежные партнеры'
         ],
+    
+        'questioners'=>[
+            'link'=>'/admin/questioners',
+            'ru'=>'Опросники'
+        ],
         
         'content'=>[
             'link'=>'/admin/content',
             'ru'=>'Контент'
         ],
-        'questioners'=>[
-            'link'=>'/admin/questioners',
-            'ru'=>'Опросники'
-        ]
+
     ],
     'sidebar'=>[
         'users'=>[

@@ -25,7 +25,7 @@ class PaymentPartner extends Model
     #endregion
     
     #region RELATION METHODS
-    public function PaymentCards()
+    public function paymentCards()
     {
         return $this->hasMany(PaymentCard::class,'holder_id','id');
     }

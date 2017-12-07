@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePartnerPost extends FormRequest
+class UpdatePaymentPartnerPatch extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +23,13 @@ class StorePartnerPost extends FormRequest
      */
     public function rules()
     {
+        $partnerId = $this->request->all()['partner-id'];
         return [
             'first-name'=>'required|min:2',
             'last-name'=>'required|min:2',
-            'email'=>'required|email|unique:payment_partners,email',
+            'email'=>'required|email|unique:payment_partners,email,'.$partnerId,
             'total-limit-eur'=>'required|numeric',
-            'active'=>'nullable'
+            'active'=>'nullable|in:0,1',
         ];
     }
 }

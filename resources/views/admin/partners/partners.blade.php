@@ -18,8 +18,8 @@
                                 <th>Имя</th>
                                 <th>Лимит</th>
                                 <th>Карточки</th>
+                                <th>Статус</th>
                                 <th>Активность</th>
-                                <th>Отложить</th>
                                 <th>Карточки</th>
                                 <th>Редактор</th>
                                 <th>Удалить</th>
@@ -35,21 +35,21 @@
                                     <td>
                                         <button
                                                 type="button"
-                                                class="btn btn-sm btn-block active"
+                                                class="btn btn-sm btn-block current"
                                                 id="{{$partner->id}}"
-                                                value="{{$partner->active}}"
+                                                value="{{$partner->current}}"
                                         >
-                                            <b>{{ $status=($partner->active)?'текущий':'ожидает' }}</b>
+                                            <b>{{ ($partner->current)?'текущий':'ожидает' }}</b>
                                         </button>
                                     </td>
                                     <td>
                                         <button
                                                 type="button"
-                                                class="btn btn-sm btn-block suspend"
+                                                class="btn btn-sm btn-block active"
                                                 id="{{$partner->id}}"
-                                                value="{{$partner->suspended}}"
+                                                value="{{$partner->active}}"
                                         >
-                                            <b>{{ $status=($partner->suspended)?'отложен':'работает' }}</b>
+                                            <b>{{ ($partner->active)?'заблокирован':'работает' }}</b>
                                         </button>
                                     </td>
 
@@ -114,12 +114,12 @@
             );
         });
 
-        $(".suspend").click(function(){
+        $(".current").click(function(){
             var partnerId = $(this).attr('id');
             var oldValue = $(this).attr('value');
             $.post
             (
-                '/admin/partner/suspend',
+                '/admin/partner/current',
                 {
                     "_token": "{{csrf_token()}}",
                     "_method": "PATCH",
