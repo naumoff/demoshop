@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\CalculateCardsLimit;
 use App\Http\Requests\StorePartnerPost;
 use App\Http\Requests\StorePaymentCardPost;
 use App\Http\Requests\UpdatePaymentPartnerPatch;
@@ -12,6 +13,8 @@ use App\Http\Controllers\Controller;
 
 class PartnersController extends Controller
 {
+    use CalculateCardsLimit;
+    
     #region MAIN METHODS
     /**
      * Display a listing of the resource.
@@ -83,7 +86,7 @@ class PartnersController extends Controller
         $paymentCard->active = $request->input('active');
         $paymentCard->save();
         
-        $this->calculateTotalCardsLimitAmount($partnerId);
+        $this->saveTotalCardsLimitAmount($partnerId);
         
         return redirect()->back();
     }
@@ -128,7 +131,7 @@ class PartnersController extends Controller
         $partner->first_name = $request->input('first-name');
         $partner->last_name = $request->input('last-name');
         $partner->email = $request->input('email');
-        $partner->card_limit_eur = $request->input('card-limit-eur');
+        $partner->total_limit_eur = $request->input('total-limit-eur');
         $partner->active = $request->input('active');
         $partner->save();
         return back();
@@ -176,19 +179,6 @@ class PartnersController extends Controller
     #endregion
     
     #region SERVICE METHODS
-    private function calculateTotalCardsLimitAmount($partnerId)
-    {
-        $partner = PaymentPartner::find($partnerId);
-    
-        $totalCardsLimit = 0;
-        foreach ($partner->paymentCards()->where('active','=',1)->get() AS $card){
-            $totalCardsLimit += $card->card_limit_eur;
-        }
 
-        $partner->total_cards_eur = $totalCardsLimit;
-        $partner->save();
-        
-        return $partner->total_cards_eur;
-    }
     #endregion
 }

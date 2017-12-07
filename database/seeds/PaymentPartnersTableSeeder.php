@@ -4,6 +4,8 @@ use Illuminate\Database\Seeder;
 
 class PaymentPartnersTableSeeder extends Seeder
 {
+    use \App\Helpers\CalculateCardsLimit;
+    
     private $partnersQtyLimit = 50;
     private $cardsQtyLimit = 8;
     
@@ -30,9 +32,8 @@ class PaymentPartnersTableSeeder extends Seeder
                     'holder_id'=>$partnerId,
                 ]);
             }
-            $partner = \App\PaymentPartner::find($partnerId);
-            $partner->total_cards_eur = $cardsQtyLimit * 600;
-            $partner->save();
+            
+            $this->saveTotalCardsLimitAmount($partnerId);
         }
 
     }

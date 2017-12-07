@@ -55,16 +55,17 @@
 
                                     <td>
                                         <a class="btn btn-info btn-xs"
-                                           href="#"
+                                           href="{{route('admin-partner-add-card',['part_id'=>$partner->id])}}"
                                            id="{{$partner->id}}"
                                            role="button"
                                         >
                                             Карточки
+                                            <span class="badge">{{count($partner->paymentCards()->get())}}</span>
                                         </a>
                                     </td>
                                     <td>
                                         <a class="btn btn-info btn-xs"
-                                           href="#"
+                                           href="{{route('partners.edit',['part_id'=>$partner->id])}}"
                                            id="{{$partner->id}}"
                                            role="button"
                                         >
