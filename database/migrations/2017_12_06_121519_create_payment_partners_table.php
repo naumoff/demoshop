@@ -17,7 +17,9 @@ class CreatePaymentPartnersTable extends Migration
             $table->increments('id');
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('email')->unique()->index();
             $table->float('total_limit_eur',8,2)->default(5000.00);
+            $table->float('total_cards_eur',8,2)->default(0);
             $table->boolean('active');
             $table->boolean('suspended')->default(0);
             $table->timestamps();

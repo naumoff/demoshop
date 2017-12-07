@@ -12,6 +12,7 @@ class PaymentPartner extends Model
         'first_name',
         'last_name',
         'total_limit_eur',
+        'total_cards_eur',
         'active',
         'suspended'
     ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\StorePartnerPost;
 use App\PaymentPartner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -27,7 +28,7 @@ class PartnersController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.partners.create-partner');
     }
 
     /**
@@ -36,9 +37,30 @@ class PartnersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePartnerPost $request)
     {
-        //
+        if($request->input('suspended') == null){
+            $request->merge(['suspended'=>0]);
+        }
+        
+        $partner = new PaymentPartner();
+        $partner->first_name = $request->input('first-name');
+        $partner->last_name = $request->input('last-name');
+        $partner->email = $request->input('email');
+        $partner->total_limit_eur = $request->input('total-limit-eur');
+        $partner->total_cards_eur = 0;
+        $partner->active = 0;
+        $partner->suspended = $request->input('suspended');
+        $partner->save();
+        return redirect()->route('admin-partner-add-card',['part_id'=>$partner->id]);
+    }
+    
+    public function createPaymentCard($partnerId)
+    {
+        $partner = PaymentPartner::find($partnerId);
+        return view('admin.partners.create-partner-card',[
+            'partner'=>$partner
+        ]);
     }
 
     /**
@@ -94,6 +116,23 @@ class PartnersController extends Controller
         $oldValue = $request->input('old-value');
         
         echo $partnerId.'-'.$oldValue;
+    }
+    
+    public function changeSuspension(Request $request)
+    {
+        $partnerId = $request->input('partner-id');
+        $oldValue = $request->input('old-value');
+        
+        if($oldValue == 0 | $oldValue == null){
+            $newValue = 1;
+        }else{
+            $newValue = 0;
+        }
+        
+        $partner = PaymentPartner::find($partnerId);
+        $partner->suspended = $newValue;
+        $partner->save();
+        return 'SUCCESS';
     }
     #endregion
     

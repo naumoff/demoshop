@@ -105,13 +105,24 @@ return [
                 'ru'=>'Управление подарками'
             ],
         ],
+        'sales'=>[
+            [
+                'link'=> '/admin/sales/deliveries',
+                'ru'=>'Стоимость доставки'
+            ],
+            [
+                'link'=>'/admin/sales/orders',
+                'ru'=>'Управление заказами'
+            ],
+        ],
+        
         'partners'=>[
             [
                 'link'=> '/admin/partners/create',
                 'ru'=>'Добавить партнера'
             ],
             [
-                'link'=>'/admin/patners',
+                'link'=>'/admin/partners',
                 'ru'=>'Управление партнерами'
             ],
         ]

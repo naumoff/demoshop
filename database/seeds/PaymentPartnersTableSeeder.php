@@ -5,7 +5,7 @@ use Illuminate\Database\Seeder;
 class PaymentPartnersTableSeeder extends Seeder
 {
     private $partnersQtyLimit = 50;
-    private $cardsQtyLimit = 9;
+    private $cardsQtyLimit = 8;
     
     /**
      * Run the database seeds.
@@ -30,7 +30,11 @@ class PaymentPartnersTableSeeder extends Seeder
                     'holder_id'=>$partnerId,
                 ]);
             }
+            $partner = \App\PaymentPartner::find($partnerId);
+            $partner->total_cards_eur = $cardsQtyLimit * 600;
+            $partner->save();
         }
+
     }
     #endregion
 }

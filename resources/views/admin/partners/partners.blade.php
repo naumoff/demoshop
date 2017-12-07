@@ -8,7 +8,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Подарки</div>
                     <div class="panel-body">
-                        <a href="{{route('presents.create')}}" class="btn btn-success" role="button">
+                        <a href="{{route('partners.create')}}" class="btn btn-success" role="button">
                             Добавить партнера
                         </a>
                         <table class="table table-striped">
@@ -17,8 +17,9 @@
                                 <th>Фамилия</th>
                                 <th>Имя</th>
                                 <th>Лимит</th>
+                                <th>Карточки</th>
                                 <th>Активность</th>
-                                <th>Отложен</th>
+                                <th>Отложить</th>
                                 <th>Карточки</th>
                                 <th>Редактор</th>
                                 <th>Удалить</th>
@@ -30,24 +31,25 @@
                                     <td>{{$partner->first_name}}</td>
                                     <td>{{$partner->last_name}}</td>
                                     <td>{{$partner->total_limit_eur}}</td>
+                                    <td>{{$partner->total_cards_eur}}</td>
                                     <td>
                                         <button
                                                 type="button"
-                                                class="btn btn-sm active"
+                                                class="btn btn-sm btn-block active"
                                                 id="{{$partner->id}}"
                                                 value="{{$partner->active}}"
                                         >
-                                            <b>{{ $status=($partner->active)?'+':'-' }}</b>
+                                            <b>{{ $status=($partner->active)?'текущий':'ожидает' }}</b>
                                         </button>
                                     </td>
                                     <td>
                                         <button
                                                 type="button"
-                                                class="btn btn-sm suspend"
+                                                class="btn btn-sm btn-block suspend"
                                                 id="{{$partner->id}}"
                                                 value="{{$partner->suspended}}"
                                         >
-                                            <b>{{ $status=($partner->suspended)?'+':'-' }}</b>
+                                            <b>{{ $status=($partner->suspended)?'отложен':'работает' }}</b>
                                         </button>
                                     </td>
 
@@ -96,6 +98,28 @@
             $.post
             (
                 '/admin/partner/active',
+                {
+                    "_token": "{{csrf_token()}}",
+                    "_method": "PATCH",
+                    'partner-id':partnerId,
+                    'old-value':oldValue
+                },
+                function(data){
+                    if(data === 'SUCCESS'){
+                        location.reload();
+                    }else{
+                        alert(data);
+                    }
+                }
+            );
+        });
+
+        $(".suspend").click(function(){
+            var partnerId = $(this).attr('id');
+            var oldValue = $(this).attr('value');
+            $.post
+            (
+                '/admin/partner/suspend',
                 {
                     "_token": "{{csrf_token()}}",
                     "_method": "PATCH",

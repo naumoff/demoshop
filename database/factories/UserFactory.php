@@ -175,6 +175,7 @@ $factory->define(\App\PaymentPartner::class, function(Faker $faker){
     return [
         'first_name'=>$faker->firstName,
         'last_name'=>$faker->lastName,
+        'email'=>$faker->email,
         'total_limit_eur'=>5000,
         'active'=>0,
         'suspended'=>rand(0,1),
