@@ -34,5 +34,13 @@ class Package extends Model
         return $this->belongsToMany(Product::class,'package_product');
     }
     
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class,
+            'order_package',
+            'package_id',
+            'order_id');
+    }
+    
     #endregion
 }

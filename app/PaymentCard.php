@@ -41,7 +41,16 @@ class PaymentCard extends Model
     #region RELATION METHODS
     public function paymentPartner()
     {
-        return $this->belongsTo(PaymentPartner::class,'holder_id','id');
+        return $this->belongsTo(PaymentPartner::class,
+            'holder_id',
+            'id');
+    }
+    
+    public function orders()
+    {
+        return $this->hasMany(Order::class,
+            'payment_card_id',
+            'id');
     }
     #endregion
 }

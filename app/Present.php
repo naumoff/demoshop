@@ -27,5 +27,9 @@ class Present extends Model
     #endregion
     
     #region RELATION METHODS
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'present_id','id');
+    }
     #endregion
 }

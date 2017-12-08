@@ -92,5 +92,13 @@ class Product extends Model
         return $this->belongsTo(Package::class, 'color_product');
     }
     
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class,
+            'order_product',
+            'product_id',
+            'order_id');
+    }
+    
     #endregion
 }
