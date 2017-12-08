@@ -195,6 +195,18 @@ $factory->define(\App\PaymentCard::class, function(Faker $faker){
         'updated_at'=>\Carbon\Carbon::now()
     ];
 });
+
+$factory->define(\App\OrderProduct::class, function(Faker $faker) {
+    $invoiceCalculator = new \App\Services\InvoiceCalculatorService();
+    $productId = '';
+    $qty = '';
+    return [
+        'product_id'=>'',
+        'qty'=>'',
+        'cost'=> $invoiceCalculator->calculateProductCostByQty($productId, $qty),
+        'weight'=> $invoiceCalculator->calculateProductWeightByQty($productId, $qty)
+    ];
+});
 #endregion
 
 #region SERVICE METHODS

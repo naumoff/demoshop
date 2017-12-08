@@ -6,13 +6,16 @@ use App\Events\CustomerRejected;
 use Illuminate\Support\Facades\Storage;
 
 Route::get('test', function(){
+
+    $productIds = \App\Product::get(['id']);
+    dd($productIds->flatten(3));
     
-    $orderStatus = [];
-    foreach (config('lists.order_status') AS $key=>$item){
-        $orderStatus[] = $key;
-    }
-    
-    dd($orderStatus);
+//    $orderStatus = [];
+//    foreach (config('lists.order_status') AS $key=>$item){
+//        $orderStatus[] = $key;
+//    }
+//
+//    dd($orderStatus);
     
 //    $files = Storage::disk('presents')->files('/');
 //    $id = 32;
