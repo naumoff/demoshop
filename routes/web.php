@@ -7,16 +7,23 @@ use Illuminate\Support\Facades\Storage;
 
 Route::get('test', function(){
     
-    $files = Storage::disk('presents')->files('/');
-    $id = 32;
-    $mask = "/^{$id}\-.*/i";
-    foreach ($files AS $file){
-        if(preg_match($mask,$file)===1){
-            Storage::disk('presents')->delete($file);
-        }
+    $orderStatus = [];
+    foreach (config('lists.order_status') AS $key=>$item){
+        $orderStatus[] = $key;
     }
     
-    dd($files);
+    dd($orderStatus);
+    
+//    $files = Storage::disk('presents')->files('/');
+//    $id = 32;
+//    $mask = "/^{$id}\-.*/i";
+//    foreach ($files AS $file){
+//        if(preg_match($mask,$file)===1){
+//            Storage::disk('presents')->delete($file);
+//        }
+//    }
+//
+//    dd($files);
     
 //    $productIds = \App\PackageProduct::getProductIdsByPackageId(60);
 //    dd($productIds);

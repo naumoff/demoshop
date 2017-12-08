@@ -29,4 +29,30 @@ return [
             'ru'=>'отложен'
         ]
     ],
+    
+    'order_status'=>[
+        'payment_expectation'=>[
+            'en'=>'payment expectation',
+            'ru'=>'ожидание оплаты'
+        ],
+        'order_processing'=>[
+            'en'=>'order processing',
+            'ru'=>'обработка заказа'
+        ],
+        'order_sent'=>[
+            'en'=>'order sent',
+            'ru'=>'заказ отправлен'
+        ],
+    ],
+    
+    'invoice_status'=>[
+        'invoice_valid'=>[
+            'en'=>'invoice valid',
+            'ru'=>'инвойс актуален'
+        ],
+        'invoice_expired'=>[
+            'en'=>'invoice expired',
+            'ru'=>'инвойс просрочен'
+        ],
+    ]
 ];
