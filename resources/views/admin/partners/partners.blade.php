@@ -140,7 +140,7 @@
             var presentId = $(this).attr('id');
             $.post
             (
-                '/admin/presents/'+ presentId,
+                '/admin/partners/'+ presentId,
                 {
                     "_token": "{{ csrf_token() }}",
                     "_method": "DELETE",

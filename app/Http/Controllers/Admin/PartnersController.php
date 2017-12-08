@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\CalculateCardsLimit;
 use App\Http\Requests\StorePartnerPost;
 use App\Http\Requests\StorePaymentCardPost;
+use App\Http\Requests\UpdatePaymentCardPatch;
 use App\Http\Requests\UpdatePaymentPartnerPatch;
 use App\PaymentCard;
 use App\PaymentPartner;
@@ -91,20 +92,18 @@ class PartnersController extends Controller
         return redirect()->back();
     }
     
-    public function updatePaymentCard()
+    public function updatePaymentCard(UpdatePaymentCardPatch $request, PaymentCard $paymentCard)
     {
-    
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        if($request->input('active') == null){
+            $request->merge(['active'=>0]);
+        }
+        $paymentCard->bank = $request->input('bank');
+        $paymentCard->card_number = $request->input('card-number');
+        $paymentCard->card_limit_eur = $request->input('card-limit-eur');
+        $paymentCard->active = $request->input('active');
+        $paymentCard->save();
+        $this->saveTotalCardsLimitAmount($paymentCard->paymentPartner->id);
+        return redirect()->back();
     }
 
     /**
@@ -148,13 +147,15 @@ class PartnersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(PaymentPartner $partner)
     {
-        //
+       $partner->delete();
+       return 'SUCCESS';
     }
     #endregion
     
     #region AJAX METHODS
+    
     //change current payment partner
     public function changeCurrent(Request $request)
     {

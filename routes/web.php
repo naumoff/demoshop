@@ -137,7 +137,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     /**
      * Present Management
      */
-    Route::resource('presents', 'Admin\PresentsController');
+    Route::resource('presents', 'Admin\PresentsController', ['except'=>['show']]);
     Route::get('presents/{present_id}/edit-photo', 'Admin\PresentsController@editPhoto');
     Route::delete('presents/{present_id}/delete-photo','Admin\PresentsController@deletePhoto');
     Route::patch('presents/{present_id}/add-photo','Admin\PresentsController@addPhoto')
@@ -147,12 +147,12 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     /**
      * Payment Partners Management
      */
-    Route::resource('partners','Admin\PartnersController');
+    Route::resource('partners','Admin\PartnersController', ['except'=>['show']]);
     Route::get('partners/{part_id}/createPaymentCard', 'Admin\PartnersController@createPaymentCard')
         ->name('admin-partner-add-card');
     Route::post('partners/{part_id}/storePaymentCard', 'Admin\PartnersController@storePaymentCard')
         ->name('admin-partner-store-card');
-    Route::patch('partners/payment-card/{card-id}', 'Admin\PartnersController@updatePaymentCard')
+    Route::patch('partners/payment-card/{paymentCard}', 'Admin\PartnersController@updatePaymentCard')
         ->name('admin-partner-update-card');
     
     /**

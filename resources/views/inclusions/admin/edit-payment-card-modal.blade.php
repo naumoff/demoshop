@@ -13,10 +13,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" type="button" data-dismiss="modal">×</button>
-                <h4 class="modal-title">Изменить имя категории</h4>
+                <h4 class="modal-title">Изменить банковскую карточку</h4>
             </div>
             <div class="modal-body">
-                <form method="post" action="{{route('admin-partner-update-card',['id'=>$card->id])}}">
+                <form method="post" action="{{route('admin-partner-update-card',['PaymentCard'=>$card->id])}}">
                     {{csrf_field()}}
                     {{method_field('PATCH')}}
                     <div class="form-group">
@@ -45,18 +45,20 @@
                         <input
                                 type="text"
                                 class="form-control"
-                                name="card-limit_eur"
+                                name="card-limit-eur"
                                 value="{{$card->card_limit_eur}}"
                         >
-                        <label for="new-category">
-                            Карточка активаная:
-                        </label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                name="active"
-                                value="{{$card->active}}"
-                        >
+                        <div class="checkbox">
+                            <label>
+                                <input
+                                        type="checkbox"
+                                        name="active"
+                                        value="1"
+                                        {{($card->active == 1)?'checked':null}}
+                                >
+                                Карточка активная:
+                            </label>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-success">Изменить</button>
                 </form>
