@@ -164,7 +164,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     
     //delivery
     Route::get('sales','Admin\AdminController@sales');
-    Route::resource('sales/deliveries', 'Admin\DeliveryRatesController');
+    Route::resource('sales/deliveries', 'Admin\DeliveryRatesController',
+        ['only'=>['index','store','update','destroy']]);
     
 
     

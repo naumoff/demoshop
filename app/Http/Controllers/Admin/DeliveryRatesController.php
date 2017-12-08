@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\DeliveryRate;
 use App\Http\Requests\StoreDeliveryPost;
+use App\Http\Requests\UpdateDeliveryPatch;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -16,19 +17,9 @@ class DeliveryRatesController extends Controller
      */
     public function index()
     {
-        $deliveries = DeliveryRate::orderBy('min_weight','ASC')->paginate(2);
+        $deliveries = DeliveryRate::orderBy('min_weight','ASC')->paginate(10);
         return view('admin.sales.deliveries',['deliveries'=>$deliveries]);
     }
-
-//    /**
-//     * Show the form for creating a new resource.
-//     *
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function create()
-//    {
-//        //
-//    }
 
     /**
      * Store a newly created resource in storage.
@@ -47,37 +38,19 @@ class DeliveryRatesController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, DeliveryRate $delivery)
+    public function update(UpdateDeliveryPatch $request, DeliveryRate $delivery)
     {
-        dd($delivery->id);
+        $delivery->min_weight = $request->input('min-weight');
+        $delivery->max_weight = $request->input('max-weight');
+        $delivery->delivery_cost = $request->input('delivery-cost');
+        $delivery->save();
+        return redirect()->back();
     }
 
     #region AJAX METHODS

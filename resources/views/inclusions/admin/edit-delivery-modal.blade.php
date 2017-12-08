@@ -27,7 +27,7 @@
                         <input
                                 type="text"
                                 class="form-control"
-                                name="bank"
+                                name="min-weight"
                                 value="{{$delivery->min_weight}}"
                         >
                         <label for="new-category">
@@ -36,7 +36,7 @@
                         <input
                                 type="text"
                                 class="form-control"
-                                name="card-number"
+                                name="max-weight"
                                 value="{{$delivery->max_weight}}"
                         >
                         <label for="new-category">
@@ -45,7 +45,7 @@
                         <input
                                 type="text"
                                 class="form-control"
-                                name="card-limit-eur"
+                                name="delivery-cost"
                                 value="{{$delivery->delivery_cost}}"
                         >
                     </div>
