@@ -158,9 +158,15 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     /**
      * Sales Management
      */
-    //delivery
-    
     //orders
+    
+    //invoices
+    
+    //delivery
+    Route::get('sales','Admin\AdminController@sales');
+    Route::resource('sales/deliveries', 'Admin\DeliveryRatesController');
+    
+
     
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');

@@ -42,6 +42,10 @@ class SideBarComposer
         if($pathMask == 'partners'){
             $links = config('links_admin.sidebar.partners');
         }
+        
+        if($pathMask == 'sales'){
+            $links = config('links_admin.sidebar.sales');
+        }
 
         $view->with('links', $links);
     }
@@ -68,6 +72,10 @@ class SideBarComposer
         
         if(strpos($path,'admin/partners')){
             return 'partners';
+        }
+        
+        if(strpos($path,'admin/sales')){
+            return 'sales';
         }
     }
     

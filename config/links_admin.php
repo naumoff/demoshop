@@ -109,12 +109,16 @@ return [
         ],
         'sales'=>[
             [
-                'link'=> '/admin/sales/deliveries',
-                'ru'=>'Стоимость доставки'
-            ],
-            [
                 'link'=>'/admin/sales/orders',
                 'ru'=>'Управление заказами'
+            ],
+            [
+                'link'=>'/admin/sales/invoices',
+                'ru'=>'Управление инвойсами'
+            ],
+            [
+                'link'=> '/admin/sales/deliveries',
+                'ru'=>'Стоимость доставки'
             ],
         ],
         
