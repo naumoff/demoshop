@@ -90,6 +90,11 @@ class PartnersController extends Controller
         
         return redirect()->back();
     }
+    
+    public function updatePaymentCard()
+    {
+    
+    }
 
     /**
      * Display the specified resource.
@@ -174,6 +179,14 @@ class PartnersController extends Controller
         $partner = PaymentPartner::find($partnerId);
         $partner->active = $newValue;
         $partner->save();
+        return 'SUCCESS';
+    }
+    
+    public function deletePaymentCardFromPartner(Request $request)
+    {
+        $cardId = PaymentCard::find($request->input('card-id'));
+        $cardId->delete();
+        $this->saveTotalCardsLimitAmount($request->input('partner-id'));
         return 'SUCCESS';
     }
     #endregion

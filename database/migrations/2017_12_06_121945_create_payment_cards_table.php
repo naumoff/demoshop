@@ -26,6 +26,7 @@ class CreatePaymentCardsTable extends Migration
                 ->references('id')
                 ->on('payment_partners')
                 ->onDelete('cascade');
+            $table->softDeletes();
         });
     }
 

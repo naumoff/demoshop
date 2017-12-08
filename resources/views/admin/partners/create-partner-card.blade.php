@@ -122,8 +122,19 @@
                                 <td>{{$card->card_number}}</td>
                                 <td>{{$card->card_limit_eur}}</td>
                                 <td>{{$card->active}}</td>
-                                <td>Редактор</td>
-                                <td>Удалить</td>
+                                <td>
+                                    @include('inclusions.admin.edit-payment-card-modal',['card'=>$card])
+                                </td>
+                                <td>
+                                    <button
+                                            type="button"
+                                            class="btn btn-danger btn-xs delete"
+                                            card-id="{{$card->id}}"
+                                            partner-id="{{$partner->id}}"
+                                    >
+                                        Удалить
+                                    </button>
+                                </td>
                             </tr>
                             @endforeach
                             </tbody>
@@ -135,4 +146,29 @@
             </div>
         </div>
     </div>
+<script>
+    $(function(){
+        $(".delete").click(function(){
+            var cardId = $(this).attr('card-id');
+            var partnerId = $(this).attr('partner-id');
+            $.post
+            (
+                '/admin/partner-card/delete',
+                {
+                    "_token": "{{ csrf_token() }}",
+                    "_method": "DELETE",
+                    "card-id": cardId,
+                    "partner-id": partnerId
+                },
+                function(data){
+                    if(data === 'SUCCESS'){
+                        location.reload();
+                    }else{
+                        alert(data);
+                    }
+                }
+            );
+        })
+    });
+</script>
 @endsection

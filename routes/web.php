@@ -152,6 +152,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
         ->name('admin-partner-add-card');
     Route::post('partners/{part_id}/storePaymentCard', 'Admin\PartnersController@storePaymentCard')
         ->name('admin-partner-store-card');
+    Route::patch('partners/payment-card/{card-id}', 'Admin\PartnersController@updatePaymentCard')
+        ->name('admin-partner-update-card');
     
     /**
      * Sales Management
@@ -177,6 +179,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::post('/photo/delete', 'Admin\ProductsController@deletePhoto'); // +
     Route::delete('/package-product/delete', 'Admin\PackagesController@deleteProductFromPackage')
         ->name('admin-delete-product-from-package');
+    Route::delete('/partner-card/delete', 'Admin\PartnersController@deletePaymentCardFromPartner');
     
     Route::get('/photo/{prod_id}/{color_code}', 'Admin\ProductsController@formGroupLoaderForProductPhoto'); //-
 });
