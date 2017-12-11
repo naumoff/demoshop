@@ -1,7 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
-use Faker\Factory as newFaker;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -196,15 +196,78 @@ $factory->define(\App\PaymentCard::class, function(Faker $faker){
     ];
 });
 
-$factory->define(\App\OrderProduct::class, function(Faker $faker) {
-    $invoiceCalculator = new \App\Services\InvoiceCalculatorService();
-    $productId = '';
-    $qty = '';
+$factory->define(\App\Order::class, function(Faker $faker){
+   
+    $invoiceNumber = \App\Order::getLastInvoiceNumber() + 1;
+    $today = Carbon::today();
+    $orderNumber = $today->year.'-'.$invoiceNumber;
+    
+    if(rand(0,1) == 1){ //order paid
+        $deliveryTrackNumber = uniqid();
+        $orderStatus = config('lists.order_status.order_sent.en');
+        $invoiceStatus = config('lists.invoice_status.invoice_valid.en');
+    }else{ // order not paid
+        $deliveryTrackNumber = null;
+        $orderStatus = config('lists.order_status.payment_expectation.en');
+        $invoiceStatus = config('lists.invoice_status.invoice_valid.en');
+    }
+    
+    $userId = getRandomUserId();
+    $randomCity = getRandomCityFromRussia();
+    
+    $createdAt = Carbon::now()->subDays(rand(0,100));
+    
     return [
-        'product_id'=>'',
-        'qty'=>'',
-        'cost'=> $invoiceCalculator->calculateProductCostByQty($productId, $qty),
-        'weight'=> $invoiceCalculator->calculateProductWeightByQty($productId, $qty)
+        'present_id'=>null,
+        'payment_card_id'=>null,
+        'invoice_number'=>$invoiceNumber,
+        'order_number'=>$orderNumber,
+        'delivery_track_number'=>$deliveryTrackNumber,
+        'user_id'=>$userId,
+        'user_first_name'=>$faker->firstName,
+        'user_last_name'=>$faker->lastName,
+        'user_email'=>$faker->email,
+        'user_phone'=>$faker->e164PhoneNumber,
+        'user_country'=>'Россия',
+        'user_city'=>$randomCity,
+        'user_street'=>$faker->streetName,
+        'user_building_number'=>$faker->buildingNumber,
+        'user_apartment_number'=>rand(1,1000),
+        'user_post_index'=>$faker->postcode,
+        'order_weight'=>null,
+        'order_delivery_cost'=>null,
+        'order_goods_cost'=>null,
+        'order_total_invoice_amount'=>null,
+        'order_status'=> $orderStatus,
+        'invoice_status'=>$invoiceStatus,
+        'created_at'=>$createdAt,
+        'updated_at'=>$createdAt
+    ];
+});
+
+$factory->define(\App\OrderProduct::class, function(Faker $faker) {
+    
+    $randomProduct = getRandomProduct();
+    $invoiceRowCalculator = new \App\Services\InvoiceRowCalculatorService();
+    $qty = rand(1,5);
+    return [
+        'product_id'=>$randomProduct->id,
+        'qty'=>$qty,
+        'cost'=> $invoiceRowCalculator->calculateProductCostByQty($randomProduct, $qty),
+        'weight'=> $invoiceRowCalculator->calculateProductWeightByQty($randomProduct, $qty)
+    ];
+});
+
+$factory->define(\App\OrderPackage::class, function(Faker $faker){
+    $randomPackage = getRandomPackage();
+    $invoiceRowCalculator = new \App\Services\InvoiceRowCalculatorService();
+    $qty = rand(1,5);
+    
+    return [
+        'package_id'=>$randomPackage->id,
+        'qty'=>$qty,
+        'cost'=>$invoiceRowCalculator->calculatePackageCostByQty($randomPackage, $qty),
+        'weight'=>$invoiceRowCalculator->calculatePackageWeightByQty($randomPackage, $qty)
     ];
 });
 #endregion
@@ -238,5 +301,54 @@ function makeEurAndRuPrice(Faker $faker)
         'eurPrice'=>$eurPrice,
         'ruPrice'=>$ruPrice
     ];
+}
+
+function getRandomUserId()
+{
+    $userIds = \App\User::get(['id']);
+    
+    $users = [];
+    foreach ($userIds AS $userId) {
+        $users[] = $userId->id;
+    }
+    return $users[rand(0,count($users)-1)];
+}
+
+function getRandomCityFromRussia()
+{
+    $cities = [
+        'Москва',
+        'Волгоград',
+        'Севастополь',
+        'Питер',
+        'Пермь',
+        'Казань'
+    ];
+    
+    return $cities[rand(0,count($cities)-1)];
+}
+
+function getRandomProduct()
+{
+    $productIds = \App\Product::get(['id']);
+    $products = [];
+    foreach ($productIds AS $productId) {
+        $products[] = $productId->id;
+    }
+    
+    $chosenProduct =  \App\Product::find($products[rand(0,count($products)-1)]);
+    return $chosenProduct;
+}
+
+function getRandomPackage()
+{
+    $packageIds = \App\Package::get(['id']);
+    $packages = [];
+    foreach ($packageIds AS $packageId) {
+        $packages[] = $packageId->id;
+    }
+    
+    $chosenPackage =  \App\Package::find($packages[rand(0,count($packages)-1)]);
+    return $chosenPackage;
 }
 #endregion

@@ -35,6 +35,10 @@ class Order extends Model
     #endregion
     
     #region MAIN METHODS
+    public static function getLastInvoiceNumber()
+    {
+        return 1;
+    }
     #endregion
     
     #region SCOPE METHODS

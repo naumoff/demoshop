@@ -6,16 +6,17 @@ use App\Events\CustomerRejected;
 use Illuminate\Support\Facades\Storage;
 
 Route::get('test', function(){
-
-    $productIds = \App\Product::get(['id']);
-    dd($productIds->flatten(3));
     
-//    $orderStatus = [];
-//    foreach (config('lists.order_status') AS $key=>$item){
-//        $orderStatus[] = $key;
+
+//    $productIds = \App\Product::get(['id']);
+//    $products = [];
+//    foreach ($productIds AS $productId) {
+//        $products[] = $productId->id;
 //    }
 //
-//    dd($orderStatus);
+//    $chosenProduct =  \App\Product::find($products[rand(0,count($products)-1)]);
+//    dd($chosenProduct->toArray());
+    
     
 //    $files = Storage::disk('presents')->files('/');
 //    $id = 32;
@@ -152,7 +153,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::delete('presents/{present_id}/delete-photo','Admin\PresentsController@deletePhoto');
     Route::patch('presents/{present_id}/add-photo','Admin\PresentsController@addPhoto')
         ->name('admin-present-add-photo');
-    
 
     /**
      * Payment Partners Management
@@ -176,8 +176,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::get('sales','Admin\AdminController@sales');
     Route::resource('sales/deliveries', 'Admin\DeliveryRatesController',
         ['only'=>['index','store','update','destroy']]);
-    
-
     
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');

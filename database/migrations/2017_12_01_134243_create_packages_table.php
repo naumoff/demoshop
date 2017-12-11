@@ -18,6 +18,7 @@ class CreatePackagesTable extends Migration
             $table->integer('category_id')->unsigned()->index();
             $table->string('package_name');
             $table->float('package_price',10,2);
+            $table->integer('weight_gr')->nullable();
             $table->dateTime('package_start_period');
             $table->dateTime('package_end_period');
             $table->boolean('active');

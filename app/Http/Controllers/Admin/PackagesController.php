@@ -114,7 +114,6 @@ class PackagesController extends Controller
     
     /**
      * Show the form for editing the specified resource.
-     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -196,6 +195,13 @@ class PackagesController extends Controller
         $packageProduct->package_id = $request->input('package-id');
         $packageProduct->product_id = $request->input('product-id');
         $packageProduct->save();
+        
+        //updating package weight
+        $product = Product::find($request->input('product-id'));
+        $package = Package::find($request->input('package-id'));
+        $package->weight_gr = $package->weight_gr + $product->weight_gr;
+        $package->save();
+        
         return 'SUCCESS';
     }
     
@@ -207,6 +213,12 @@ class PackagesController extends Controller
             ->where('product_id','=',$productId)
             ->first();
         $packageProduct->delete();
+        
+        //updating package weight
+        $product = Product::find($request->input('product-id'));
+        $package = Package::find($request->input('package-id'));
+        $package->weight_gr = $package->weight_gr - $product->weight_gr;
+        $package->save();
         return 'SUCCESS';
     }
     #endregion

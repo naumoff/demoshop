@@ -32,26 +32,26 @@ return [
     
     'order_status'=>[
         'payment_expectation'=>[
-            'en'=>'payment expectation',
+            'en'=>'payment_expectation',
             'ru'=>'ожидание оплаты'
         ],
         'order_processing'=>[
-            'en'=>'order processing',
+            'en'=>'order_processing',
             'ru'=>'обработка заказа'
         ],
         'order_sent'=>[
-            'en'=>'order sent',
+            'en'=>'order_sent',
             'ru'=>'заказ отправлен'
         ],
     ],
     
     'invoice_status'=>[
         'invoice_valid'=>[
-            'en'=>'invoice valid',
+            'en'=>'invoice_valid',
             'ru'=>'инвойс актуален'
         ],
         'invoice_expired'=>[
-            'en'=>'invoice expired',
+            'en'=>'invoice_expired',
             'ru'=>'инвойс просрочен'
         ],
     ]
