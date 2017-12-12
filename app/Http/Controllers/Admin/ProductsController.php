@@ -15,6 +15,7 @@ use App\Http\Requests\StoreCategoryPost;
 use App\Http\Requests\StoreCurrencyRatePost;
 use App\Http\Requests\StoreGroupPost;
 use App\Http\Requests\StoreProductPost;
+use App\Jobs\Packages\UpdatePackageJob;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -249,12 +250,19 @@ class ProductsController extends Controller
     
     public function updateProduct(Request $request)
     {
-        $updateDate = $this->formProductCreateData($request);
+        $updateData = $this->formProductCreateData($request);
         Product::where('id','=',$request->input('id'))
-            ->update($updateDate);
+            ->update($updateData);
         
-        $groupId = $request->input('group-id');
-
+        $packages = Product::find($request->input('id'))->packages()->get();
+//        dump(Product::find($request->input('id')));
+//        dd($packages);
+        // if product price changes - package price updated also here
+        if($packages !== null && count($packages) > 0){
+            foreach ($packages AS $package){
+                UpdatePackageJob::dispatch($package);
+            }
+        }
         return redirect()->back();
     }
     

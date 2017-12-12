@@ -33,7 +33,12 @@ class InvoiceRowCalculatorService
     
     public function calculatePackageCostByQty(Package $package, $qty)
     {
-        return $package->package_price * $qty;
+        if($package->price_rub_manual == null){
+            $cost = $package->price_rub_auto * $qty;
+        }else{
+            $cost = $package->price_rub_manual * $qty;
+        }
+        return $cost;
     }
     
     public function calculatePackageWeightByQty(Package $package, $qty)

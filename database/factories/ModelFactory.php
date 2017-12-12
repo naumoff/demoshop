@@ -115,7 +115,7 @@ $factory->define(\App\Package::class,function(Faker $faker){
     
     extract(makeEurAndRubPrice($faker));
     
-    // retrive random category id
+    // retrieve random category id
     $categories = \App\Category::all()->toArray();
     $categoryId = $categories[rand(0,count($categories)-1)]['id'];
     

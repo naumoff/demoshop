@@ -179,17 +179,6 @@ class PackagesController extends Controller
         $packageProduct->product_id = $request->input('product-id');
         $packageProduct->save();
         
-//        //updating package weight
-//        $product = Product::find($request->input('product-id'));
-//        $package = Package::find($request->input('package-id'));
-//        $package->weight_gr = $package->weight_gr + $product->weight_gr;
-//
-//        //updating package automatic eur and rub price
-//        $exchEurRub = CurrencyRate::getEurRubRate();
-//        $package->price_eur = $package->price_eur + $product->price_eur;
-//        $package->price_rub_auto = $package->price_eur * $exchEurRub;
-//        $package->save();
-    
         $package = Package::find($request->input('package-id'));
         UpdatePackageJob::dispatch($package);
         
@@ -204,12 +193,6 @@ class PackagesController extends Controller
             ->where('product_id','=',$productId)
             ->first();
         $packageProduct->delete();
-        
-//        //updating package weight
-//        $product = Product::find($request->input('product-id'));
-//        $package = Package::find($request->input('package-id'));
-//        $package->weight_gr = $package->weight_gr - $product->weight_gr;
-//        $package->save();
         
         $package = Package::find($request->input('package-id'));
         UpdatePackageJob::dispatch($package);

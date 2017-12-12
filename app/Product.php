@@ -90,7 +90,7 @@ class Product extends Model
     
     public function packages()
     {
-        return $this->belongsTo(Package::class, 'color_product');
+        return $this->belongsToMany(Package::class, 'package_product');
     }
     
     public function orders()
