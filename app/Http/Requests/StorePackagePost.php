@@ -26,7 +26,7 @@ class StorePackagePost extends FormRequest
         return [
             'category-id'=>'required|exists:categories,id',
             'package-ru'=>'required|min:3',
-            'price-rub'=>'required|numeric',
+            'package-de'=>'required|min:3',
             'package-start'=>'required|date',
             'package-end'=>'required|date',
             'package-active'=>'nullable'

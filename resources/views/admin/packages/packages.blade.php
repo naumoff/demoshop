@@ -28,7 +28,7 @@
                             @foreach($packages AS $package)
                                 <tr>
                                     <td>{{$package->category->category}}</td>
-                                    <td>{{$package->package_name}}</td>
+                                    <td>{{$package->package_ru}}</td>
                                     <td>{{$package->package_price}}</td>
                                     <td>{{$package->package_start_period}}</td>
                                     <td>{{$package->package_end_period}}</td>

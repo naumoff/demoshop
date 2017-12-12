@@ -29,10 +29,23 @@
                                        class="form-control"
                                        id="package-name"
                                        name="package-name"
-                                       value="{{$package->package_name}}"
+                                       value="{{$package->package_ru}}"
                                        readonly
                                 >
                             </div>
+                            <div class="form-group">
+                                <label for="package_weight">Вес пакета (гр.):</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="package_weigh"
+                                       placeholder="Суммарный вес пакета"
+                                       required
+                                       name="package-weight"
+                                       readonly
+                                       value="{{$package->weight_gr}}"
+                                >
+                            </div>
+
                         </form>
                         <a href="{{route('admin-create-package-products',['pack_id'=>$package->id])}}"
                            class="btn btn-success"

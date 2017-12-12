@@ -65,7 +65,7 @@ $factory->define(\App\Product::class, function(Faker $faker){
     $productNameRu = 'RU-prod-'.$productName;
     $productNameDe = 'DE-prod-'.$productName;
     
-    extract(makeEurAndRuPrice($faker));
+    extract(makeEurAndRubPrice($faker));
     
     $discountChance = rand(0,1);
     if($discountChance){
@@ -82,9 +82,9 @@ $factory->define(\App\Product::class, function(Faker $faker){
         'product_de'=>$productNameDe,
         'description'=>$faker->paragraph($nbSentences = 3, $variableNbSentences = true),
         'price_eur'=>$eurPrice,
-        'price_rub_auto'=>$ruPrice,
+        'price_rub_auto'=>$rubPrice,
         'price_rub_manual'=>0,
-        'price_with_discount'=>($discountChance)?$ruPrice*$discount:0,
+        'price_with_discount'=>($discountChance)?$rubPrice*$discount:0,
         'discount_start'=>$startDate,
         'discount_end'=>$endDate,
         'discount_active'=>rand(0,$discountChance),
@@ -113,7 +113,7 @@ $factory->define(\App\Package::class,function(Faker $faker){
     
     extract(makeStartAndEndDate());
     
-    extract(makeEurAndRuPrice($faker));
+    extract(makeEurAndRubPrice($faker));
     
     // retrive random category id
     $categories = \App\Category::all()->toArray();
@@ -121,8 +121,10 @@ $factory->define(\App\Package::class,function(Faker $faker){
     
     return [
         'category_id'=>$categoryId,
-        'package_name'=>'RU-pack-'.$faker->word,
-        'package_price'=>$ruPrice,
+        'package_ru'=>'RU-pack-'.$faker->word,
+        'package_de'=>'DE-pack-'.$faker->word,
+        'price_eur'=>$eurPrice,
+        'price_rub_auto'=>$rubPrice,
         'package_start_period'=>$startDate,
         'package_end_period'=>$endDate,
         'active'=>rand(0,1),
@@ -212,7 +214,8 @@ $factory->define(\App\Order::class, function(Faker $faker){
         $invoiceStatus = config('lists.invoice_status.invoice_valid.en');
     }
     
-    $userId = getRandomUserId();
+    $user = getRandomUser();
+    
     $randomCity = getRandomCityFromRussia();
     
     $createdAt = Carbon::now()->subDays(rand(0,100));
@@ -223,12 +226,12 @@ $factory->define(\App\Order::class, function(Faker $faker){
         'invoice_number'=>$invoiceNumber,
         'order_number'=>$orderNumber,
         'delivery_track_number'=>$deliveryTrackNumber,
-        'user_id'=>$userId,
-        'user_first_name'=>$faker->firstName,
-        'user_last_name'=>$faker->lastName,
-        'user_email'=>$faker->email,
+        'user_id'=>$user->id,
+        'user_first_name'=>$user->first_name,
+        'user_last_name'=>$user->last_name,
+        'user_email'=>$user->email,
         'user_phone'=>$faker->e164PhoneNumber,
-        'user_country'=>'Россия',
+        'user_country'=>$user->country,
         'user_city'=>$randomCity,
         'user_street'=>$faker->streetName,
         'user_building_number'=>$faker->buildingNumber,
@@ -290,20 +293,20 @@ function makeStartAndEndDate()
     ];
 }
 
-function makeEurAndRuPrice(Faker $faker)
+function makeEurAndRubPrice(Faker $faker)
 {
     // make price
     $exchRate = 69.5;
     $eurPrice = $faker->randomFloat($nbMaxDecimals = 8, $min = 1, $max = 150);
-    $ruPrice = $eurPrice * $exchRate;
+    $rubPrice = $eurPrice * $exchRate;
     
     return [
         'eurPrice'=>$eurPrice,
-        'ruPrice'=>$ruPrice
+        'rubPrice'=>$rubPrice
     ];
 }
 
-function getRandomUserId()
+function getRandomUser()
 {
     $userIds = \App\User::get(['id']);
     
@@ -311,7 +314,7 @@ function getRandomUserId()
     foreach ($userIds AS $userId) {
         $users[] = $userId->id;
     }
-    return $users[rand(0,count($users)-1)];
+    return \App\User::find($users[rand(0,count($users)-1)]);
 }
 
 function getRandomCityFromRussia()

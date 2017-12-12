@@ -44,19 +44,17 @@
                                 >
                             </div>
                             <div class="form-group">
-                                <label for="price_rub">Цена товара (RUB):</label>
-                                <input type="number"
+                                <label for="package_de">Название Пакета (нем):</label>
+                                <input type="text"
                                        class="form-control"
-                                       id="price_rub"
-                                       placeholder="Введите цену товара в RUB"
+                                       id="package_de"
+                                       placeholder="Введите имя пакета на немецком языке"
                                        required
-                                       name="price-rub"
-                                       min="0"
-                                       max="100000"
-                                       step="0.0001"
+                                       name="package-de"
                                        value=""
                                 >
                             </div>
+
                             <div class="form-group">
                                 <label for="package_start">Дата и время начала акции:</label>
                                 <input type="datetime-local"

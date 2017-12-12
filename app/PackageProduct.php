@@ -24,10 +24,6 @@ class PackageProduct extends Model
         );
     }
     
-    public static function deleteProductFromPackage()
-    {
-    
-    }
     #endregion
     
     #region SCOPE METHODS
@@ -36,12 +32,12 @@ class PackageProduct extends Model
     #region RELATION METHODS
     public function product()
     {
-        return $this->belongsTo(Product::class, 'products');
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
     
     public function package()
     {
-        return $this->belongsTo(Package::class, 'packages');
+        return $this->belongsTo(Package::class, 'package_id', 'id');
     }
     #endregion
 }

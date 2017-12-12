@@ -22,18 +22,18 @@ class PackagesTableSeeder extends Seeder
         for($a = 0; $a <$limit; $a++){
             $packageId = factory(\App\Package::class)->create()->id;
             
-            $product1 = factory(\App\PackageProduct::class)->create([
+            $packageProduct1 = factory(\App\PackageProduct::class)->create([
                 'package_id'=>$packageId,
             ]);
             
-            $product2 = factory(\App\PackageProduct::class)->create([
+            $packageProduct2 = factory(\App\PackageProduct::class)->create([
                 'package_id'=>$packageId,
             ]);
             
-            $totalWeightWeight = $product1->weight_gr + $product2->weight_gr;
+            $totalWeight = $packageProduct1->product->weight_gr + $packageProduct2->product->weight_gr;
             
             $package = \App\Package::find($packageId);
-            $package->weight_gr = $totalWeightWeight;
+            $package->weight_gr = $totalWeight;
             $package->save();
         }
     }

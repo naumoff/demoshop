@@ -168,12 +168,7 @@ class ProductsController extends Controller
             }
         }
         
-        //adding to session for future redirect after pictures saving
-        session(['fullUrlCreateProduct'=>$request->fullUrl()]);
-        if (session()->exists('fullUrlAddPhoto')){
-            session()->forget('fullUrlAddPhoto');
-        }
-        
+ 
         $group = Group::find($groupId);
         $groups = Group::getGroups()
             ->byCategoryId($categoryId)
@@ -232,17 +227,8 @@ class ProductsController extends Controller
             }
         }
         
-        if(session()->exists('fullUrlCreateProduct')){
-            //redirecting to create product page
-            $fullPath = session('fullUrlCreateProduct');
-            session()->forget('fullUrlCreateProduct');
-        }elseif (session()->exists('fullUrlAddPhoto')){
-            //redirecting to add photo page
-            $fullPath = session('fullUrlAddPhoto');
-            session()->forget('fullUrlAddPhoto');
-        }
-        //redirecting
-        return redirect($fullPath);
+        return redirect()
+            ->route('admin-edit-product-photo',['prod_id'=>$request->input('product-id')]);
     }
     
     public function editProduct($productId)
@@ -268,25 +254,14 @@ class ProductsController extends Controller
             ->update($updateDate);
         
         $groupId = $request->input('group-id');
-        $categoryId = Group::getCategoryIdByGroupId($groupId);
-        
-        return redirect()->route('admin-products',[
-            '{cat-id}'=>$categoryId,
-            '{prod-id}'=>$groupId
-        ]);
+
+        return redirect()->back();
     }
     
     public function editPhoto(Request $request, $productId)
     {
         $product = Product::find($productId);
         $photos = ColorProduct::byProductId($productId)->get();
-        
-        //adding to session for future redirect after pictures saving
-        session(['fullUrlAddPhoto'=>$request->fullUrl()]);
-    
-        if(session()->exists('fullUrlCreateProduct')){
-            session()->forget('fullUrlCreateProduct');
-        }
         
         return view('admin.products.edit-photo',[
             'product'=>$product,

@@ -30,6 +30,7 @@ class EventServiceProvider extends ServiceProvider
     
         'App\Events\ExchangeRateUpdated' => [
             'App\Listeners\Products\UpdateAllProductsPrices',
+            'App\Listeners\Packages\UpdateAllPackagesPrices'
         ],
     ];
 

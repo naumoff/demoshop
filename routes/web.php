@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Storage;
 
 Route::get('test', function(){
     
-
+//    $packageProduct = \App\PackageProduct::first();
+//    dd($packageProduct->product->id);
 //    $productIds = \App\Product::get(['id']);
 //    $products = [];
 //    foreach ($productIds AS $productId) {
@@ -128,7 +129,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::get('products/{prod_id}/edit-product','Admin\ProductsController@editProduct')
         ->name('admin-edit-product'); // +
     Route::patch('products/update-product','Admin\ProductsController@updateProduct'); // +
-    Route::get('products/{prod_id}/edit-photo','Admin\ProductsController@editPhoto'); // +
+    Route::get('products/{prod_id}/edit-photo','Admin\ProductsController@editPhoto')
+        ->name('admin-edit-product-photo'); // +
     
     //exchange rates
     Route::get('/products/create-currency-rate', 'Admin\ProductsController@createCurrencyRate');
@@ -144,6 +146,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::get('packages/{pack_id}/products/show/{cat_id}/{group_id}','Admin\PackagesController@showProductsList')
         ->name('admin-add-product-to-package'); //-
     Route::post('packages/{pack_id}/products', 'Admin\PackagesController@storeProductsList');
+    
+    Route::patch('packages/{pack_id}/update-package-price', 'Admin\PackagesController@updatePackageRublePrice')
+        ->name('admin-update-package-ruble-price');
     
     /**
      * Present Management

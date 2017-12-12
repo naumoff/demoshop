@@ -45,9 +45,35 @@
                                        placeholder="Введите имя пакета на русском языке"
                                        required
                                        name="package-ru"
-                                       value="{{$package->package_name}}"
+                                       value="{{$package->package_ru}}"
                                 >
                             </div>
+
+                            <div class="form-group">
+                                <label for="package_de">Название Пакета (нем):</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="package_de"
+                                       placeholder="Введите имя пакета на немецком языке"
+                                       required
+                                       name="package-de"
+                                       value="{{$package->package_de}}"
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="package_weight">Вес пакета (гр.):</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="package_weigh"
+                                       placeholder="Суммарный вес пакета"
+                                       required
+                                       name="package-weight"
+                                       readonly
+                                       value="{{$package->weight_gr}}"
+                                >
+                            </div>
+
                             <div class="form-group">
                                 <label for="price_rub">Цена товара (RUB):</label>
                                 <input type="number"
@@ -59,7 +85,8 @@
                                        min="0"
                                        max="100000"
                                        step="0.0001"
-                                       value="{{$package->package_price}}"
+                                       readonly
+                                       value="{{($package->price_rub_manual != null && $package->price_rub_manual != 0)? $package->price_rub_manual:$package->price_rub_auto}}"
                                 >
                             </div>
                             <div class="form-group">

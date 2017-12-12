@@ -7,6 +7,7 @@ use App\Helpers\DateTimeManipulation;
 use App\Helpers\GetCategoriesAndGroups;
 use App\Http\Requests\StorePackagePost;
 use App\Http\Requests\UpdatePackagePatch;
+use App\Jobs\Packages\UpdatePackageJob;
 use App\Package;
 use App\PackageProduct;
 use App\Product;
@@ -19,11 +20,7 @@ class PackagesController extends Controller
         DateTimeManipulation;
     
     #region MAIN METHODS
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $packages = Package::with('category')->paginate(10);
@@ -32,11 +29,6 @@ class PackagesController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $categories = Category::all();
@@ -48,18 +40,12 @@ class PackagesController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StorePackagePost $request)
     {
         $package = new Package();
         $package->category_id = $request->input('category-id');
-        $package->package_name = $request->input('package-ru');
-        $package->package_price = $request->input('price-rub');
+        $package->package_ru = $request->input('package-ru');
+        $package->package_de = $request->input('package-de');
         $package->package_start_period = $request->input('package-start');
         $package->package_end_period = $request->input('package-end');
         $package->active = $request->input('package-active');
@@ -112,11 +98,6 @@ class PackagesController extends Controller
         ]);
     }
     
-    /**
-     * Show the form for editing the specified resource.
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $categories = Category::all();
@@ -129,13 +110,6 @@ class PackagesController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdatePackagePatch $request, $id)
     {
         $package = Package::find($id);
@@ -148,7 +122,8 @@ class PackagesController extends Controller
         }
         
         $package->category_id = $request->input('category-id');
-        $package->package_name = $request->input('package-ru');
+        $package->package_ru = $request->input('package-ru');
+        $package->package_de = $request->input('package-de');
         $package->package_price = $request->input('price-rub');
         $package->package_start_period = $request->input('package-start');
         $package->package_end_period = $request->input('package-end');
@@ -156,6 +131,14 @@ class PackagesController extends Controller
         
         $package->save();
         
+        return redirect()->back();
+    }
+    
+    public function updatePackageRublePrice(Request $request)
+    {
+        $package = Package::find($request->input('package-id'));
+        $package->price_rub_manual = $request->input('price-rub-manual');
+        $package->save();
         return redirect()->back();
     }
     #endregion
@@ -196,11 +179,19 @@ class PackagesController extends Controller
         $packageProduct->product_id = $request->input('product-id');
         $packageProduct->save();
         
-        //updating package weight
-        $product = Product::find($request->input('product-id'));
+//        //updating package weight
+//        $product = Product::find($request->input('product-id'));
+//        $package = Package::find($request->input('package-id'));
+//        $package->weight_gr = $package->weight_gr + $product->weight_gr;
+//
+//        //updating package automatic eur and rub price
+//        $exchEurRub = CurrencyRate::getEurRubRate();
+//        $package->price_eur = $package->price_eur + $product->price_eur;
+//        $package->price_rub_auto = $package->price_eur * $exchEurRub;
+//        $package->save();
+    
         $package = Package::find($request->input('package-id'));
-        $package->weight_gr = $package->weight_gr + $product->weight_gr;
-        $package->save();
+        UpdatePackageJob::dispatch($package);
         
         return 'SUCCESS';
     }
@@ -214,11 +205,15 @@ class PackagesController extends Controller
             ->first();
         $packageProduct->delete();
         
-        //updating package weight
-        $product = Product::find($request->input('product-id'));
+//        //updating package weight
+//        $product = Product::find($request->input('product-id'));
+//        $package = Package::find($request->input('package-id'));
+//        $package->weight_gr = $package->weight_gr - $product->weight_gr;
+//        $package->save();
+        
         $package = Package::find($request->input('package-id'));
-        $package->weight_gr = $package->weight_gr - $product->weight_gr;
-        $package->save();
+        UpdatePackageJob::dispatch($package);
+        
         return 'SUCCESS';
     }
     #endregion

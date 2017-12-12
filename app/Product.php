@@ -36,6 +36,7 @@ class Product extends Model
     {
         $this->price_rub_auto = $this->price_eur * $EurRubRate;
     }
+    
     #endregion
     
     #region SCOPE METHODS
