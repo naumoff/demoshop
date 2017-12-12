@@ -52,20 +52,24 @@ class Order extends Model
             'id');
     }
     
+    //many-to-many
     public function products()
     {
         return $this->belongstoMany(Product::class,
             'order_product',
             'order_id',
-            'product_id');
+            'product_id')
+            ->withPivot('id','qty','cost','weight');
     }
     
+    //many-to-many
     public function packages()
     {
         return $this->belongsToMany(Package::class,
             'order_package',
             'order_id',
-            'package_id');
+            'package_id')
+            ->withPivot('id','qty','cost','weight');
     }
     
     public function present()

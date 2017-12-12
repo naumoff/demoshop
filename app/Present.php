@@ -21,6 +21,11 @@ class Present extends Model
     #endregion
     
     #region MAIN METHODS
+    public static function getAvailablePresents($goodsCost)
+    {
+        return self::where('min_order_value_rub','<=',$goodsCost)
+            ->where('max_order_value_rub','>=',$goodsCost)->get();
+    }
     #endregion
     
     #region SCOPE METHODS

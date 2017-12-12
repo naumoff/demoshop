@@ -43,18 +43,11 @@ class DeliveryRatesTableSeeder extends Seeder
             ],
             [
                 'min_weight'=>5000,
-                'max_weight'=>6999,
+                'max_weight'=>9999,
                 'delivery_cost'=>3200,
                 'created_at'=>\Carbon\Carbon::now(),
                 'updated_at'=>\Carbon\Carbon::now()
-            ],
-            [
-                'min_weight'=>7000,
-                'max_weight'=>11999,
-                'delivery_cost'=>6200,
-                'created_at'=>\Carbon\Carbon::now(),
-                'updated_at'=>\Carbon\Carbon::now()
-            ],
+            ]
         ]);
     }
 }

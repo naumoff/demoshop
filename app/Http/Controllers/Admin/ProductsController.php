@@ -255,8 +255,7 @@ class ProductsController extends Controller
             ->update($updateData);
         
         $packages = Product::find($request->input('id'))->packages()->get();
-//        dump(Product::find($request->input('id')));
-//        dd($packages);
+
         // if product price changes - package price updated also here
         if($packages !== null && count($packages) > 0){
             foreach ($packages AS $package){

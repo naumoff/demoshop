@@ -16,6 +16,17 @@ class DeliveryRate extends Model
     #endregion
     
     #region MAIN METHODS
+    public static function calculateDeliveryCost($weight)
+    {
+        $deliveryRange = self::where('min_weight', '<=', $weight)
+            ->where('max_weight','>=',$weight)->first();
+        
+        if($deliveryRange !== null){
+            return $deliveryRange->delivery_cost;
+        }else{
+            return false;
+        }
+    }
     #endregion
     
     #region SCOPE METHODS

@@ -88,7 +88,7 @@ $factory->define(\App\Product::class, function(Faker $faker){
         'discount_start'=>$startDate,
         'discount_end'=>$endDate,
         'discount_active'=>rand(0,$discountChance),
-        'weight_gr'=>rand(500,40000),
+        'weight_gr'=>rand(100,1000),
         'active'=>rand(0,1),
         'created_at'=>\Carbon\Carbon::now(),
         'updated_at'=>\Carbon\Carbon::now()
@@ -157,7 +157,11 @@ $factory->define(\App\Present::class,function(Faker $faker){
         [3000.01,4000],
         [4000.01,5000],
         [5000.01,6000],
-        [6000.01,7000]
+        [6000.01,1500],
+        [15000.01,20000],
+        [20000.01,30000],
+        [30000.01,50000],
+        [50000.01,150000],
     ];
     $range = $ranges[rand(0,count($ranges)-1)];
     $present = $faker->word;

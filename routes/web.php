@@ -6,6 +6,10 @@ use App\Events\CustomerRejected;
 use Illuminate\Support\Facades\Storage;
 
 Route::get('test', function(){
+
+    $presents = \App\Present::getAvailablePresents(38278.69);
+    
+    dd($presents[rand(0,count($presents)-1)]);
     
 //    $packageProduct = \App\PackageProduct::first();
 //    dd($packageProduct->product->id);
