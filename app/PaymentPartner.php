@@ -19,6 +19,15 @@ class PaymentPartner extends Model
     #endregion
     
     #region MAIN METHODS
+    public static function getLastPartnerId()
+    {
+        $lastPartnerId = self::orderBy('id','desc')->first();
+        if($lastPartnerId === null){
+            return 0;
+        }else{
+            return $lastPartnerId->id;
+        }
+    }
     #endregion
     
     #region SCOPE METHODS

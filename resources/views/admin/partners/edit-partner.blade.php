@@ -24,6 +24,16 @@
                             {{method_field('PATCH')}}
                             <input type="text" name="partner-id" value="{{$partner->id}}" hidden >
                             <div class="form-group">
+                                <label for="sequence">Порядок ротации:</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="sequence"
+                                       placeholder="Порядок ротации"
+                                       required
+                                       name="sequence"
+                                       value="{{$partner->sequence}}"
+                                >
+                            </div>                            <div class="form-group">
                                 <label for="first_name">Имя партнера:</label>
                                 <input type="text"
                                        class="form-control"

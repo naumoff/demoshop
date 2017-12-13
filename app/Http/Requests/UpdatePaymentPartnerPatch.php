@@ -25,6 +25,7 @@ class UpdatePaymentPartnerPatch extends FormRequest
     {
         $partnerId = $this->request->all()['partner-id'];
         return [
+            'sequence'=>'required|numeric|min:0',
             'first-name'=>'required|min:2',
             'last-name'=>'required|min:2',
             'email'=>'required|email|unique:payment_partners,email,'.$partnerId,

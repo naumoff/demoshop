@@ -14,6 +14,7 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
+                                <th>Порядок</th>
                                 <th>Фамилия</th>
                                 <th>Имя</th>
                                 <th>Лимит</th>
@@ -28,6 +29,7 @@
                             <tbody>
                             @foreach($partners AS $partner)
                                 <tr>
+                                    <td>{{$partner->sequence}}</td>
                                     <td>{{$partner->first_name}}</td>
                                     <td>{{$partner->last_name}}</td>
                                     <td>{{$partner->total_limit_eur}}</td>
@@ -49,7 +51,7 @@
                                                 id="{{$partner->id}}"
                                                 value="{{$partner->active}}"
                                         >
-                                            <b>{{ ($partner->active)?'заблокирован':'работает' }}</b>
+                                            <b>{{ ($partner->active)?'работает':'заблокирован' }}</b>
                                         </button>
                                     </td>
 

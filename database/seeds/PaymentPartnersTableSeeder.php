@@ -24,6 +24,9 @@ class PaymentPartnersTableSeeder extends Seeder
     {
         for($a = 0; $a < $partnersQtyLimit; $a++){
             $partnerId = factory(\App\PaymentPartner::class)->create()->id;
+            $partner = \App\PaymentPartner::find($partnerId);
+            $partner->sequence = $partnerId;
+            $partner->save();
             
             $cardsQtyLimit = rand(1,$this->cardsQtyLimit);
             

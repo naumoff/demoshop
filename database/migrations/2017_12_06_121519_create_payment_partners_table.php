@@ -15,6 +15,7 @@ class CreatePaymentPartnersTable extends Migration
     {
         Schema::create('payment_partners', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('sequence')->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique()->index();

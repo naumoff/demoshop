@@ -24,7 +24,7 @@ class PartnersController extends Controller
      */
     public function index()
     {
-        $partners = PaymentPartner::paginate(10);
+        $partners = PaymentPartner::orderBy('sequence')->paginate(10);
         return view('admin.partners.partners',['partners'=>$partners]);
     }
 
@@ -35,7 +35,13 @@ class PartnersController extends Controller
      */
     public function create()
     {
-        return view('admin.partners.create-partner');
+        $lastPartnerId = PaymentPartner::getLastPartnerId();
+        
+        return view('admin.partners.create-partner',
+            [
+                'nextPartnerId' => ($lastPartnerId + 1)
+            ]
+        );
     }
 
     /**
@@ -51,6 +57,7 @@ class PartnersController extends Controller
         }
         
         $partner = new PaymentPartner();
+        $partner->sequence = $request->input('sequence');
         $partner->first_name = $request->input('first-name');
         $partner->last_name = $request->input('last-name');
         $partner->email = $request->input('email');
@@ -132,6 +139,7 @@ class PartnersController extends Controller
         if($request->input('active') == null){
             $request->merge(['active'=>0]);
         }
+        $partner->sequence = $request->input('sequence');
         $partner->first_name = $request->input('first-name');
         $partner->last_name = $request->input('last-name');
         $partner->email = $request->input('email');

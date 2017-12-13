@@ -20,6 +20,17 @@
                         <form method="post" action="{{route('partners.store')}}">
                             {{csrf_field()}}
                             <div class="form-group">
+                                <label for="sequence">Порядок ротации:</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="sequence"
+                                       placeholder="Введите порядок ротации партнера"
+                                       required
+                                       name="sequence"
+                                       value="{{(old('sequence'))?old('sequence'):$nextPartnerId}}"
+                                >
+                            </div>
+                            <div class="form-group">
                                 <label for="first_name">Имя партнера:</label>
                                 <input type="text"
                                        class="form-control"

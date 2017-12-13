@@ -7,9 +7,11 @@ use Illuminate\Support\Facades\Storage;
 
 Route::get('test', function(){
 
-    $presents = \App\Present::getAvailablePresents(38278.69);
+//    $presents = \App\Present::getAvailablePresents(38278.69);
+//
+//    dd($presents[rand(0,count($presents)-1)]);
     
-    dd($presents[rand(0,count($presents)-1)]);
+    dd(\App\PaymentPartner::getLastPartnerId());
     
 //    $packageProduct = \App\PackageProduct::first();
 //    dd($packageProduct->product->id);

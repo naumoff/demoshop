@@ -24,6 +24,7 @@ class StorePartnerPost extends FormRequest
     public function rules()
     {
         return [
+            'sequence'=>'required|min:0|numeric',
             'first-name'=>'required|min:2',
             'last-name'=>'required|min:2',
             'email'=>'required|email|unique:payment_partners,email',
