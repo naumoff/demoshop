@@ -89,6 +89,7 @@ class PartnersController extends Controller
         if($request->input('active') == null){
             $request->merge(['active'=>0]);
         }
+        
         $paymentCard->bank = $request->input('bank');
         $paymentCard->card_number = $request->input('card-number');
         $paymentCard->card_limit_eur = $request->input('card-limit-eur');
@@ -131,7 +132,7 @@ class PartnersController extends Controller
     #region AJAX METHODS
     
     //change current payment partner
-    public function changeCurrent(Request $request)
+    public function changePartnerCurrent(Request $request)
     {
         $partnerId = $request->input('partner-id');
         $oldValue = $request->input('old-value');
@@ -140,7 +141,7 @@ class PartnersController extends Controller
     }
     
     //block - unblock payment partner
-    public function changeActivity(Request $request)
+    public function changePartnerActivity(Request $request)
     {
         $partnerId = $request->input('partner-id');
         $oldValue = $request->input('old-value');
@@ -154,6 +155,26 @@ class PartnersController extends Controller
         $partner = PaymentPartner::find($partnerId);
         $partner->active = $newValue;
         $partner->save();
+        return 'SUCCESS';
+    }
+    
+    public function changeCardActivity(Request $request)
+    {
+        $cardId = $request->input('card-id');
+        $oldValue = $request->input('old-value');
+    
+        if($oldValue == 0 || $oldValue == null){
+            $newValue = 1;
+        }else{
+            $newValue = 0;
+        }
+    
+        $card = PaymentCard::find($cardId);
+        $card->active = $newValue;
+        $card->save();
+    
+        $this->saveTotalCardsLimitAmount($card->paymentPartner->id);
+        
         return 'SUCCESS';
     }
     

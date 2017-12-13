@@ -119,6 +119,7 @@
                                 <th>Карточка</th>
                                 <th>Лимит</th>
                                 <th>Инвойсы</th>
+                                <th>Статус</th>
                                 <th>Активность</th>
                                 <th>Редактор</th>
                                 <th>Удалить</th>
@@ -131,7 +132,26 @@
                                 <td>{{$card->card_number}}</td>
                                 <td>{{$card->card_limit_eur}}</td>
                                 <td>{{$card->card_invoiced_eur}}</td>
-                                <td>{{$card->active}}</td>
+                                <td>
+                                    <button
+                                            type="button"
+                                            class="btn btn-sm btn-block current"
+                                            id="{{$card->id}}"
+                                            value="{{$card->current}}"
+                                    >
+                                        <b>{{ ($card->current)?'текущий':'ожидает' }}</b>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button
+                                            type="button"
+                                            class="btn btn-sm btn-block active"
+                                            id="{{$card->id}}"
+                                            value="{{$card->active}}"
+                                    >
+                                        <b>{{ ($card->active ==1 )?'работает':'заблокирован' }}</b>
+                                    </button>
+                                </td>
                                 <td>
                                     @include('inclusions.admin.edit-payment-card-modal',['card'=>$card])
                                 </td>
@@ -178,7 +198,28 @@
                     }
                 }
             );
-        })
+        });
+        $(".active").click(function(){
+            var cardId = $(this).attr('id');
+            var oldValue = $(this).attr('value');
+            $.post
+            (
+                '/admin/card/active',
+                {
+                    "_token": "{{csrf_token()}}",
+                    "_method": "PATCH",
+                    'card-id':cardId,
+                    'old-value':oldValue
+                },
+                function(data){
+                    if(data === 'SUCCESS'){
+                        location.reload();
+                    }else{
+                        alert(data);
+                    }
+                }
+            );
+        });
     });
 </script>
 @endsection

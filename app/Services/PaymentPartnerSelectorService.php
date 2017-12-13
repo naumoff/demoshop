@@ -10,12 +10,14 @@ namespace App\Services;
 
 use App\CurrencyRate;
 use App\Order;
+use App\PaymentCard;
 use App\PaymentPartner;
 
 class PaymentPartnerSelectorService
 {
     private $order;
     private $partner;
+    private $card;
     private $orderAmountEur;
     
     #region MAIN METHODS
@@ -41,6 +43,9 @@ class PaymentPartnerSelectorService
     
         //store data to current Partner and current Card
         $this->setCurrentCard();
+        dump($this->partner);
+        dd($this->card);
+        dd(88);
         do{
             if($this->checkCardLimitWithOrderAmount() === false){
                 //limit reached, partner rotated
@@ -89,7 +94,11 @@ class PaymentPartnerSelectorService
                 ->withinEurLimit($this->orderAmountEur)
                 ->with('paymentCards')
                 ->first();
-
+            
+            if($this->partner === null){
+                $this->setCurrentPartner();
+            }
+            
             $status = false;
             
             foreach ($this->partner->paymentCards AS $paymentCard){
@@ -101,9 +110,6 @@ class PaymentPartnerSelectorService
             }
         }while($status === true);
         
-        if($this->partner == null){
-            $this->setCurrentPartner();
-        }
         $this->partner->current = 1;
         $this->partner->save();
     }
@@ -118,6 +124,19 @@ class PaymentPartnerSelectorService
             $paymentCard->current = 0;
             $paymentCard->save();
         }
+    }
+    private function setCurrentCard()
+    {
+        $currentCard = $this->partner->paymentCards()->active()->current()->first();
+        
+        if ($currentCard === null) {
+            $currentCard = $this->partner->paymentCards()->active()->byId()->first();
+            PaymentCard::where('current','=',1)->update(['current'=>0]);
+            $currentCard->current = 1;
+            $currentCard->save();
+        }
+        $this->card = $currentCard;
+        return $currentCard;
     }
     
     #endregion

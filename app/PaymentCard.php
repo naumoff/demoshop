@@ -36,6 +36,16 @@ class PaymentCard extends Model
     {
         return $query->where('active','=',1);
     }
+    
+    public function scopeCurrent($query)
+    {
+        return $query->where('current','=',1);
+    }
+    
+    public function scopeById($query)
+    {
+        return $query->orderBy('id', 'asc');
+    }
     #endregion
     
     #region RELATION METHODS

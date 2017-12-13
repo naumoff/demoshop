@@ -158,8 +158,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::post('/package/status', 'Admin\PackagesController@changePackageStatus');
     Route::post('/present/status', 'Admin\PresentsController@changePresentStatus');
     
-    Route::patch('/partner/active', 'Admin\PartnersController@changeActivity');
-    Route::patch('/partner/current', 'Admin\PartnersController@changeCurrent');
+    Route::patch('/partner/active', 'Admin\PartnersController@changePartnerActivity');
+    Route::patch('/partner/current', 'Admin\PartnersController@changePartnerCurrent');
+    Route::patch('/card/active', 'Admin\PartnersController@changeCardActivity');
     
     Route::post('/category/delete', 'Admin\ProductsController@deleteCategory');
     Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');
