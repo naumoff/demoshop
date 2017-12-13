@@ -83,10 +83,18 @@
                                 <label for="card_limit_eur">Cуммарный лимит по всем активным карточкам:</label>
                                 <input type="text"
                                        class="form-control"
-                                       id="total-cards-eur"
+                                       id="card_limit_eur"
                                        readonly
-                                       name="total-cards-eur"
-                                       value="{{$partner->total_cards_eur}}"
+                                       value="{{$partner->total_cards_limit_eur}}"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="card_eur">Cуммарный баланс по всем активным карточкам:</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="card_eur"
+                                       readonly
+                                       value="{{$partner->total_invoiced_eur}}"
                                 >
                             </div>
                             <div class="checkbox">
@@ -110,6 +118,7 @@
                                 <th>Банк</th>
                                 <th>Карточка</th>
                                 <th>Лимит</th>
+                                <th>Инвойсы</th>
                                 <th>Активность</th>
                                 <th>Редактор</th>
                                 <th>Удалить</th>
@@ -121,6 +130,7 @@
                                 <td>{{$card->bank}}</td>
                                 <td>{{$card->card_number}}</td>
                                 <td>{{$card->card_limit_eur}}</td>
+                                <td>{{$card->card_invoiced_eur}}</td>
                                 <td>{{$card->active}}</td>
                                 <td>
                                     @include('inclusions.admin.edit-payment-card-modal',['card'=>$card])

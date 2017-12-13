@@ -18,9 +18,15 @@ class CreatePaymentCardsTable extends Migration
             $table->integer('holder_id')->unsigned()->index();
             $table->string('bank');
             $table->string('card_number')->unique();
-            $table->float('card_limit_eur',8,2)->default('600.00');
-            $table->boolean('current')->comment('1 - if current card is used now for invoicing');
-            $table->boolean('active')->default(0)->comment('1 - if current card is not blocked');
+            $table->float('card_limit_eur',8,2)
+                ->default('600.00');
+            $table->float('card_invoiced_eur',8,2)
+                ->default(0);
+            $table->boolean('current')
+                ->comment('1 - if current card is used now for invoicing');
+            $table->boolean('active')
+                ->default(0)
+                ->comment('1 - if current card is not blocked');
             $table->timestamps();
             $table->foreign('holder_id')
                 ->references('id')

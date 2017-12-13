@@ -19,10 +19,20 @@ class CreatePaymentPartnersTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique()->index();
-            $table->float('total_limit_eur',8,2)->default(5000.00);
-            $table->float('total_cards_eur',8,2)->default(0);
-            $table->boolean('current')->comment('1 - if partner is used now for invoicing');
-            $table->boolean('active')->default(0)->comment('1 - if partner is not blocked');
+            $table->float('total_limit_eur',8,2)
+                ->default(5000.00)
+                ->comment('total limit for payment partner in EUR');
+            $table->float('total_cards_limit_eur',8,2)
+                ->default(0)
+                ->comment('total cards limits amount in EUR');
+            $table->float('total_invoiced_eur')
+                ->default(0)
+                ->invoice('total invoiced amount for payment partner in EUR');
+            $table->boolean('current')
+                ->comment('1 - if partner is used now for invoicing');
+            $table->boolean('active')
+                ->default(0)
+                ->comment('1 - if partner is not blocked');
             $table->timestamps();
             $table->softDeletes();
         });

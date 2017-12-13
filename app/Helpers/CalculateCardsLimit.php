@@ -21,9 +21,9 @@ trait CalculateCardsLimit
             $totalCardsLimit += $card->card_limit_eur;
         }
         
-        $partner->total_cards_eur = $totalCardsLimit;
+        $partner->total_cards_limit_eur = $totalCardsLimit;
         $partner->save();
         
-        return $partner->total_cards_eur;
+        return $partner->total_cards_limit_eur;
     }
 }

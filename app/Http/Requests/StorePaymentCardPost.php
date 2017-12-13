@@ -26,7 +26,7 @@ class StorePaymentCardPost extends FormRequest
         return [
             'holder-id'=>'required|exists:payment_partners,id',
             'bank'=>'required|min:3',
-            'card-number'=>'required|numeric|digits:16|unique:payment_cards,card_number',
+            'card-number'=>'required|numeric|unique:payment_cards,card_number',
             'card-limit-eur'=>'required',
             'active'=>'nullable|in:1,0'
         ];

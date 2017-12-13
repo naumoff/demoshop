@@ -27,7 +27,7 @@ class UpdatePaymentCardPatch extends FormRequest
         return [
             'id'=>'required|exists:payment_cards,id',
             'bank'=>'required|min:3',
-            'card-number'=>'required|numeric|digits:16|unique:payment_cards,card_number,'.$paymentCardId,
+            'card-number'=>'required|numeric|unique:payment_cards,card_number,'.$paymentCardId,
             'card-limit-eur'=>'required|numeric',
             'active'=>'nullable|numeric|size:1'
         ];

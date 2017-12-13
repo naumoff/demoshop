@@ -6,7 +6,7 @@
             @include('layouts.sidebar-admin')
             <div class="col-md-9">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Подарки</div>
+                    <div class="panel-heading">Платежные партнеры</div>
                     <div class="panel-body">
                         <a href="{{route('partners.create')}}" class="btn btn-success" role="button">
                             Добавить партнера
@@ -17,8 +17,9 @@
                                 <th>Порядок</th>
                                 <th>Фамилия</th>
                                 <th>Имя</th>
-                                <th>Лимит</th>
-                                <th>Карточки</th>
+                                <th>Лим. партн.</th>
+                                <th>Лим. карт.</th>
+                                <th>Инвойсы</th>
                                 <th>Статус</th>
                                 <th>Активность</th>
                                 <th>Карточки</th>
@@ -33,7 +34,8 @@
                                     <td>{{$partner->first_name}}</td>
                                     <td>{{$partner->last_name}}</td>
                                     <td>{{$partner->total_limit_eur}}</td>
-                                    <td>{{$partner->total_cards_eur}}</td>
+                                    <td>{{$partner->total_cards_limit_eur}}</td>
+                                    <td>{{$partner->total_invoiced_eur}}</td>
                                     <td>
                                         <button
                                                 type="button"

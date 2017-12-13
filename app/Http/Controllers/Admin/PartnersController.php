@@ -17,22 +17,12 @@ class PartnersController extends Controller
     use CalculateCardsLimit;
     
     #region MAIN METHODS
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $partners = PaymentPartner::orderBy('sequence')->paginate(10);
         return view('admin.partners.partners',['partners'=>$partners]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $lastPartnerId = PaymentPartner::getLastPartnerId();
@@ -44,12 +34,6 @@ class PartnersController extends Controller
         );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StorePartnerPost $request)
     {
         if($request->input('active') == null){
@@ -62,7 +46,8 @@ class PartnersController extends Controller
         $partner->last_name = $request->input('last-name');
         $partner->email = $request->input('email');
         $partner->total_limit_eur = $request->input('total-limit-eur');
-        $partner->total_cards_eur = 0;
+        $partner->total_cards_limit_eur = 0;
+        $partner->total_invoiced_eur = 0;
         $partner->current = 0;
         $partner->active = $request->input('active');
         $partner->save();
@@ -113,12 +98,6 @@ class PartnersController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $partner = PaymentPartner::find($id);
@@ -127,13 +106,6 @@ class PartnersController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdatePaymentPartnerPatch $request, PaymentPartner $partner)
     {
         if($request->input('active') == null){
@@ -149,12 +121,6 @@ class PartnersController extends Controller
         return back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(PaymentPartner $partner)
     {
        $partner->delete();

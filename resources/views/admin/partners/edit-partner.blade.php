@@ -67,14 +67,14 @@
                                 >
                             </div>
                             <div class="form-group">
-                                <label for="total_limit_eur">Лимит по обороту в месяц (EUR):</label>
+                                <label for="total_limit_eur">Лимит партнера по обороту (EUR):</label>
                                 <input type="number"
                                        min="1"
                                        max="200000"
                                        step="0.01"
                                        class="form-control"
                                        id="total_limit_eur"
-                                       placeholder="Введите ежемесячный лимит по обороту в Евро"
+                                       placeholder="Введите лимит партнера по обороту в Евро"
                                        name="total-limit-eur"
                                        value="{{$partner->total_limit_eur}}"
                                        required
@@ -86,7 +86,7 @@
                                        class="form-control"
                                        id="total_cards_eur"
                                        name="total-cards-eur"
-                                       value="{{$partner->total_cards_eur}}"
+                                       value="{{$partner->total_cards_limit_eur}}"
                                        required
                                        readonly
                                 >

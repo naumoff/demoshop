@@ -4,57 +4,19 @@
 use App\User;
 use App\Events\CustomerRejected;
 use Illuminate\Support\Facades\Storage;
+use App\Services\PaymentPartnerSelectorService;
 
 Route::get('test', function(){
-
-//    $presents = \App\Present::getAvailablePresents(38278.69);
-//
-//    dd($presents[rand(0,count($presents)-1)]);
     
-    dd(\App\PaymentPartner::getLastPartnerId());
+    $order1 = \App\Order::find(1);
+    $order2 = \App\Order::find(2);
+    $order3 = \App\Order::find(3);
     
-//    $packageProduct = \App\PackageProduct::first();
-//    dd($packageProduct->product->id);
-//    $productIds = \App\Product::get(['id']);
-//    $products = [];
-//    foreach ($productIds AS $productId) {
-//        $products[] = $productId->id;
-//    }
-//
-//    $chosenProduct =  \App\Product::find($products[rand(0,count($products)-1)]);
-//    dd($chosenProduct->toArray());
+    $service1 = new PaymentPartnerSelectorService($order1);
+    $service2 = new PaymentPartnerSelectorService($order2);
+    $service3 = new PaymentPartnerSelectorService($order3);
     
-    
-//    $files = Storage::disk('presents')->files('/');
-//    $id = 32;
-//    $mask = "/^{$id}\-.*/i";
-//    foreach ($files AS $file){
-//        if(preg_match($mask,$file)===1){
-//            Storage::disk('presents')->delete($file);
-//        }
-//    }
-//
-//    dd($files);
-    
-//    $productIds = \App\PackageProduct::getProductIdsByPackageId(60);
-//    dd($productIds);
-    
-//    $categories = \App\Category::all()->toArray();
-//    dd($categories[rand(0,count($categories)-1)]['id']);
-//
-//    dd('end');
-
-
-
-//    $result = Storage::disk('products')->files('/');
-//    dump($result);
-//
-//    $url = Storage::disk('products')->url($result[0]);
-//    dump($url);
-//
-//    $rawContent1 = Storage::disk('products')->get("images (1).jpg");
-//    dump($rawContent1);
-    
+    $service1->setPaymentCardForOrder();
 });
 
 Route::get('test/{id}', 'Admin\ProductsController@deleteCategoryTest');

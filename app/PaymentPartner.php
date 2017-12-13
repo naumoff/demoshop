@@ -31,6 +31,27 @@ class PaymentPartner extends Model
     #endregion
     
     #region SCOPE METHODS
+    public function scopeActive($query)
+    {
+        return $query->where('active','=',1);
+    }
+    public function scopeBySequence($query)
+    {
+        return $query->orderBy('sequence','asc');
+    }
+    public function scopeCurrent($query)
+    {
+        return $query->where('current','=',1);
+    }
+    public function scopeNext($query, $pastPartnerSequence, $pastPartnerId){
+        return $query->where('id','!=',$pastPartnerId)
+            ->where('sequence','>=', $pastPartnerSequence);
+    }
+    public function scopeWithinEurLimit($query, $orderAmountInEur)
+    {
+        return $query->where('total_limit_eur','>',$orderAmountInEur);
+    }
+    
     #endregion
     
     #region RELATION METHODS
