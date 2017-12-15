@@ -42,9 +42,14 @@ class PaymentCard extends Model
         return $query->where('current','=',1);
     }
     
-    public function scopeById($query)
+    public function scopeOrderById($query)
     {
         return $query->orderBy('id', 'asc');
+    }
+    
+    public function scopeNext($query,$postCurrentCardId)
+    {
+        return $query->where('id','>',$postCurrentCardId);
     }
     #endregion
     

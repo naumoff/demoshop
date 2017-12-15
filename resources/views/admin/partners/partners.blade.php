@@ -43,7 +43,11 @@
                                                 id="{{$partner->id}}"
                                                 value="{{$partner->current}}"
                                         >
-                                            <b>{{ ($partner->current)?'текущий':'ожидает' }}</b>
+                                            @if($partner->current == 1)
+                                                <div style=color:red>Текущий</div>
+                                            @else
+                                                <div>Ожидает</div>
+                                            @endif
                                         </button>
                                     </td>
                                     <td>

@@ -139,7 +139,11 @@
                                             id="{{$card->id}}"
                                             value="{{$card->current}}"
                                     >
-                                        <b>{{ ($card->current)?'текущий':'ожидает' }}</b>
+                                        @if($card->current)
+                                            <div style="color:red">Текущий</div>
+                                        @else
+                                            Ожидает
+                                        @endif
                                     </button>
                                 </td>
                                 <td>

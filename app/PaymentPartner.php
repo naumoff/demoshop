@@ -35,7 +35,7 @@ class PaymentPartner extends Model
     {
         return $query->where('active','=',1);
     }
-    public function scopeBySequence($query)
+    public function scopeOrderBySequence($query)
     {
         return $query->orderBy('sequence','asc');
     }
