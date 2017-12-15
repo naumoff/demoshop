@@ -12,11 +12,13 @@ Route::get('test', function(){
     $order2 = \App\Order::find(2);
     $order3 = \App\Order::find(3);
     
-    $service1 = new PaymentPartnerSelectorService($order1);
-    $service2 = new PaymentPartnerSelectorService($order2);
-    $service3 = new PaymentPartnerSelectorService($order3);
+    dd($order1->paymentCard->paymentPartner->last_name);
     
-    $service1->setPaymentCardForOrder();
+//    $service1 = new PaymentPartnerSelectorService($order1);
+//    $service2 = new PaymentPartnerSelectorService($order2);
+//    $service3 = new PaymentPartnerSelectorService($order3);
+//
+//    $service1->setPaymentCardForOrder();
 });
 
 Route::get('test/{id}', 'Admin\ProductsController@deleteCategoryTest');
@@ -142,8 +144,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
      * Sales Management
      */
     //orders
-    
-    //invoices
+    Route::get('sales/orders/not-paid', 'Admin\OrdersController@notPaidOrders');
+    Route::get('sales/orders/paid', 'Admin\OrdersController@paidOrders');
+    Route::get('sales/orders/dispatched', 'Admin\OrdersController@dispatchedOrders');
+    Route::get('sales/orders/overdue', 'Admin\OrdersController@paymentOverdueOrders');
     
     //delivery
     Route::get('sales','Admin\AdminController@sales');

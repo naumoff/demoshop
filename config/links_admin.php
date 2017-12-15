@@ -109,12 +109,24 @@ return [
         ],
         'sales'=>[
             [
-                'link'=>'/admin/sales/orders',
-                'ru'=>'Управление заказами'
+                'link'=>'/admin/sales/orders/not-paid',
+                'ru'=>'Заказы ожидающие оплаты',
+                'qty'=>'{not-paid-orders}'
             ],
             [
-                'link'=>'/admin/sales/invoices',
-                'ru'=>'Управление инвойсами'
+                'link'=>'/admin/sales/orders/paid',
+                'ru'=>'Заказы оплаченные',
+                'qty'=>'{paid-orders}'
+            ],
+            [
+                'link'=>'/admin/sales/orders/dispatched',
+                'ru'=>'Заказы отправленные',
+                'qty'=>'{dispatched-orders}'
+            ],
+            [
+                'link'=>'/admin/sales/orders/overdue',
+                'ru'=>'Заказы c спросроченной оплатой',
+                'qty'=>'{overdue-orders}'
             ],
             [
                 'link'=> '/admin/sales/deliveries',

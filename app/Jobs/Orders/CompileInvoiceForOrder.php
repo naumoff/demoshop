@@ -69,7 +69,6 @@ class CompileInvoiceForOrder implements ShouldQueue
         if($this->order->present !== null){
             $orderWeight += $this->order->present->weight_gr;
         }
-        
         return $orderWeight;
     }
 }

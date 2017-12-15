@@ -39,9 +39,37 @@ class Order extends Model
     {
         return 1;
     }
+    
     #endregion
     
     #region SCOPE METHODS
+    public function scopeNotPaid($query)
+    {
+        return $query
+            ->where('order_status','=',config('lists.order_status.payment_expectation.en'));
+    }
+    
+    public function scopePaid($query)
+    {
+        return $query
+            ->where('order_status','=',config('lists.order_status.order_processing.en'));
+    }
+    
+    public function scopeDispatched($query)
+    {
+        return $query
+            ->where('order_status','=', config('lists.order_status.order_sent.en'));
+    }
+    public function scopeOverdue($query)
+    {
+        return $query
+            ->where('invoice_status','=',config('lists.invoice_status.invoice_expired.en'));
+    }
+    public function scopeValid($query)
+    {
+        return $query
+            ->where('invoice_status','=',config('lists.invoice_status.invoice_valid.en'));
+    }
     #endregion
     
     #region RELATION METHODS
@@ -85,5 +113,6 @@ class Order extends Model
             'payment_card_id',
             'id');
     }
+    
     #endregion
 }

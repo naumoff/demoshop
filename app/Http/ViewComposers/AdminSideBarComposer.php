@@ -8,12 +8,13 @@
 
 namespace App\Http\ViewComposers;
 
+use App\Order;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use App\Category;
 use App\Group;
 
-class SideBarComposer
+class AdminSideBarComposer
 {
     public function composeForAdmin(View $view)
     {
@@ -28,7 +29,7 @@ class SideBarComposer
         
         if($pathMask == 'products'){
             $links = config('links_admin.sidebar.products');
-            $links = $this->replaceTokens($links);
+            $links = $this->replacePathTokens($links);
         }
         
         if($pathMask == 'packages'){
@@ -45,6 +46,7 @@ class SideBarComposer
         
         if($pathMask == 'sales'){
             $links = config('links_admin.sidebar.sales');
+            $links = $this->replaceQtyTokens($links);
         }
 
         $view->with('links', $links);
@@ -79,7 +81,7 @@ class SideBarComposer
         }
     }
     
-    private function replaceTokens($links)
+    private function replacePathTokens($links)
     {
         $updatedLinks = [];
         foreach ($links AS $link){
@@ -97,6 +99,32 @@ class SideBarComposer
 
             $updatedLinks[] = $link;
         };
+        return $updatedLinks;
+    }
+    
+    private function replaceQtyTokens($links)
+    {
+        $updatedLinks = [];
+        foreach ($links AS $link){
+            //replace tokens in qty
+            if(isset($link['qty'])){
+                switch($link['qty']){
+                    case '{not-paid-orders}':
+                        $link['qty'] = Order::notPaid()->valid()->get()->count();
+                    break;
+                    case '{paid-orders}':
+                        $link['qty'] = Order::paid()->get()->count();
+                    break;
+                    case '{dispatched-orders}':
+                        $link['qty'] = Order::dispatched()->get()->count();
+                    break;
+                    case '{overdue-orders}':
+                        $link['qty'] = Order::overdue()->get()->count();
+                    break;
+                }
+            }
+            $updatedLinks[] = $link;
+        }
         return $updatedLinks;
     }
 }
