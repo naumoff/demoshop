@@ -4,6 +4,7 @@ namespace App\Jobs\Orders;
 
 use App\DeliveryRate;
 use App\Order;
+use App\Services\PaymentPartnerSelectorService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -49,7 +50,8 @@ class CompileInvoiceForOrder implements ShouldQueue
             $this->order->order_goods_cost + $this->order->order_delivery_cost;
         
         //payment partner selection
-        //@todo make partner rotation
+        $paymentPartnerSelector = new PaymentPartnerSelectorService($this->order);
+        $paymentPartnerSelector->setPaymentCardForOrder();
         $this->order->save();
     }
     

@@ -52,8 +52,8 @@ class PaymentPartnerSelectorService
             }
         }while($this->checkCardBalanceWithOrderAmount() === false);
     
-        //store data to current Partner and current Card
-        $this->addDataToPaymentPartner();
+        //store data to current Partner and current Card and current Order
+        $this->saveAllData();
        
     }
     #endrgion
@@ -162,6 +162,7 @@ class PaymentPartnerSelectorService
             //deactivating current status of post current card
             $this->card->current = 0;
             $this->card->save();
+            
             //setting new current card
             $this->card = $nextCurrentCard;
             $this->card->current = 1;
@@ -174,20 +175,14 @@ class PaymentPartnerSelectorService
     }
     private function cleanCardsData()
     {
-//        foreach ($this->partner->paymentCards AS $paymentCard){
-//            $paymentCard->card_invoiced_eur = 0;
-//            $paymentCard->current = 0;
-//            $paymentCard->save();
-//        }
         PaymentCard::where('holder_id','=',$this->partner->id)
             ->update([
                 'current'=>0,
                 'card_invoiced_eur'=>0
             ]);
     }
-    private function addDataToPaymentPartner()
+    private function saveAllData()
     {
-        
         //saving new invoice to partner balance
         $this->partner->total_invoiced_eur += $this->orderAmountEur;
         $this->partner->save();
@@ -195,6 +190,10 @@ class PaymentPartnerSelectorService
         //saving new invoice to partner's card
         $this->card->card_invoiced_eur += $this->orderAmountEur;
         $this->card->save();
+        
+        //savingCardIdToOrder
+        $this->order->payment_card_id = $this->card->id;
+        $this->order->save();
     }
     #endregion
 }
