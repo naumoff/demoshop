@@ -160,12 +160,16 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
         ->name('admin-load-order-packages');
     Route::get('sales/orders/{order}/present', 'Admin\OrdersController@loadPresentForOrder')
         ->name('admin-load-order-present');
-    Route::get('sales/orders/{order}/cost', 'Admin\OrdersController@loadCostForOrder')
-        ->name('admin-load-order-cost');
-    Route::get('sales/orders/{order}/address', 'Admin\OrdersController@loadAddressForOrder')
-        ->name('admin-load-order-address');
     Route::get('sales/orders/{order}/partner', 'Admin\OrdersController@loadPartnerForOrder')
         ->name('admin-load-order-partner');
+    Route::get('sales/orders/{order}/address', 'Admin\OrdersController@loadAddressForOrder')
+        ->name('admin-load-order-address');
+    Route::patch('/sales/orders/receptor/{order}', 'Admin\OrdersController@updateOrderReceptor')
+        ->name('admin-load-order-receptor-update');
+    Route::get('sales/orders/{order}/status', 'Admin\OrdersController@loadStatusForOrder')
+        ->name('admin-load-order-status');
+
+
     
     //delivery
     Route::get('sales','Admin\AdminController@sales');

@@ -1,6 +1,9 @@
 @extends('layouts.dashboard-admin')
 
 @section('content')
+    @if(isset($tab))
+        {{$tab}}
+    @endif
     <div class="container-fluid">
         <div class="row">
             @include('layouts.sidebar-admin')
@@ -8,6 +11,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Детали заказа</div>
                     <div class="panel-body">
+                        @include('inclusions.error-message');
                         <form>
                             <div class="row">
                                 <div class="col-lg-6">
@@ -60,7 +64,7 @@
                                     <div class="form-group">
                                         <label for="address">Детали заказа:</label>
                                         <textarea class="form-control"
-                                                  rows="4"
+                                                  rows="5"
                                                   readonly
                                                   id="address">вес: {{$order->order_weight}} гр.&#13;&#10;доставка: {{$order->order_delivery_cost}} руб.&#13;&#10;товар: {{$order->order_goods_cost}} руб.&#13;&#10;всего:{{$order->order_total_invoice_amount}} руб.
                                         </textarea>
@@ -70,7 +74,7 @@
 
                         </form>
                         <ul class="nav nav-tabs">
-                            <li class="active tab" tab="goods">
+                            <li class="active tab" tab="products">
                                 <a href="#">
                                     Товар <span class="badge">{{$order->products()->count()}}</span>
                                 </a>
@@ -85,19 +89,19 @@
                                     Подарок <span class="badge">{{$order->present()->count()}}</span>
                                 </a>
                             </li>
-                            <li tab="cost" class="tab">
+                            <li tab="partner" class="tab">
                                 <a href="#">
-                                    Стоимость
+                                    Партнер
                                 </a>
                             </li>
                             <li tab="address" class="tab">
                                 <a href="#">
-                                    Адрес
+                                    Доставка
                                 </a>
                             </li>
-                            <li tab="partner" class="tab">
+                            <li tab="status" class="tab">
                                 <a href="#">
-                                    Партнер
+                                    Статус
                                 </a>
                             </li>
                         </ul>
@@ -110,27 +114,38 @@
         </div>
     </div>
 <script>
-    $("document").ready(function(){
-        $("#form-loader").load("{{route('admin-load-order-products',['order'=>$order->id])}}");
-        $('.tab').on('click',function(){
+    $("document").ready(function() {
+        var getParams = new URLSearchParams(window.location.search);
+        if(getParams.has('tab')===true){
+            var tab = getParams.get('tab');
+            if(tab === 'delivery'){
+                $("li").removeClass('active');
+                $("[tab=address]").addClass('active');
+                $("#form-loader").load("{{route('admin-load-order-address',['order'=>$order->id])}}");
+            }
+        }else{
+            $("#form-loader").load("{{route('admin-load-order-products',['order'=>$order->id])}}");
+        }
+
+        $('.tab').on('click', function () {
             $("li").removeClass('active');
             var tab = $(this).attr('tab');
             $(this).addClass('active');
 
-            if(tab === 'goods'){
+            if (tab === 'products') {
                 $("#form-loader").load("{{route('admin-load-order-products',['order'=>$order->id])}}");
-            }else if(tab === 'packages'){
+            } else if (tab === 'packages') {
                 $("#form-loader").load("{{route('admin-load-order-packages',['order'=>$order->id])}}");
-            }else if(tab === 'present'){
+            } else if (tab === 'present') {
                 $("#form-loader").load("{{route('admin-load-order-present',['order'=>$order->id])}}");
-            }else if(tab === 'cost'){
-                $("#form-loader").load("{{route('admin-load-order-cost',['order'=>$order->id])}}");
-            }else if(tab === 'address'){
-                $("#form-loader").load("{{route('admin-load-order-address',['order'=>$order->id])}}");
-            }else if(tab === 'partner'){
+            } else if (tab === 'partner') {
                 $("#form-loader").load("{{route('admin-load-order-partner',['order'=>$order->id])}}");
+            } else if (tab === 'address') {
+                $("#form-loader").load("{{route('admin-load-order-address',['order'=>$order->id])}}");
+            } else if (tab === 'status') {
+                $("#form-loader").load("{{route('admin-load-order-status',['order'=>$order->id])}}");
             }
-        })
-    })
+        });
+    });
 </script>
 @endsection
