@@ -11,32 +11,46 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>Заказ</th>
-                                <th>Инвойс</th>
-                                <th>Платежный партнер</th>
+                                <th>Документы</th>
                                 <th>Клиент</th>
                                 <th>Адрес</th>
-                                <th>Вес</th>
-                                <th>Доставка</th>
-                                <th>Стоимость товара</th>
-                                <th>Общая стоимость</th>
+                                <th>Данные по заказу</th>
+                                <th>Детали</th>
+                                <th>Удалить</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($orders AS $order)
                                 <tr>
-                                    <td>{{$order->order_number}}</td>
-                                    <td>{{$order->invoice_number}}</td>
-                                    <td>{{
+                                    <td>
+                                        Заказ:{{$order->order_number}}<br>
+                                        Инвойс: {{$order->invoice_number}}<br>
+                                        Партнер:
+                                        {{
                                             $order->paymentCard->paymentPartner->last_name.' '.
                                             $order->paymentCard->paymentPartner->first_name
                                         }}
                                     </td>
-                                    <td>{{$order->user->name}}</td>
-                                    <td></td>
                                     <td>
-                                        <a class="btn btn-info btn-xs edit"
-                                           href="#"
+                                        {{$order->user->name}}<br>
+                                        {{$order->user_email}}<br>
+                                        {{$order->user_phone}}
+                                    </td>
+                                    <td>
+                                        {{$order->user_country}}, {{$order->user_city}}<br>
+                                        ул. {{$order->user_street}}<br>
+                                        дом {{$order->user_building_number}}
+                                        кв. {{$order->user_apartment_number}}
+                                    </td>
+                                    <td>
+                                        вес: {{$order->order_weight}} гр. <br>
+                                        доставка: {{$order->order_delivery_cost}} руб.<br>
+                                        товар: {{$order->order_goods_cost}} руб. <br>
+                                        <b>всего:</b> {{$order->order_total_invoice_amount}} руб.
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-info btn-xs"
+                                           href="{{route('admin-order-edit',$order->id)}}"
                                            id="{{$order->id}}"
                                            role="button"
                                         >
@@ -64,24 +78,6 @@
     </div>
 <script>
     $(function(){
-        $(".edit").click(function(){
-            var packageId = $(this).attr('id');
-            var oldValue = $(this).attr('value');
-            $.post
-            (
-                '/admin/package/status',
-                {
-                    "_token": "{{ csrf_token() }}",
-                    'package-id':packageId,
-                    'old-value':oldValue
-                },
-                function(data){
-                    if(data === 'SUCCESS'){
-                        location.reload();
-                    }
-                }
-            );
-        });
         $(".delete").click(function(){
             var packageId = $(this).attr('id');
             $.post

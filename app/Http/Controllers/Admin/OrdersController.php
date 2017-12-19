@@ -28,4 +28,13 @@ class OrdersController extends Controller
     {
     
     }
+
+    public function orderEdit(Order $order)
+    {
+        $paymentPartner = $order->paymentCard->paymentPartner;
+        return view('admin.orders.edit-order',[
+            'order'=>$order,
+            'paymentPartner'=> $paymentPartner
+        ]);
+    }
 }

@@ -2,6 +2,7 @@
 
 use Faker\Generator as Faker;
 use Carbon\Carbon;
+use App\Services\InvoiceAndOrderNumberGeneratorService;
 
 /*
 |--------------------------------------------------------------------------
@@ -206,9 +207,8 @@ $factory->define(\App\PaymentCard::class, function(Faker $faker){
 
 $factory->define(\App\Order::class, function(Faker $faker){
    
-    $invoiceNumber = \App\Order::getLastInvoiceNumber() + 1;
-    $today = Carbon::today();
-    $orderNumber = $today->year.'-'.$invoiceNumber;
+    $invoiceNumber = InvoiceAndOrderNumberGeneratorService::getNextInvoiceNumber();
+    $orderNumber = InvoiceAndOrderNumberGeneratorService::getNextOrderNumber();
     
     if(rand(0,1) == 1){ //order paid
         $deliveryTrackNumber = uniqid();

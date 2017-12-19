@@ -148,12 +148,17 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::get('sales/orders/paid', 'Admin\OrdersController@paidOrders');
     Route::get('sales/orders/dispatched', 'Admin\OrdersController@dispatchedOrders');
     Route::get('sales/orders/overdue', 'Admin\OrdersController@paymentOverdueOrders');
+    Route::get('sales/orders/{order}/edit','Admin\OrdersController@orderEdit')
+        ->name('admin-order-edit');
     
     //delivery
     Route::get('sales','Admin\AdminController@sales');
     Route::resource('sales/deliveries', 'Admin\DeliveryRatesController',
         ['only'=>['index','store','update','destroy']]);
-    
+
+    /**
+     * AJAX requests
+     */
     //AJAX requests
     Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');
     Route::post('/group/status', 'Admin\ProductsController@changeGroupStatus');

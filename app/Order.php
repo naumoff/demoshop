@@ -35,9 +35,16 @@ class Order extends Model
     #endregion
     
     #region MAIN METHODS
-    public static function getLastInvoiceNumber()
+    public static function getNextOrderId()
     {
-        return 1;
+        $lastOrder = self::orderBy('id','desc')->first();
+        if($lastOrder == null){
+            $lastId = 0;
+        }else{
+            $lastId = $lastOrder->id;
+        }
+        $nextId = $lastId + 1;
+        return $nextId;
     }
     
     #endregion
