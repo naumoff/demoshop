@@ -30,6 +30,15 @@
                                                name="invoice">
                                     </div>
                                     <div class="form-group">
+                                        <label for="date">Дата:</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="date"
+                                               readonly
+                                               value="{{$order->created_at}}"
+                                               name="date">
+                                    </div>
+                                    <div class="form-group">
                                         <label for="partner">Партнер:</label>
                                         <input type="text"
                                                class="form-control"
@@ -53,7 +62,7 @@
                                         <textarea class="form-control"
                                                   rows="4"
                                                   readonly
-                                                  id="address">{{$order->user_country}}, г. {{$order->user_city}}&#13;&#10;ул. {{$order->user_street}}&#13;&#10;дом {{$order->user_building_number}} кв. {{$order->user_apartment_number}}
+                                                  id="address">вес: {{$order->order_weight}} гр.&#13;&#10;доставка: {{$order->order_delivery_cost}} руб.&#13;&#10;товар: {{$order->order_goods_cost}} руб.&#13;&#10;всего:{{$order->order_total_invoice_amount}} руб.
                                         </textarea>
                                     </div>
                                 </div>
@@ -61,14 +70,38 @@
 
                         </form>
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#">Товар</a></li>
-                            <li><a href="#">Пакет</a></li>
-                            <li><a href="#">Подарок</a></li>
-                            <li><a href="#">Стоимость</a></li>
-                            <li><a href="#">Адрес</a></li>
-                            <li><a href="#">Партнер</a></li>
+                            <li class="active tab" tab="goods">
+                                <a href="#">
+                                    Товар <span class="badge">{{$order->products()->count()}}</span>
+                                </a>
+                            </li>
+                            <li tab="packages" class="tab">
+                                <a href="#">
+                                    Пакет <span class="badge">{{$order->packages()->count()}}</span>
+                                </a>
+                            </li>
+                            <li tab="present" class="tab">
+                                <a href="#">
+                                    Подарок <span class="badge">{{$order->present()->count()}}</span>
+                                </a>
+                            </li>
+                            <li tab="cost" class="tab">
+                                <a href="#">
+                                    Стоимость
+                                </a>
+                            </li>
+                            <li tab="address" class="tab">
+                                <a href="#">
+                                    Адрес
+                                </a>
+                            </li>
+                            <li tab="partner" class="tab">
+                                <a href="#">
+                                    Партнер
+                                </a>
+                            </li>
                         </ul>
-                        <div>
+                        <div id="form-loader">
 
                         </div>
                     </div>
@@ -76,4 +109,28 @@
             </div>
         </div>
     </div>
+<script>
+    $("document").ready(function(){
+        $("#form-loader").load("{{route('admin-load-order-products',['order'=>$order->id])}}");
+        $('.tab').on('click',function(){
+            $("li").removeClass('active');
+            var tab = $(this).attr('tab');
+            $(this).addClass('active');
+
+            if(tab === 'goods'){
+                $("#form-loader").load("{{route('admin-load-order-products',['order'=>$order->id])}}");
+            }else if(tab === 'packages'){
+                $("#form-loader").load("{{route('admin-load-order-packages',['order'=>$order->id])}}");
+            }else if(tab === 'present'){
+                $("#form-loader").load("{{route('admin-load-order-present',['order'=>$order->id])}}");
+            }else if(tab === 'cost'){
+                $("#form-loader").load("{{route('admin-load-order-cost',['order'=>$order->id])}}");
+            }else if(tab === 'address'){
+                $("#form-loader").load("{{route('admin-load-order-address',['order'=>$order->id])}}");
+            }else if(tab === 'partner'){
+                $("#form-loader").load("{{route('admin-load-order-partner',['order'=>$order->id])}}");
+            }
+        })
+    })
+</script>
 @endsection

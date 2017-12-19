@@ -8,11 +8,13 @@ use App\Services\PaymentPartnerSelectorService;
 
 Route::get('test', function(){
     
-    $order1 = \App\Order::find(1);
+    $order1 = \App\Order::find(10);
     $order2 = \App\Order::find(2);
     $order3 = \App\Order::find(3);
-    
-    dd($order1->paymentCard->paymentPartner->last_name);
+
+//    dd(route('admin-load-order-products',['order'=>$order1]));
+
+    dd($order1->present->present_ru);
     
 //    $service1 = new PaymentPartnerSelectorService($order1);
 //    $service2 = new PaymentPartnerSelectorService($order2);
@@ -150,6 +152,20 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::get('sales/orders/overdue', 'Admin\OrdersController@paymentOverdueOrders');
     Route::get('sales/orders/{order}/edit','Admin\OrdersController@orderEdit')
         ->name('admin-order-edit');
+
+    //load inclusions
+    Route::get('sales/orders/{order}/products', 'Admin\OrdersController@loadProductsForOrder')
+        ->name('admin-load-order-products');
+    Route::get('sales/orders/{order}/packages', 'Admin\OrdersController@loadPackagesForOrder')
+        ->name('admin-load-order-packages');
+    Route::get('sales/orders/{order}/present', 'Admin\OrdersController@loadPresentForOrder')
+        ->name('admin-load-order-present');
+    Route::get('sales/orders/{order}/cost', 'Admin\OrdersController@loadCostForOrder')
+        ->name('admin-load-order-cost');
+    Route::get('sales/orders/{order}/address', 'Admin\OrdersController@loadAddressForOrder')
+        ->name('admin-load-order-address');
+    Route::get('sales/orders/{order}/partner', 'Admin\OrdersController@loadPartnerForOrder')
+        ->name('admin-load-order-partner');
     
     //delivery
     Route::get('sales','Admin\AdminController@sales');

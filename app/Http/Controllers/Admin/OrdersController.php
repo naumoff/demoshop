@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 class OrdersController extends Controller
 {
+    #region MAIN METHODS
     public function notPaidOrders()
     {
         $orders = Order::notPaid()->valid()->paginate();
@@ -37,4 +38,38 @@ class OrdersController extends Controller
             'paymentPartner'=> $paymentPartner
         ]);
     }
+
+    public function loadProductsForOrder(Order $order)
+    {
+        return view('inclusions.admin.order.products',['order'=>$order]);
+    }
+
+    public function loadPackagesForOrder(Order $order)
+    {
+        return view('inclusions.admin.order.packages',['order'=>$order]);
+    }
+
+    public function loadPresentForOrder(Order $order)
+    {
+        return view('inclusions.admin.order.present',['order'=>$order]);
+    }
+
+    public function loadCostForOrder(Order $order)
+    {
+        dd('cost');
+    }
+
+    public function loadAddressForOrder(Order $order)
+    {
+        dd('address');
+    }
+
+    public function loadPartnerForOrder(Order $order)
+    {
+        dd('partner');
+    }
+    #endregion
+
+    #region SERVICE METHODS
+    #endregion
 }
