@@ -8,6 +8,7 @@
             <th>Кол-во</th>
             <th>Общий вес</th>
             <th>всего RUB</th>
+            <th>Просмотр</th>
         </tr>
         </thead>
         <tbody>
@@ -25,6 +26,16 @@
                 <td>{{$package->pivot->qty}}</td>
                 <td>{{$package->pivot->weight}} гр.</td>
                 <td>{{$package->pivot->cost}} руб.</td>
+                <td>
+                    <a
+                            href="{{route('packages.edit',['$package'=>$package->id])}}"
+                            class="btn btn-info btn-xs"
+                            role="button"
+                            target="_blank"
+                    >
+                        Просмотр
+                    </a>
+                </td>
             </tr>
         @endforeach
         </tbody>

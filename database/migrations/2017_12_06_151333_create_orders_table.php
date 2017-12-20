@@ -46,6 +46,7 @@ class CreateOrdersTable extends Migration
             $table->enum('order_status',$orderStatus);
             $table->enum('invoice_status',$invoiceStatus);
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('present_id')->references('id')->on('presents');
             $table->foreign('payment_card_id')->references('id')->on('payment_cards');
             $table->foreign('user_id')->references('id')->on('users');

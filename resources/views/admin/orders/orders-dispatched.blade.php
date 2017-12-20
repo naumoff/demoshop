@@ -6,7 +6,7 @@
             @include('layouts.sidebar-admin')
             <div class="col-md-9">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Заказы ожидающие оплаты:</div>
+                    <div class="panel-heading">Заказы отправленные:</div>
                     <div class="panel-body">
                         <table class="table table-striped">
                             <thead>
@@ -77,26 +77,26 @@
             </div>
         </div>
     </div>
-<script>
-    $(function(){
-        $(".delete").click(function(){
-            var orderId = $(this).attr('id');
-            $.post
-            (
-                '/admin/orders/'+ orderId,
-                {
-                    "_token": "{{ csrf_token() }}",
-                    "_method": "DELETE",
-                },
-                function(data){
-                    if(data === 'SUCCESS'){
-                        location.reload();
-                    }else{
-                        alert(data);
+    <script>
+        $(function(){
+            $(".delete").click(function(){
+                var orderId = $(this).attr('id');
+                $.post
+                (
+                    '/admin/orders/'+ orderId,
+                    {
+                        "_token": "{{ csrf_token() }}",
+                        "_method": "DELETE",
+                    },
+                    function(data){
+                        if(data === 'SUCCESS'){
+                            location.reload();
+                        }else{
+                            alert(data);
+                        }
                     }
-                }
-            );
-        })
-    });
-</script>
+                );
+            })
+        });
+    </script>
 @endsection

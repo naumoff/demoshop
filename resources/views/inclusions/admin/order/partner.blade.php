@@ -32,4 +32,12 @@
                 value="{{$order->paymentCard->card_number}}"
         >
     </div>
+    <a
+            href="{{route('partners.edit',['partner'=>$order->paymentCard->paymentPartner->id])}}"
+            class="btn btn-info btn-block"
+            role="button"
+            target="_blank"
+    >
+        Просмотр Партнера
+    </a>
 </form>

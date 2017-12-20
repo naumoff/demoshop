@@ -8,6 +8,7 @@
         <th>Кол-во</th>
         <th>Общий вес</th>
         <th>Всего RUB</th>
+        <th>Просмотр</th>
     </tr>
     </thead>
     <tbody>
@@ -25,6 +26,16 @@
         <td>{{$product->pivot->qty}}</td>
         <td>{{$product->pivot->weight}} гр.</td>
         <td>{{$product->pivot->cost}}</td>
+        <td>
+            <a
+                href="{{route('admin-edit-product',['prod_id'=>$product->id])}}"
+                class="btn btn-info btn-xs"
+                role="button"
+                target="_blank"
+            >
+                    Просмотр
+            </a>
+        </td>
     </tr>
     @endforeach
     </tbody>

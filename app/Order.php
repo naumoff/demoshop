@@ -3,11 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
+    use SoftDeletes;
+
     #region CLASS PROPERTIES
     protected $table = 'orders';
+    protected $dates = ['deleted_at'];
     protected $fillable = [
         'present_id',
         'payment_card_id',

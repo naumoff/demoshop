@@ -201,6 +201,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::delete('/package-product/delete', 'Admin\PackagesController@deleteProductFromPackage')
         ->name('admin-delete-product-from-package');
     Route::delete('/partner-card/delete', 'Admin\PartnersController@deletePaymentCardFromPartner');
+
+    Route::delete('/orders/{order}','Admin\OrdersController@deleteOrder')
+        ->name('admin-delete-order');
     
     Route::get('/photo/{prod_id}/{color_code}', 'Admin\ProductsController@formGroupLoaderForProductPhoto'); //-
 });

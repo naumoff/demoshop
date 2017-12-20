@@ -119,7 +119,7 @@ class AdminSideBarComposer
                         $link['qty'] = Order::dispatched()->get()->count();
                     break;
                     case '{overdue-orders}':
-                        $link['qty'] = Order::overdue()->get()->count();
+                        $link['qty'] = Order::overdue()->notPaid()->get()->count();
                     break;
                 }
             }

@@ -19,17 +19,21 @@ class OrdersController extends Controller
     
     public function paidOrders()
     {
-    
+        $orders = Order::paid()->paginate();
+        return view('admin.orders.orders-paid',['orders'=>$orders]);
     }
     
     public function dispatchedOrders()
     {
-    
+        $orders = Order::dispatched()->paginate();
+        return view('admin.orders.orders-dispatched',['orders'=>$orders]);
     }
     
     public function paymentOverdueOrders()
     {
-    
+        $orders = Order::overdue()->notPaid()->paginate();
+        return view('admin.orders.orders-overdue',['orders'=>$orders]);
+
     }
 
     public function orderEdit(Order $order)
@@ -132,5 +136,13 @@ class OrdersController extends Controller
     #endregion
 
     #region SERVICE METHODS
+    #endregion
+
+    #region AJAX METHODS
+    public function deleteOrder(Order $order)
+    {
+        $order->delete();
+        return 'SUCCESS';
+    }
     #endregion
 }

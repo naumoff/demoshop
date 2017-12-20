@@ -1,9 +1,6 @@
 @extends('layouts.dashboard-admin')
 
 @section('content')
-    @if(isset($tab))
-        {{$tab}}
-    @endif
     <div class="container-fluid">
         <div class="row">
             @include('layouts.sidebar-admin')
