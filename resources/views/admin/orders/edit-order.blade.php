@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                        <hr>
                         </form>
                         <ul class="nav nav-tabs">
                             <li class="active tab" tab="products">
@@ -96,7 +96,7 @@
                             </li>
                             <li tab="address" class="tab">
                                 <a href="#">
-                                    Доставка
+                                    Адресат
                                 </a>
                             </li>
                             <li tab="status" class="tab">
@@ -122,6 +122,10 @@
                 $("li").removeClass('active');
                 $("[tab=address]").addClass('active');
                 $("#form-loader").load("{{route('admin-load-order-address',['order'=>$order->id])}}");
+            }else if(tab === 'status'){
+                $("li").removeClass('active');
+                $("[tab=status]").addClass('active');
+                $("#form-loader").load("{{route('admin-load-order-status',['order'=>$order->id])}}");
             }
         }else{
             $("#form-loader").load("{{route('admin-load-order-products',['order'=>$order->id])}}");

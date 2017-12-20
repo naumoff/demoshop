@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateOrderReceptorPatch extends FormRequest
 {
+    protected $redirect;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -35,6 +37,15 @@ class UpdateOrderReceptorPatch extends FormRequest
             'user_building_number'=>'required|min:1',
             'user_apartment_number'=>'required|min:1'
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $orderId = $this->request->all()['order_id'];
+
+        if($validator->fails()){
+            $this->redirect = '/admin/sales/orders/'.$orderId.'/edit?tab=delivery';
+        }
     }
 
 }

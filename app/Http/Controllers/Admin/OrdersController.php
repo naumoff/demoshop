@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\UpdateOrderReceptorPatch;
+use App\Http\Requests\UpdateOrderStatusPatch;
 use App\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -68,7 +69,7 @@ class OrdersController extends Controller
         ]);
     }
 
-    public function loadAddressForOrder(Order $order)
+    public function loadReceptorForOrder(Order $order)
     {
         return view('inclusions.admin.order.address',[
             'order'=>$order,
@@ -78,6 +79,18 @@ class OrdersController extends Controller
     public function updateOrderReceptor(UpdateOrderReceptorPatch $request)
     {
         $order = Order::find($request->input('order_id'));
+
+        $order->user_first_name = $request->input('user_first_name');
+        $order->user_last_name = $request->input('user_last_name');
+        $order->user_phone = $request->input('user_phone');
+        $order->user_country = $request->input('user_country');
+        $order->user_post_index = $request->input('user_post_index');
+        $order->user_city = $request->input('user_city');
+        $order->user_street = $request->input('user_street');
+        $order->user_building_number = $request->input('user_building_number');
+        $order->user_apartment_number = $request->input('user_apartment_number');
+        $order->save();
+
         return redirect()->route('admin-order-edit',[
             'order'=>$order->id,
             'tab'=>'delivery' // will be added to GET params
@@ -86,8 +99,34 @@ class OrdersController extends Controller
 
     public function loadStatusForOrder(Order $order)
     {
+        $orderStatus = config('lists.order_status');
+        foreach ($orderStatus AS $statusItem){
+            $orderStatusList[$statusItem['en']] = $statusItem['ru'];
+        }
+
+        $invoiceStatus = config('lists.invoice_status');
+        foreach ($invoiceStatus AS $statusItem){
+            $invoiceStatusList[$statusItem['en']] = $statusItem['ru'];
+        }
         return view('inclusions.admin.order.status',[
-            'order'=>$order
+            'order'=>$order,
+            'orderStatusList'=>$orderStatusList,
+            'invoiceStatusList'=>$invoiceStatusList
+        ]);
+    }
+
+    public function updateOrderStatus(UpdateOrderStatusPatch $request)
+    {
+        $order = Order::find($request->input('order_id'));
+
+        $order->order_status = $request->input('order_status');
+        $order->delivery_track_number = $request->input('delivery_track_number');
+        $order->invoice_status = $request->input('invoice_status');
+        $order->save();
+
+        return redirect()->route('admin-order-edit',[
+            'order'=>$order->id,
+            'tab'=>'status' // will be added to GET params
         ]);
     }
     #endregion
