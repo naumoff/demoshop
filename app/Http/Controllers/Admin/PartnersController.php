@@ -6,7 +6,9 @@ use App\Helpers\CalculateCardsLimit;
 use App\Http\Requests\StorePartnerPost;
 use App\Http\Requests\StorePaymentCardPost;
 use App\Http\Requests\UpdatePaymentCardPatch;
+use App\Http\Requests\UpdatePaymentPartnerActiveStatusPatch;
 use App\Http\Requests\UpdatePaymentPartnerPatch;
+use App\Jobs\PaymentPartners\SetCurrentStatusForPartnerJob;
 use App\PaymentCard;
 use App\PaymentPartner;
 use Illuminate\Http\Request;
@@ -132,12 +134,14 @@ class PartnersController extends Controller
     #region AJAX METHODS
     
     //change current payment partner
-    public function changePartnerCurrent(Request $request)
+    public function changePartnerCurrent(UpdatePaymentPartnerActiveStatusPatch $request)
     {
-        $partnerId = $request->input('partner-id');
-        $oldValue = $request->input('old-value');
+        $partner = PaymentPartner::find($request->input('partner_id'));
+        $oldValue = $request->input('old_value');
+
+        SetCurrentStatusForPartnerJob::dispatch($partner, $oldValue);
         
-        echo $partnerId.'-'.$oldValue;
+        return 'SUCCESS';
     }
     
     //block - unblock payment partner

@@ -132,8 +132,8 @@
                 {
                     "_token": "{{csrf_token()}}",
                     "_method": "PATCH",
-                    'partner-id':partnerId,
-                    'old-value':oldValue
+                    'partner_id':partnerId,
+                    'old_value':oldValue
                 },
                 function(data){
                     if(data === 'SUCCESS'){
