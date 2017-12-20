@@ -10,11 +10,11 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    {{--CSS--}}
+    <link href="{{mix('/css/app.css')}}" type="text/css" rel="stylesheet">
 
-    <!-- jquery library -->
-    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+    {{-- JS libraries --}}
+    <script type="text/javascript" src="{{mix('/js/app.js')}}"></script>
 
 </head>
 <body>

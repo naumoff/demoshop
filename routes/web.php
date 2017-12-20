@@ -12,15 +12,12 @@ Route::get('test', function(){
     $order2 = \App\Order::find(2);
     $order3 = \App\Order::find(3);
 
-//    dd(route('admin-load-order-products',['order'=>$order1]));
 
-    dd($order1->present->present_ru);
-    
-//    $service1 = new PaymentPartnerSelectorService($order1);
+    $service1 = new PaymentPartnerSelectorService($order1);
 //    $service2 = new PaymentPartnerSelectorService($order2);
 //    $service3 = new PaymentPartnerSelectorService($order3);
 //
-//    $service1->setPaymentCardForOrder();
+    $service1->setPaymentCardForOrder();
 });
 
 Route::get('test/{id}', 'Admin\ProductsController@deleteCategoryTest');
