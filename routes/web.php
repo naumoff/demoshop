@@ -49,14 +49,21 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')
     ->name('home');
 
-// ADMIN DASHBOARD
+/**
+ * ****************************************************************************
+ * *                         ADMIN DASHBOARD                                  *
+ * ****************************************************************************
+ */
+
 Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     //General management
     Route::get('home','Admin\AdminController@index')
         ->name('admin-home');
     
     /**
-     * User Management
+     * **********************
+     * * USER MANAGEMENT    *
+     * **********************
      */
     Route::get('users','Admin\UsersController@index')
         ->name('admin-users');
@@ -67,7 +74,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::get('users/all','Admin\UsersController@showAll');
     
     /**
-     * Product Management
+     * **********************
+     * * PRODUCT MANAGEMENT *
+     * **********************
      */
     Route::get('products','Admin\ProductsController@index')
         ->name('admin-products');
@@ -105,8 +114,23 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::get('/products/create-currency-rate', 'Admin\ProductsController@createCurrencyRate');
     Route::post('/products/currency-rates', 'Admin\ProductsController@storeCurrencyRate');
     
+    //AJAX requests for PRODUCTS
+    Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');
+    Route::post('/group/status', 'Admin\ProductsController@changeGroupStatus');
+    Route::post('/product/status', 'Admin\ProductsController@changeProductStatus');
+    Route::post('/product-action/status', 'Admin\ProductsController@changeProductActionStatus');
+    
+    Route::post('/category/delete', 'Admin\ProductsController@deleteCategory');
+    Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');
+    Route::post('/product/delete', 'Admin\ProductsController@deleteProduct');
+    Route::post('/photo/delete', 'Admin\ProductsController@deletePhoto');
+    
+    Route::get('/photo/{prod_id}/{color_code}', 'Admin\ProductsController@formGroupLoaderForProductPhoto');
+    
     /**
-     * Package Management
+     * **********************
+     * * PACKAGE MANAGEMENT *
+     * **********************
      */
     Route::resource('packages', 'Admin\PackagesController',['except'=>['show']]);
     
@@ -118,18 +142,28 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     
     Route::patch('packages/{pack_id}/update-package-price', 'Admin\PackagesController@updatePackageRublePrice')
         ->name('admin-update-package-ruble-price');
+    //AJAX requests for PACKAGES
+    Route::post('/package/status', 'Admin\PackagesController@changePackageStatus');
+    Route::delete('/package-product/delete', 'Admin\PackagesController@deleteProductFromPackage')
+        ->name('admin-delete-product-from-package');
     
     /**
-     * Present Management
+     * **********************
+     * * PRESENT MANAGEMENT *
+     * **********************
      */
     Route::resource('presents', 'Admin\PresentsController', ['except'=>['show']]);
     Route::get('presents/{present_id}/edit-photo', 'Admin\PresentsController@editPhoto');
     Route::delete('presents/{present_id}/delete-photo','Admin\PresentsController@deletePhoto');
     Route::patch('presents/{present_id}/add-photo','Admin\PresentsController@addPhoto')
         ->name('admin-present-add-photo');
+    //AJAX requests for PRESENTS
+    Route::post('/present/status', 'Admin\PresentsController@changePresentStatus');
 
     /**
-     * Payment Partners Management
+     * ***********************
+     * * PARTNERS MANAGEMENT *
+     * ***********************
      */
     Route::resource('partners','Admin\PartnersController', ['except'=>['show']]);
     Route::get('partners/{part_id}/createPaymentCard', 'Admin\PartnersController@createPaymentCard')
@@ -139,8 +173,16 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     Route::patch('partners/payment-card/{paymentCard}', 'Admin\PartnersController@updatePaymentCard')
         ->name('admin-partner-update-card');
     
+    //AJAX requests for PARTNERS
+    Route::patch('/partner/active', 'Admin\PartnersController@changePartnerActivity');
+    Route::patch('/partner/current', 'Admin\PartnersController@changePartnerCurrent');
+    Route::patch('/card/active', 'Admin\PartnersController@changeCardActivity');
+    Route::delete('/partner-card/delete', 'Admin\PartnersController@deletePaymentCardFromPartner');
+    
     /**
-     * Sales Management
+     * **********************
+     * * SALES MANAGEMENT   *
+     * **********************
      */
     //orders
     Route::get('sales/orders/not-paid', 'Admin\OrdersController@notPaidOrders');
@@ -169,43 +211,22 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
         ->name('admin-load-order-status');
     Route::patch('/sales/orders/status/{order}', 'Admin\OrdersController@updateOrderStatus')
         ->name('admin-load-order-status-update');
-
     
     //delivery
     Route::get('sales','Admin\AdminController@sales');
     Route::resource('sales/deliveries', 'Admin\DeliveryRatesController',
         ['only'=>['index','store','update','destroy']]);
-
-    /**
-     * AJAX requests
-     */
-    //AJAX requests
-    Route::post('/category/status', 'Admin\ProductsController@changeCategoryStatus');
-    Route::post('/group/status', 'Admin\ProductsController@changeGroupStatus');
-    Route::post('/product/status', 'Admin\ProductsController@changeProductStatus'); // +
-    Route::post('/product-action/status', 'Admin\ProductsController@changeProductActionStatus'); // +
-    Route::post('/package/status', 'Admin\PackagesController@changePackageStatus');
-    Route::post('/present/status', 'Admin\PresentsController@changePresentStatus');
     
-    Route::patch('/partner/active', 'Admin\PartnersController@changePartnerActivity');
-    Route::patch('/partner/current', 'Admin\PartnersController@changePartnerCurrent');
-    Route::patch('/card/active', 'Admin\PartnersController@changeCardActivity');
-    
-    Route::post('/category/delete', 'Admin\ProductsController@deleteCategory');
-    Route::post('/group/delete', 'Admin\ProductsController@deleteGroup');
-    Route::post('/product/delete', 'Admin\ProductsController@deleteProduct'); // +
-    Route::post('/photo/delete', 'Admin\ProductsController@deletePhoto'); // +
-    Route::delete('/package-product/delete', 'Admin\PackagesController@deleteProductFromPackage')
-        ->name('admin-delete-product-from-package');
-    Route::delete('/partner-card/delete', 'Admin\PartnersController@deletePaymentCardFromPartner');
-
+    //AJAX requests for ORDERS
     Route::delete('/orders/{order}','Admin\OrdersController@deleteOrder')
         ->name('admin-delete-order');
-    
-    Route::get('/photo/{prod_id}/{color_code}', 'Admin\ProductsController@formGroupLoaderForProductPhoto'); //-
 });
 
-//CUSTOMER DASHBOARD
+/**
+ * ****************************************************************************
+ * *                         CUSTOMER AREA                                    *
+ * ****************************************************************************
+ */
 Route::group(['prefix'=>'customer', 'middleware'=>'customer'], function(){
     Route::get('home','Customers\CustomerController@index')->name('customer-home');
 });

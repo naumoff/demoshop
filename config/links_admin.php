@@ -32,8 +32,8 @@ return [
             'ru'=>'Платежные партнеры'
         ],
     
-        'questioners'=>[
-            'link'=>'/admin/questioners',
+        'inquirers'=>[
+            'link'=>'/admin/inquirers',
             'ru'=>'Опросники'
         ],
         
