@@ -220,6 +220,13 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
     //AJAX requests for ORDERS
     Route::delete('/orders/{order}','Admin\OrdersController@deleteOrder')
         ->name('admin-delete-order');
+    
+    /**
+     * ************************
+     * * INQUIRERS MANAGEMENT *
+     * ************************
+     */
+    
 });
 
 /**

@@ -106,9 +106,16 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
     
+    //one-to-many
     public function orders()
     {
         return $this->hasMany(Order::class, 'user_id','id');
+    }
+    
+    // many-to-many
+    public function questions()
+    {
+        return $this->belongsToMany(Question::class,'question_user','question_id','user_id');
     }
     #endregion
 }

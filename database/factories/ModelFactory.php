@@ -279,6 +279,33 @@ $factory->define(\App\OrderPackage::class, function(Faker $faker){
         'weight'=>$invoiceRowCalculator->calculatePackageWeightByQty($randomPackage, $qty)
     ];
 });
+
+$factory->define(\App\Inquirer::class, function(Faker $faker){
+    return [
+        'inquirer'=>$faker->words($nb = 4, $asText = true).'.',
+        'created_at'=>\Carbon\Carbon::now(),
+        'updated_at'=>\Carbon\Carbon::now()
+    ];
+});
+$factory->define(\App\Question::class, function(Faker $faker){
+    $chance = rand(0,1);
+    if($chance == 1){
+        $pathToFiles = Storage::disk('questions')->files('/');
+        $url = Storage::disk('questions')->url($pathToFiles[rand(0,count($pathToFiles)-1)]);
+    }else{
+        $url = null;
+    }
+    return [
+        'question'=>$faker->words($nb = 4, $asText = true).'?',
+        'url'=>$url
+    ];
+});
+
+$factory->define(\App\QuestionUser::class,function(Faker $faker){
+    return [
+        'answer'=>'Answer-'.$faker->words($nb = 4, $asText = true).'.'
+    ];
+});
 #endregion
 
 #region SERVICE METHODS
