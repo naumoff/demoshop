@@ -8,16 +8,23 @@ use App\Services\PaymentPartnerSelectorService;
 
 Route::get('test', function(){
     
-    $order1 = \App\Order::find(10);
-    $order2 = \App\Order::find(2);
-    $order3 = \App\Order::find(3);
-
-
-    $service1 = new PaymentPartnerSelectorService($order1);
-//    $service2 = new PaymentPartnerSelectorService($order2);
-//    $service3 = new PaymentPartnerSelectorService($order3);
+    $inquirer = \App\Inquirer::find(3);
+    dd($inquirer->questions()->first()->users->count());
+    
+    
+    $user = User::find(3);
+    dd($user->questions);
+    
+//    $order1 = \App\Order::find(10);
+//    $order2 = \App\Order::find(2);
+//    $order3 = \App\Order::find(3);
 //
-    $service1->setPaymentCardForOrder();
+//
+//    $service1 = new PaymentPartnerSelectorService($order1);
+////    $service2 = new PaymentPartnerSelectorService($order2);
+////    $service3 = new PaymentPartnerSelectorService($order3);
+////
+//    $service1->setPaymentCardForOrder();
 });
 
 Route::get('test/{id}', 'Admin\ProductsController@deleteCategoryTest');
@@ -226,7 +233,13 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
      * * INQUIRERS MANAGEMENT *
      * ************************
      */
+    Route::resource('inquirers', 'Admin\InquirersController');
     
+    //load inclusions
+    Route::get('inquirers/{inquirer}/questions', 'Admin\inquirersController@loadQuestionsForInquirer')
+        ->name('admin-load-inquirer-questions');
+    Route::get('inquirers/{inquirer}/users', 'Admin\inquirersController@loadUsersForInquirer')
+        ->name('admin-load-inquirer-users');
 });
 
 /**

@@ -5,6 +5,8 @@ use Illuminate\Database\Seeder;
 class InquirersTableSeeder extends Seeder
 {
     private $inquirersQtyLimit = 35;
+    private $responsiveUsersQtyLimit = 15;
+    private $questionsQtyLimit = 5;
     
     /**
      * Run the database seeds.
@@ -21,13 +23,13 @@ class InquirersTableSeeder extends Seeder
             }
             
             //defining users array
-            $usersQty = rand(1,15);
+            $usersQty = rand(1,$this->responsiveUsersQtyLimit);
             $usersIds = $this->getRandomUsersArrayIds($usersQty);
             
             //adding questions to inquirer
-            $questionsQtyLimit = rand(1,5);
+            $questionsQtyLimit = rand(1,$this->questionsQtyLimit);
             
-            for($questions=0; $questions<$questionsQtyLimit; $questions++){
+            for($questions=0; $questions<=$questionsQtyLimit; $questions++){
                 //creating questions for inquirer
                 $questionId = factory(\App\Question::class)->create([
                     'inquirer_id'=>$inquirerId

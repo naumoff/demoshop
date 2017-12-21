@@ -8,6 +8,7 @@
 
 namespace App\Http\ViewComposers;
 
+use App\Inquirer;
 use App\Order;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -48,6 +49,11 @@ class AdminSideBarComposer
             $links = config('links_admin.sidebar.sales');
             $links = $this->replaceQtyTokens($links);
         }
+        
+        if($pathMask == 'inquirers'){
+            $links = config('links_admin.sidebar.inquirers');
+            $links = $this->replaceQtyTokens($links);
+        }
 
         $view->with('links', $links);
     }
@@ -78,6 +84,10 @@ class AdminSideBarComposer
         
         if(strpos($path,'admin/sales')){
             return 'sales';
+        }
+        
+        if(strpos($path,'admin/inquirers')){
+            return 'inquirers';
         }
     }
     
@@ -121,6 +131,8 @@ class AdminSideBarComposer
                     case '{overdue-orders}':
                         $link['qty'] = Order::overdue()->notPaid()->get()->count();
                     break;
+                    case '{all-inquirers}':
+                        $link['qty'] = Inquirer::all()->count();
                 }
             }
             $updatedLinks[] = $link;

@@ -143,6 +143,18 @@ return [
                 'link'=>'/admin/partners',
                 'ru'=>'Управление партнерами'
             ],
-        ]
+        ],
+        
+        'inquirers'=>[
+            [
+                'link'=>'/admin/inquirers/create',
+                'ru'=>'Создать новый опросный лист'
+            ],
+            [
+                'link'=>'/admin/inquirers',
+                'ru'=>'Опросные листы',
+                'qty'=>'{all-inquirers}'
+            ],
+        ],
     ]
 ];
