@@ -29,7 +29,13 @@
                                 <tr>
                                     <td>{{$package->category->category}}</td>
                                     <td>{{$package->package_ru}}</td>
-                                    <td>{{$package->package_price}}</td>
+                                    <td>
+                                        @if($package->price_rub_manual !== null)
+                                            {{$package->price_rub_manual}} руб.
+                                        @else
+                                            {{$package->price_rub_auto}} руб.
+                                        @endif
+                                    </td>
                                     <td>{{$package->package_start_period}}</td>
                                     <td>{{$package->package_end_period}}</td>
                                     <td>

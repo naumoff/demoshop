@@ -13,25 +13,25 @@ class OrdersController extends Controller
     #region MAIN METHODS
     public function notPaidOrders()
     {
-        $orders = Order::notPaid()->valid()->paginate();
+        $orders = Order::notPaid()->valid()->with('paymentCard.paymentPartner')->paginate();
         return view('admin.orders.orders-not-paid',['orders'=>$orders]);
     }
     
     public function paidOrders()
     {
-        $orders = Order::paid()->paginate();
+        $orders = Order::paid()->with('paymentCard.paymentPartner')->paginate();
         return view('admin.orders.orders-paid',['orders'=>$orders]);
     }
     
     public function dispatchedOrders()
     {
-        $orders = Order::dispatched()->paginate();
+        $orders = Order::dispatched()->with('paymentCard.paymentPartner')->paginate();
         return view('admin.orders.orders-dispatched',['orders'=>$orders]);
     }
     
     public function paymentOverdueOrders()
     {
-        $orders = Order::overdue()->notPaid()->paginate();
+        $orders = Order::overdue()->notPaid()->with('paymentCard.paymentPartner')->paginate();
         return view('admin.orders.orders-overdue',['orders'=>$orders]);
 
     }

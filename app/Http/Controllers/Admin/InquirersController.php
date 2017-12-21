@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Inquirer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\User;
 
 class InquirersController extends Controller
 {
@@ -48,17 +49,35 @@ class InquirersController extends Controller
     {
         dd(7);
     }
+    
+    //show answers of all users for one question
+    public function showAnswersForOneQuestion(Inquirer $inquirer)
+    {
+        dd('show answers of all users for one question');
+    }
+    //show answers of one user for one inquirer
+    public function showAnswersForOneUser(Inquirer $inquirer, User $user)
+    {
+        dd('show answers of one user for one inquirer');
+    }
     #endregion
     
     #region AJAX INCLUSIONS
     public function loadQuestionsForInquirer(Inquirer $inquirer)
     {
-        dd('questions');
+        $questions = $inquirer->questions;
+        return view('inclusions.admin.inquirers.questions',[
+            'questions'=>$questions
+        ]);
     }
     
     public function loadUsersForInquirer(Inquirer $inquirer)
     {
-        dd('users');
+        $users = $inquirer->questions->first()->users;
+        return view('inclusions.admin.inquirers.users',[
+            'users'=>$users,
+            'inquirer'=>$inquirer
+        ]);
     }
     #endregion
 }

@@ -234,6 +234,12 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
      * ************************
      */
     Route::resource('inquirers', 'Admin\InquirersController');
+    //show answers of all users for one question
+    Route::get('inquiries/{inquirer}/question-users-answers','Admin\InquirersController@showAnswersForOneQuestion')
+        ->name('admin-show-answers-to-question');
+    //show answers of one user for one inquirer
+    Route::get('inquiries/{inquirer}/inquirer-user-answers/{user}', 'Admin\InquirersController@showAnswersForOneUser')
+        ->name('admin-show-user-answers-to-inquirer');
     
     //load inclusions
     Route::get('inquirers/{inquirer}/questions', 'Admin\inquirersController@loadQuestionsForInquirer')
