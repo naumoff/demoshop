@@ -11,7 +11,8 @@ class QuestionUser extends Model
     protected $fillable = [
         'question_id',
         'user_id',
-        'answer'
+        'answer',
+        'created_at'
     ];
     #endregion
     
@@ -19,8 +20,24 @@ class QuestionUser extends Model
     #endregion
     
     #region SCOPE METHODS
+    public function scopeUser($query, User $user)
+    {
+        return $query->where('user_id','=',$user->id);
+    }
+    public function scopeInquirer($query, Inquirer $inquirer)
+    {
+        $questionIds = [];
+        foreach ($inquirer->questions AS $question){
+             $questionIds[] = $question->id;
+        }
+        return $query->whereIn('question_id',$questionIds);
+    }
     #endregion
     
     #region RELATION METHODS
+    public function question()
+    {
+        return $this->belongsTo(Question::class,'question_id','id');
+    }
     #endregion
 }

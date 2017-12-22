@@ -13,7 +13,12 @@
             </td>
             <td>
                 <a
-                        href="{{route('admin-show-answers-to-question',['inquirer'=>$question->inquirer->id])}}"
+                        href="{{route('admin-show-answers-to-question',
+                            [
+                                'inquirer'=>$question->inquirer->id,
+                                'question'=>$question->id
+                            ]
+                        )}}"
                         class="btn btn-info btn-xs btn-block"
                         role="button"
                 >

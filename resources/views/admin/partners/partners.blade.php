@@ -81,13 +81,15 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="#"
-                                           id="{{$partner->id}}"
-                                           class="btn btn-danger btn-xs delete"
-                                           role="button"
-                                        >
-                                            Удалить
-                                        </a>
+                                        @if($partner->orders->count() === 0 )
+                                            <a href="#"
+                                               id="{{$partner->id}}"
+                                               class="btn btn-danger btn-xs delete"
+                                               role="button"
+                                            >
+                                                Удалить
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

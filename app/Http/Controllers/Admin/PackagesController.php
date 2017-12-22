@@ -124,7 +124,6 @@ class PackagesController extends Controller
         $package->category_id = $request->input('category-id');
         $package->package_ru = $request->input('package-ru');
         $package->package_de = $request->input('package-de');
-        $package->package_price = $request->input('price-rub');
         $package->package_start_period = $request->input('package-start');
         $package->package_end_period = $request->input('package-end');
         $package->active = $request->input('package-active');

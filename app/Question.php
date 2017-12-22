@@ -29,7 +29,16 @@ class Question extends Model
     // many-to-many
     public function users()
     {
-        return $this->belongsToMany(User::class,'question_user','question_id','user_id');
+        return $this->belongsToMany(User::class,
+            'question_user',
+            'question_id',
+            'user_id')
+            ->withPivot('answer','created_at');
+    }
+
+    public function question_users()
+    {
+        return $this->hasMany(QuestionUser::class,'question_id','id');
     }
     #endregion
 }

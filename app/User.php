@@ -115,7 +115,11 @@ class User extends Authenticatable
     // many-to-many
     public function questions()
     {
-        return $this->belongsToMany(Question::class,'question_user','question_id','user_id');
+        return $this->belongsToMany(Question::class,
+            'question_user',
+            'question_id',
+            'user_id')
+            ->withPivot('answer','created_at');
     }
     #endregion
 }

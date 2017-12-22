@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Inquirer;
+use App\Question;
+use App\QuestionUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -51,14 +53,24 @@ class InquirersController extends Controller
     }
     
     //show answers of all users for one question
-    public function showAnswersForOneQuestion(Inquirer $inquirer)
+    public function showAnswersForOneQuestion(Inquirer $inquirer, Question $question)
     {
-        dd('show answers of all users for one question');
+//        dd($question->users);
+
+        return view('admin.inquirers.question-users',[
+            'inquirer'=>$inquirer,
+            'question'=>$question
+        ]);
     }
     //show answers of one user for one inquirer
     public function showAnswersForOneUser(Inquirer $inquirer, User $user)
     {
-        dd('show answers of one user for one inquirer');
+        $questionUser = QuestionUser::user($user)->inquirer($inquirer)->get();
+        return view('admin.inquirers.user-answers',[
+            'inquirer'=>$inquirer,
+            'user'=>$user,
+            'questionUser'=>$questionUser
+        ]);
     }
     #endregion
     
@@ -78,6 +90,26 @@ class InquirersController extends Controller
             'users'=>$users,
             'inquirer'=>$inquirer
         ]);
+    }
+
+    public function getUserAnswersForInquirer(Inquirer $inquirer, User $user)
+    {
+        $questionUser = QuestionUser::user($user)->inquirer($inquirer)->get();
+        dd($collection);
+    }
+    #endregion
+
+    #region SERVICE METHODS
+    private function getInquirerCompletionDate(Inquirer $inquirer, User $user)
+    {
+        $completedAt = $inquirer
+            ->questions()
+            ->first()
+            ->question_users()
+            ->where('user_id','=',$user->id)
+            ->first()
+            ->created_at;
+        return $completedAt;
     }
     #endregion
 }

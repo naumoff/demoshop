@@ -59,5 +59,14 @@ class PaymentPartner extends Model
     {
         return $this->hasMany(PaymentCard::class,'holder_id','id');
     }
+
+    public function orders()
+    {
+        return $this->hasManyThrough(Order::class,
+            PaymentCard::class,
+            'holder_id',
+            'payment_card_id'
+            );
+    }
     #endregion
 }

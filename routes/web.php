@@ -8,23 +8,23 @@ use App\Services\PaymentPartnerSelectorService;
 
 Route::get('test', function(){
     
-    $inquirer = \App\Inquirer::find(3);
-    dd($inquirer->questions()->first()->users->count());
-    
-    
-    $user = User::find(3);
-    dd($user->questions);
-    
-//    $order1 = \App\Order::find(10);
+//    $inquirer = \App\Inquirer::find(3);
+//    dd($inquirer->questions()->first()->users->count());
+//
+//
+//    $user = User::find(3);
+//    dd($user->questions);
+//
+    $order1 = \App\Order::find(10);
 //    $order2 = \App\Order::find(2);
 //    $order3 = \App\Order::find(3);
 //
 //
-//    $service1 = new PaymentPartnerSelectorService($order1);
+    $service1 = new PaymentPartnerSelectorService($order1);
 ////    $service2 = new PaymentPartnerSelectorService($order2);
 ////    $service3 = new PaymentPartnerSelectorService($order3);
 ////
-//    $service1->setPaymentCardForOrder();
+    $service1->setPaymentCardForOrder();
 });
 
 Route::get('test/{id}', 'Admin\ProductsController@deleteCategoryTest');
@@ -235,10 +235,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>'admin'], function(){
      */
     Route::resource('inquirers', 'Admin\InquirersController');
     //show answers of all users for one question
-    Route::get('inquiries/{inquirer}/question-users-answers','Admin\InquirersController@showAnswersForOneQuestion')
+    Route::get('inquirers/{inquirer}/question-users-answers/{question}','Admin\InquirersController@showAnswersForOneQuestion')
         ->name('admin-show-answers-to-question');
     //show answers of one user for one inquirer
-    Route::get('inquiries/{inquirer}/inquirer-user-answers/{user}', 'Admin\InquirersController@showAnswersForOneUser')
+    Route::get('inquirers/{inquirer}/inquirer-user-answers/{user}', 'Admin\InquirersController@showAnswersForOneUser')
         ->name('admin-show-user-answers-to-inquirer');
     
     //load inclusions

@@ -22,6 +22,7 @@ class PartnersController extends Controller
     public function index()
     {
         $partners = PaymentPartner::orderBy('sequence')->paginate(10);
+
         return view('admin.partners.partners',['partners'=>$partners]);
     }
 
@@ -137,11 +138,17 @@ class PartnersController extends Controller
     public function changePartnerCurrent(UpdatePaymentPartnerActiveStatusPatch $request)
     {
         $partner = PaymentPartner::find($request->input('partner_id'));
-        $oldValue = $request->input('old_value');
 
-        SetCurrentStatusForPartnerJob::dispatch($partner, $oldValue);
-        
-        return 'SUCCESS';
+        if($partner->active === 1){
+            $oldValue = $request->input('old_value');
+
+            SetCurrentStatusForPartnerJob::dispatch($partner, $oldValue);
+
+            return 'SUCCESS';
+        }else{
+            return 'Для активации разблокируйте партнера';
+        }
+
     }
     
     //block - unblock payment partner
