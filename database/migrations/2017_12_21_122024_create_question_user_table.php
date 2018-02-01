@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAnswerUserTable extends Migration
+class CreateQuestionUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -37,6 +37,6 @@ class CreateAnswerUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('answer_user');
+        Schema::dropIfExists('question_user');
     }
 }
